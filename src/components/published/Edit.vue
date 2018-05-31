@@ -28,17 +28,17 @@
           </el-select>
            </el-col>
         </el-form-item>
-        <el-form-item label="封面" prop="display_type" required>
-          <el-radio-group v-model="ruleForm.display_type">
-            <el-radio :label="1" v-if="ruleForm.display_type!==4">无图</el-radio>
-            <el-radio :label="2" v-if="ruleForm.display_type!==4">单张大图</el-radio>
-            <el-radio :label="3" v-if="ruleForm.display_type!==4">单张小图</el-radio>
-            <el-radio :label="4" v-if="ruleForm.display_type==4">单张大图</el-radio>
-            <el-radio :label="5" v-if="ruleForm.display_type!==4">三图</el-radio>
+        <el-form-item label="封面" prop="display_type">
+          <el-radio-group v-model="display_type">
+            <el-radio :label="1">无图</el-radio>
+            <el-radio :label="2" v-if="display_type==2">单张大图</el-radio>
+            <el-radio :label="3" v-if="display_type==3">单张小图</el-radio>
+            <el-radio :label="4" v-if="display_type==4">单张大图</el-radio>
+            <el-radio :label="5" v-if="display_type==5">三图</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item v-if="imgShow.length>=1">
-          <div v-for="(item ,index) in imgShow" :key="index">
+        <el-form-item >
+          <div v-for="item in cover" :key="item" v-if="display_type!==1">
             <div v-if="ruleForm.display_type==2 || ruleForm.display_type==4">
               <img :src="item" width="180" height="114"/>
             </div>
@@ -99,7 +99,6 @@
       types: "",
       type_name:"",
       type_id:"",
-      display_type:"",
       cover:[],
       imgShow:[],
       flag:false,
@@ -112,56 +111,58 @@
       this.id = this.$route.params.id
     },
     watch:{
-        display_type:function(){ //封面
-      console.log(this.display_type)
-      console.log(this.display_type ==1)
-      this.ruleForm.coverage = "";
-      this.imgShow = []      
-      if(this.display_type ==1){  //无封面
-        this.ruleForm.display_type =1;
-          return
-      }
-      if(this.display_type ==2 || this.display_type ==4){ // 690*388 单张大图
-          this.selectedImgs(690,388);
-           if(this.cover.length >0){
-          this.ruleForm.coverage  = this.cover[0];
-           this.ruleForm.display_type =this.display_type ;
-            this.imgShow = this.ruleForm.coverage.split(",")
-       }else{
-          this.display_type = 1;
-          this.open("不符合单张大图,请选择其他模式")
-       }
-      }
-     if(this.display_type ==3){//220*140 单张小图
-        this.selectedImgs(690,388);
-        if(this.cover.length >0){
-          this.ruleForm.display_type =3;
-          this.selectedImgs(220,140);
-          this.ruleForm.coverage  = this.cover[0];
-          this.imgShow = this.ruleForm.coverage.split(",")
-       }else{
-          this.display_type = 1;
-          this.open("不符合单张小图,请选择其他模式")
-       }
-     
-    
+      // display_type:function(){
+      //   if(display_type==1){
+      //       this.ruleForm.display_type =1
+      //   }else{
+      //     this.ruleForm.display_type = display_type
+      //   }
+      // },
+    // display_type:function(){ //封面
+    //   // this.ruleForm.coverage = "";
+    //   this.imgShow = []      
+    //   console.log(this.cover)
+    //   if(this.display_type ==1){  //无封面
+    //     this.ruleForm.display_type =1;
+    //       return
+    //   }
+    //   if(this.display_type ==2 || this.display_type ==4){ // 690*388 单张大图
+    //       this.selectedImgs(690,388);
+    //         if(this.cover.length >0){
+    //           this.ruleForm.coverage  = this.cover[0];
+    //           this.ruleForm.display_type =this.display_type ;
+    //           this.imgShow = this.ruleForm.coverage.split(",")
+    //    }else{
+    //       this.display_type = 1;
+    //       this.open("不符合单张大图690*388,请选择其他模式")
+    //    }
+    //   }
+    //  if(this.display_type ==3){//220*140 单张小图
+    //      this.selectedImgs(220,140);
+    //     if(this.cover.length >0){
+    //       this.ruleForm.display_type =3;
+    //       this.ruleForm.coverage  = this.cover[0];
+    //       this.imgShow = this.ruleForm.coverage.split(",")
+    //    }else{
+    //       this.display_type = 1;
+    //       this.open("不符合单张小图220*140标准,请选择其他模式")
+    //    }
+    //   }
+    //   if(this.display_type ==5){ //220*140 三张图
+    //     this.selectedImgs(220,140);
+    //     if(this.cover.length >2){
+    //       this.ruleForm.display_type =5;
+    //       this.ruleForm.coverage  = this.cover[0] + ','+ this.cover[1] +","+ this.cover[2]
+    //       this.imgShow = this.ruleForm.coverage.split(",")
+    //     }else{
+    //       this.display_type = 1;
+    //       this.open("不符合三图标准,请选择其他模式")
+    //     }
 
-      }
-      if(this.display_type ==5){ //220*140 三张图
-        this.selectedImgs(220,140);
-        if(this.cover.length >2){
-          this.ruleForm.display_type =5;
-          this.ruleForm.coverage  = this.cover[0] + ','+ this.cover[1] +","+ this.cover[2]
-          this.imgShow = this.ruleForm.coverage.split(",")
-        }else{
-          this.display_type = 1;
-          this.open("不符合三图标准,请选择其他模式")
-        }
 
-
-      }
-      console.log(this.ruleForm.article_imgs)
-    },
+    //   }
+    //   console.log(this.ruleForm.article_imgs)
+    // },
 
     inputTags: function(val) { //选择标签
       this.inputTagsChange(val)
@@ -200,29 +201,30 @@
         });
       },
     // 封面
-   selectedImgs(h,w){
-     if(this.ruleForm.article_imgs == undefined){
-       this.open("请先上传图片！")
-     }else{
-      this.ruleForm.article_imgs.forEach(item => {
-            const height = item.img_w*item.img_radio;
-            if(height>h && item.img_w>w){
-              this.cover.push(item.img_url)            
-              return false;
+  //  selectedImgs(h,w){
+  //     this.ruleForm.article_imgs.forEach(item => {
+  //           const height = item.img_w*item.img_radio;
+  //           if(height>h && item.img_w>w){
+  //             this.cover.push(item.img_url)            
+  //             return false;
 
-            }
-          })
-     }
+  //           }
+  //         })
 
-          },
+  //         },
     inputHandler(val) {
       this.ruleForm.content = val;
     },
     previewData(){
       this.ruleForm.tag = this.inputTags;
+      this.ruleForm.display_type = this.display_type;
       if(this.flag){
         this.ruleForm.type_id = this.type_name;
       }
+      if(this.ruleForm.display_type == 1){
+        this.ruleForm.coverage =""
+      }
+      console.log(this.ruleForm.display_type)
       publishedService.previewData(this.ruleForm).then(data=>{
         if(data.code==0){
           this.$router.push({ path: "../../../index/published/publish/" + this.id });
@@ -263,6 +265,8 @@
         this.type_id = this.ruleForm.type_id;
         this.display_type = parseInt(this.ruleForm.display_type);
         this.inputTags = this.ruleForm.tag;
+        this.cover = this.ruleForm.coverage.split(",")
+        console.log(this.cover)
         this.inputTagsChange();
 
       }

@@ -35,13 +35,20 @@ export default {
         return Promise.resolve(resp.data)
       })
   },
+    //markEdited
+  
+    markEdited(id){
+      return api.post('information/resource/mark-edited',id, true).then(resp=>{
+          return Promise.resolve(resp.data)
+        })
+    }, 
+  
   //delete
   detele(ids){
     return api.post('information/resource/delete',ids, true).then(resp=>{
         return Promise.resolve(resp.data)
       })
-  }
-  
+  },
 
 
 

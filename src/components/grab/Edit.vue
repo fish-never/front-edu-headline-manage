@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <p class="location"><router-link class="grey" to="/index">抓取池</router-link>>编辑</p>
+    <p class="location"><router-link class="grey" to="/index">抓取池</router-link>>编辑   <button class="detele-btn" @click="deleteLists" title="删除"></button></p>
     <div class="wrap-margin wrap-padding">
         <XEditor :content="ruleForm.content" v-on:change="onContentChange"/>
     </div>
@@ -66,6 +66,8 @@
 
         <el-form-item>
           <button @click="saveData" class="btn" type="button">保存并预览</button>
+          <button class="btn" type="button" v-if="btnShow">保存并发布</button>
+          <button class="btn" @click="publishData" type="button"  v-if="!btnShow">保存并发布</button>
         </el-form-item>
       </el-form>
     </div>
@@ -97,7 +99,8 @@ export default {
       display_type:"",
       cover:[],
       imgShow:[],
-      options:""
+      options:"",
+      btnShow:false
 
       
     };
@@ -165,6 +168,52 @@ export default {
     }
   },
   methods: {
+      publishData(){
+      this.btnShow = true;
+      this.ruleForm.id = this.ruleForm._id;
+      this.ruleForm.tag = this.inputTags;
+      if(this.flag){
+        this.ruleForm.type_id = this.type_name;
+      }
+      grabService.saveData(this.ruleForm).then(data => {
+        if (data.code == 0) {
+          const params = {
+            id:this.ruleForm._id
+          }
+          grabService.publishData(params).then(data=>{
+              if(data.code==0){
+                  this.$router.push({path:'../../index'});
+            }else{
+               this.btnShow = false;
+              this.open(data.msg)
+            }
+          })
+        } else {
+          this.open(data.msg);
+        }
+      })
+    },
+          //删除
+      deleteLists(){
+        console.log(this.id)
+           const params = {
+              ids:this.id
+           };
+        this.$confirm('确定删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          grabService.detele(params).then(data=>{
+            if(data.code==0){
+            this.$router.push({ path: "../../index"});
+            }else{
+            this.open(data.msg)
+            }
+
+          })
+        })
+      },
     //type
     typeNameChange(val){
       this.flag=true;
@@ -271,12 +320,20 @@ export default {
 };
 </script>
 <style>
+
 .mce-branding {
   display: none !important;
 }
 </style>
 <style scoped>
-
+.disabled{
+  pointer-events:none
+}
+ .detele-btn{
+   vertical-align: middle;
+   top: 22px;
+   right: 30px;
+ }
 .item-wrap {
   width: 290px;
   height: 258px;

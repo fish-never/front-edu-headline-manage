@@ -25,8 +25,8 @@ export default {
     return {
       // username:"",
       // password: "",
-      username:"shengaoqiang",
-      password: "123456",
+      username:"sunjiatian",
+      password: "xinxiliu666",
     }
   },
 
@@ -46,11 +46,10 @@ export default {
          return
       }
       userService.login(this.username, this.password).then(data=>{
-        console.log(data)
       if(data.code==0){
         this.$router.push({path:'index'});
       }else{
-        // this.$router.push({path:'index'});
+        this.open("账户或密码错误")
       }
 
     })

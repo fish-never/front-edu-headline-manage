@@ -245,3 +245,15 @@ input,button,select,textarea{outline:none}
   .el-checkbox+.el-checkbox {
     margin-left: 0px; 
   }
+  .detele-btn{
+    background:url("./assets/imgs/detele.svg") no-repeat;
+    background-size:100%;
+    width:20px;
+    height: 20px;
+    display: block;
+    float: right;
+    margin-right: 15px;
+    top: 8px;
+    position: relative;
+    cursor: pointer;
+  }

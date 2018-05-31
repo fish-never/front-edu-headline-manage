@@ -10,7 +10,7 @@
         :value="item">
       </el-option>
     </el-select>
-    <el-select v-model="value2" clearable size="small" placeholder="最近一周" style="width:150px;">
+    <el-select v-model="value2" clearable size="small" placeholder="近7天" style="width:150px;">
       <el-option
         v-for="item in options2"
         :key="item.value"
@@ -139,19 +139,19 @@
         value3:"",
         options:[],
         value2:"",
-        options2: [ {
-          value: 1,
-          label: '一天'
-        },
+        options2: [
           {
-            value: 2,
-            label: '一周'
+            value: 1,
+            label: '今天'
           }, {
+          value: 2,
+          label: '近7天'
+        }, {
           value: 3,
-          label: '一月'
+          label: '近1一个月'
         }, {
           value: 4,
-          label: '一年'
+          label: '近1年'
         }]
       }
     },
@@ -209,6 +209,8 @@
           publishedService.updataStatus(params).then(data=>{
             if(data.code==0){
               this.loadList()
+          }else{
+            this.open(data.msg)
           }
         })
         }).catch(() => {       
@@ -229,6 +231,8 @@
         publishedService.updataStatus(params).then(data=>{
           if(data.code==0){
             this.loadList()
+        }else{
+          this.open(data.msg)
         }
       })
         }).catch(() => {       

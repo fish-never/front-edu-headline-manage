@@ -16,9 +16,15 @@
         width="60">
       </el-table-column>
       <el-table-column
-        label="用户" width="200px">
+        label="用户头像" width="200px">
         <template slot-scope="scope">
           <img :src="scope.row.thumb_img" width="25px" />
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="用户名称" width="200px">
+        <template slot-scope="scope">
+          {{scope.row.nickname}}
         </template>
       </el-table-column>
       <el-table-column

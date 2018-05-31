@@ -94,7 +94,10 @@
       <el-table-column label="操作"  width="150px">
         <template slot-scope="scope">
           <router-link class="link-a" :to="{path:'/index/preview/'+ scope.row._id}">预览</router-link>
+          <!-- <p @click="mark(scope.row.status)" >
+            {{scope.row.status}} -->
           <router-link class="link-a" :to="{path:'/index/edit/'+ scope.row._id}">编辑</router-link>
+          <!-- </p> -->
           <span class="link-a"
             type="button"
             @click="Detele(scope.row._id)">删除</span>
@@ -136,16 +139,16 @@
         options2: [
           {
             value: 1,
-            label: '一天'
+            label: '今天'
           }, {
           value: 2,
-          label: '一周'
+          label: '近7天'
         }, {
           value: 3,
-          label: '一月'
+          label: '近1一个月'
         }, {
           value: 4,
-          label: '一年'
+          label: '近1年'
         }]
 
       }
@@ -172,6 +175,14 @@
         this.$alert(text, '信息', {
           confirmButtonText: '确定',
         });
+      },
+      //点击编辑
+      // markEdited
+      mark(mark){
+        mark =2;
+       console.log(mark)
+        // return mark;
+      
       },
      handleSelectionChange(val) {
        console.log(val)
@@ -207,6 +218,13 @@
           this.pageNum = parseInt(data.data.pageNum);
           this.total = data.data.count;
           this.itemData = data.data.result;
+          console.log(this.itemData)
+          // this.itemData.forEach(item=>{
+          //   console.log(item)
+          //   item.status = 0
+          // })
+          console.log(this.itemData)
+          console.log(8888)
           this.loading = false;
           this.pageShow=true;
         }else{
@@ -290,6 +308,15 @@
     /*display: table-cell;*/
     /*overflow: scroll;*/
   }
+  .link-a:visited{
+  color:red;
+}
+a:visited{
+  color:red;
+}
+.red{
+  color:red;
+}
   .item-wrap{
     width:290px;
     height:258px;
@@ -369,5 +396,6 @@
     margin-right: 15px;
     top: 8px;
     position: relative;
+    cursor: pointer;
   }
 </style>

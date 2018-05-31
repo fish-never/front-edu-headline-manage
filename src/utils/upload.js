@@ -13,7 +13,7 @@ function getOssToken(){
     })
 }
 
-function uploadToOss(callback){
+function uploadToOss(callback, feildName){
     getOssToken().done(function(resp){
         console.log(resp)
         if(resp.code != 0){
@@ -34,7 +34,7 @@ function uploadToOss(callback){
         form.append("success_action_status", "200");
         form.append("signature", tokenObj.signature);
         form.append("callback",tokenObj.callback);
-        form.append("file", $('[name=imgFile]')[0].files[0]);
+        form.append("file", $('[name='+ (feildName || 'imgFile') +']')[0].files[0]);
         var settings = {
             "async": true,
             "crossDomain": true,

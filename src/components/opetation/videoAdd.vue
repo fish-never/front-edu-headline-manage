@@ -10,8 +10,8 @@
         <el-form-item label="标题" prop="title" >
           <el-input v-model="videoData.title"></el-input>
         </el-form-item>
-        <el-form-item label="文章来源" prop="origin_link" >
-          <el-input v-model="videoData.origin_link"></el-input>
+        <el-form-item label="文章来源" prop="source" >
+          <el-input v-model="videoData.source"></el-input>
         </el-form-item>
         <el-form-item label="分类" prop="region">
           <el-select v-model="videoData.type_id" placeholder="请选择分类" >
@@ -69,7 +69,7 @@
         videoData:{
             content_html:"",
             coverage:"",
-            origin_link:'',
+            origin_link:'111',
             source:'',
             video_uri:'',
            display_type:4

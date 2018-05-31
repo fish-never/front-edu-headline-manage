@@ -9,7 +9,7 @@
           <el-input v-model="textData.title"></el-input>
         </el-form-item>
         <el-form-item label="文章来源" prop="source">
-          <el-input v-model="textData.origin_link"></el-input>
+          <el-input v-model="textData.source"></el-input>
         </el-form-item>
         <el-form-item label="分类" prop="type_id">
           <el-select v-model="textData.type_id" placeholder="请选择分类" >
@@ -26,7 +26,7 @@
         </el-form-item>
         <el-form-item class='clearfloat' v-show='display_type==5'>
           <div v-for='item in files' :key="item.id">
-          <UploadFile v-on:filechange="filechange(item)" :file="item.url" @click="upImg(item)"/>
+          <UploadFile v-model="item.url" />
           <!-- <UploadFile v-on:filechange="filechange"/>
           <UploadFile v-on:filechange="filechange"/> -->
           </div>
@@ -34,11 +34,11 @@
 
         </el-form-item>
         <el-form-item class='clearfloat' v-show='display_type==2'>
-          <UploadFile v-on:filechange="filechange" :file="file"/> 
+          <UploadFile v-on:filechange="filechange"/> 
           <p class='up-img'>图片建议尺寸690*388</p>
         </el-form-item>
        <el-form-item class='clearfloat' v-show='display_type==3'>
-          <UploadFile v-on:filechange="filechange" :file="file"/>
+          <UploadFile v-on:filechange="filechange"/>
           <p class='up-img'>图片建议尺寸220*140</p>
         </el-form-item>
         <el-form-item label="新增标签" prop="type">
@@ -85,7 +85,7 @@
         files:[
           {
             id:1,
-            url:""
+            url:"https://img-toutiao.ministudy.com/2018_05_30/Desert.jpg"
           },
           {
             id:2,
@@ -93,7 +93,7 @@
           },
           {
             id:3,
-            url:""
+            url:"https://img-toutiao.ministudy.com/2018_05_30/Desert.jpg"
           },
         ],
         checkedTags: [],
@@ -154,14 +154,15 @@
         }
       });
     },
-    filechange(url){
-      console.log(url)
-      this.textData.coverage = url;
-      this.file = url
+    filechange(resp){
+      console.log('upload id:' + resp.id)
+      console.log(resp.url)
+      this.textData.coverage = resp.url;
+      this.file = resp.url
        if(this.display_type==5){
           console.log()
         }
-        console.log(url);
+        console.log(resp.url);
       },
       handleClick(tab, event) {
           if(tab.index==1){
