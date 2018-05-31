@@ -5,7 +5,9 @@ function getOssToken(){
         // axios.defaults.baseURL = "http://tmp-manage-api.ministudy.com";
         // url: 'http://manage-api.ministudy.com/oss/upload/token',
         // url: 'http://tmp-manage-api.ministudy.com/oss/upload/token',
-        url: 'http://manage-api-toutiao.ministudy.com/oss/upload/token',
+
+        url: 'http://manage-api.ministudy.com/oss/upload/token',
+        // url: 'http://manage-api-toutiao.ministudy.com/oss/upload/token',
         
         headers:{
             'Authorization': token

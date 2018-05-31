@@ -68,6 +68,7 @@
           <button @click="saveData" class="btn" type="button">保存并预览</button>
           <button class="btn" type="button" v-if="btnShow">保存并发布</button>
           <button class="btn" @click="publishData" type="button"  v-if="!btnShow">保存并发布</button>
+
         </el-form-item>
       </el-form>
     </div>
@@ -189,6 +190,7 @@ export default {
             }
           })
         } else {
+           this.btnShow = false;
           this.open(data.msg);
         }
       })
