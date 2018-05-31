@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="location"><span class="grey">已发布</span>>预览</p>
+    <p class="location"> <router-link to="/index/published" class="grey">已发布</router-link>>预览</p>
     <div class="wrap">
       <div class="item">
         <h2 class="title">{{data.title}}</h2>

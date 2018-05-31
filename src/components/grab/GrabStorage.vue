@@ -109,7 +109,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="page"
-      :page-sizes="[10,20,30]"
+      :page-sizes="[10,20,30,50,100,200]"
       :page-size="pageNum"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
@@ -385,16 +385,5 @@ a:visited{
     line-height:20px;
     margin:14px 0 21px 0;
   }
-  .detele-btn{
-    background:url("../../assets/imgs/detele.svg") no-repeat;
-    background-size:100%;
-    width:20px;
-    height: 20px;
-    display: block;
-    float: right;
-    margin-right: 15px;
-    top: 8px;
-    position: relative;
-    cursor: pointer;
-  }
+
 </style>

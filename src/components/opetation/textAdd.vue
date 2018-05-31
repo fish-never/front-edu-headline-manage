@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="location"><router-link to="/index/operationStorage" class="grey">运营池444</router-link>>新建文章</p>
+    <p class="location"><router-link to="/index/operationStorage" class="grey">运营池</router-link>>新建文章</p>
     <div class="wrap-margin wrap-padding">
       <el-tabs v-model="activeName" @tab-click="handleClick">
          <el-tab-pane label="图文文章" name="first">

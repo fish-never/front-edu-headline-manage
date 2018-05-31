@@ -91,7 +91,7 @@
                    @size-change="handleSizeChange"
                    @current-change="handleCurrentChange"
                    :current-page="page"
-                   :page-sizes="[10,20,30]"
+                   :page-sizes="[10,20,30,50,100,200]"
                    :page-size="pageNum"
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
@@ -190,16 +190,14 @@
           id:row.id
         };
         operationService.publishData(params).then(data=>{
-          console.log(data)
-          if(data.code==0){
+          console.log(data.data.code)
+          if(data.data.code==0){
             this.loadList()
         }else{
           this.open("发布信息失败")
         }
       })
-        }).catch(() => {       
-        });
-
+        })
 
       },
       deleteLists(){
