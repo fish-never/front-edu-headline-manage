@@ -120,6 +120,7 @@
 <script>
   import grabService from '../../service/grab';
   import commonService from '../../service/common';
+  import { Loading } from 'element-ui';
   export default {
     name: 'grab',
     data () {
@@ -167,7 +168,6 @@
         this.options = data.data;
       }
     })
-
     },
     methods: {
     //弹框
@@ -180,12 +180,12 @@
       // markEdited
       mark(mark){
         mark =2;
-       console.log(mark)
+      // console.log(mark)
         // return mark;
       
       },
      handleSelectionChange(val) {
-       console.log(val)
+      // console.log(val)
         this.multipleSelection = val;
         this.ids='';
         val.forEach(item=>{
@@ -212,19 +212,22 @@
           rangeType:this.value2,
           typeId:this.value3,
         };
+       let loadingInstance = Loading.service({ fullscreen: true });
         grabService.list(params).then(data=>{
           if(data.code==0){
+            this.$nextTick(() => { 
+              loadingInstance.close();
+            });
           this.page = parseInt(data.data.page);
           this.pageNum = parseInt(data.data.pageNum);
           this.total = data.data.count;
           this.itemData = data.data.result;
-          console.log(this.itemData)
+         // console.log(this.itemData)
           // this.itemData.forEach(item=>{
           //   console.log(item)
           //   item.status = 0
           // })
-          console.log(this.itemData)
-          console.log(8888)
+       //   console.log(this.itemData)
           this.loading = false;
           this.pageShow=true;
         }else{
@@ -237,7 +240,7 @@
        const params = {
             ids: ids
         }
-       console.log(ids)
+      // console.log(ids)
          this.$confirm('确定删除?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -294,20 +297,16 @@
       },
 
       handleEdit(item) {
-        console.log(item);
+      //  console.log(item);
       },
       handlePreview(item) {
-        console.log(item);
+      //  console.log(item);
       }
     }
   }
 </script>
 
 <style scoped lang="scss">
-  .wrap-main{
-    /*display: table-cell;*/
-    /*overflow: scroll;*/
-  }
   .link-a:visited{
   color:red;
 }
