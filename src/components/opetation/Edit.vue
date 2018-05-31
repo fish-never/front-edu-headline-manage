@@ -1,7 +1,11 @@
 <template>
   <div>
 
-  <p class="location"><router-link to="/index/operationStorage" class="grey">运营池</router-link>>编辑</p>
+  <p class="location">
+    <router-link to="/index/operationStorage" class="grey">运营池</router-link>>编辑
+    <button class="detele-btn" @click="deleteLists" title="删除"></button>
+    
+  </p>
     <div class="wrap-margin wrap-padding">
         <XEditor :content="ruleForm.content_html" v-on:change="onContentChange"/>
     </div>
@@ -26,7 +30,7 @@
         </el-form-item>
         <el-form-item label="分类" prop="type_name">
            <el-col :span="11">
-          <el-select v-model="ruleForm.type_name" placeholder="请选择分类" width="100%">
+          <el-select v-model="ruleForm.type_name" placeholder="请选择分类" width="100%"  @change="typeNameChange">
             <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
           </el-select>
            </el-col>
@@ -60,6 +64,8 @@
         </el-form-item>
         <el-form-item>
           <button @click="saveData" class="btn" type="button">保存并预览</button>
+          <button class="btn" type="button" v-if="btnShow">保存并发布</button>
+          <button @click="publishData"  type="button" class="btn" v-if="!btnShow">保存并发布</button>
         </el-form-item>
       </el-form>
     </div>
@@ -76,21 +82,23 @@
       return {
         radio2: 1,
         input:'',
- 	editorText:"",
+        editorText:"",
+        flag:false,
         inputTags:'',
-       checkedTags: [],
+        checkedTags: [],
         tags: [],
         id:'',
-         ruleForm: {
-        content_html: "",
-      },
-      types: "",
-      type_name:"",
-      type_id:"",
-      display_type:"",
-      cover:[],
-      imgShow:[],
-      options:""
+        ruleForm: {
+          content_html: "",
+        },
+        types: "",
+        type_name:"",
+        type_id:"",
+        display_type:"",
+        cover:[],
+        imgShow:[],
+        options:"",
+        btnShow:false
 
       
     };
@@ -142,14 +150,14 @@
 
 
       }
-      console.log(this.ruleForm.article_imgs)
+
     },
     // article_imgs
     type_name:function(){
         this.types.forEach(item => {
         if(this.type_name==item.typeName){
            this.ruleForm.type_id = item.id;
-           console.log(this.ruleForm.type_id)
+
         }
       });
       },
@@ -169,6 +177,60 @@
     }
   },
   methods: {
+    //发布
+    publishData(){
+      this.btnShow = true;
+    this.ruleForm.tag = this.inputTags;
+     if(this.flag){
+        this.ruleForm.type_id = this.type_name;
+      }
+      operationService.editData(this.ruleForm).then(data => {
+        if (data.code == 0) {
+            const params = {
+                id: this.id
+              };
+            operationService.publishData(params).then(data=>{
+                if(data.data.code==0){
+                this.$router.push({path:'../../index/operationStorage'});
+
+              }else{
+                this.btnShow = false;
+                this.open(data.data.msg)
+              }
+            })
+        } else {
+           this.btnShow = false;
+          this.open(data.msg)
+        }
+      });
+
+
+      },
+      deleteLists(){
+        this.$confirm('确定删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+            const params = {
+              ids:this.id
+            };
+            operationService.deleteData(params).then(data=>{
+        
+              if(data.code==0){
+                this.$router.push({ path: "../../index/operationStorage/"});
+            }else{
+              this.open(data.msg)
+            }
+          })
+        })
+      },
+        //type
+    typeNameChange(val){
+      this.flag=true;
+ 
+
+    },
     inputTagsChange(){
       this.checkedTags = [];
       this.tags.forEach(item => {
@@ -202,7 +264,9 @@
     },
     saveData() {
       this.ruleForm.tag = this.inputTags;
-      console.log(this.ruleForm)
+     if(this.flag){
+        this.ruleForm.type_id = this.type_name;
+      }
       operationService.editData(this.ruleForm).then(data => {
         if (data.code == 0) {
           this.$router.push({ path: "../../index/publish/" + this.id });
@@ -245,7 +309,7 @@
         })
       commonService.tagList().then(data => {
         if(data.code == 0){
-        console.log(data)
+
         this.tags = data.data;
       }
     })
@@ -263,6 +327,11 @@
 }
 </style>
 <style scoped>
+ .detele-btn{
+   vertical-align: middle;
+   top: 22px;
+   right: 30px;
+ }
   .item-wrap{
     width:290px;
     height:258px;

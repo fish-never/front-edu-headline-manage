@@ -1,7 +1,10 @@
 <template>
   <div>
 
-   <p class="location"><span class="grey">已发布</span>>编辑</p>
+   <p class="location clearfloat">
+     <router-link to="/index/published" class="grey">已发布</router-link>>编辑
+     <!-- <button class="add-btn" @click="updataStatusDown">下架</button> -->
+     </p>
     <div class="wrap-margin wrap-padding">
         <XEditor :content="ruleForm.content_html" v-on:change="onContentChange"/>
     </div>
@@ -70,6 +73,8 @@
 
         <el-form-item>
           <button @click="previewData" class="btn" type="button">保存并预览</button>
+          <!-- <button class="btn" type="button" v-if="btnShow">保存并发布</button>
+          <button class="btn" @click="publishData" type="button"  v-if="!btnShow">保存并发布</button> -->
         </el-form-item>
       </el-form>
     </div>
@@ -102,7 +107,8 @@
       cover:[],
       imgShow:[],
       flag:false,
-      options:""
+      options:"",
+      btnShow:false
 
 
       }
@@ -180,6 +186,27 @@
     }
   },
   methods: {
+    updataStatusDown(id,status){
+         this.$confirm('确定下架?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          const params = {
+            id: this.id,
+            status:2
+          };
+          publishedService.updataStatus(params).then(data=>{
+            if(data.code==0){
+                this.$router.push({path:'../../../index/published'});
+          }else{
+            this.open(data.msg)
+          }
+        })
+        }).catch(() => {       
+        });
+
+      },
     //type
     typeNameChange(val){
       this.flag=true;
@@ -212,9 +239,11 @@
   //         })
 
   //         },
+
     inputHandler(val) {
       this.ruleForm.content = val;
     },
+    // 
     previewData(){
       this.ruleForm.tag = this.inputTags;
       this.ruleForm.display_type = this.display_type;
@@ -297,6 +326,11 @@
 }
 </style>
 <style scoped>
+.add-btn{
+      position: relative;
+    top: 20px;
+    right: 20px;
+}
   .item-wrap{
     width:290px;
     height:258px;

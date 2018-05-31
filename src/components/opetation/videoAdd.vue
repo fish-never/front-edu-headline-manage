@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="location"><router-link to="/index/operationStorage" class="grey">运营池</router-link>>新建文章</p>
+    <p class="location"><router-link to="/index/operationStorage" class="grey">运营池</router-link>>新建文章9999</p>
     <div class="wrap-margin wrap-padding">
       <el-tabs v-model="activeName" @tab-click="handleClick">
          <el-tab-pane label="图文文章" name="first">
@@ -38,6 +38,7 @@
         </el-form-item>
         <el-form-item>
           <button @click="textSaveData"  type="button" class="btn">保存并预览</button>
+
         </el-form-item>
       </el-form>
     </el-tab-pane>
@@ -68,7 +69,7 @@
         imageUrl: '',
         videoData:{
             content_html:"",
-            coverage:"",
+            coverage:"  ",
             origin_link:'111',
             source:'',
             video_uri:'',

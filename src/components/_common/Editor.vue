@@ -55,7 +55,6 @@ export default {
   },
   methods: {
     onContentChange: function(val){
-      console.log(val)
      this.$emit('change', val)
     },
     afterChange: function(val){
