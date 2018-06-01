@@ -17,6 +17,7 @@ import OperationPreview from '@/components/opetation/Preview'
 import OperationEdit from '@/components/opetation/Edit'
 import OperationPublish from '@/components/opetation/publish'
 import PreviewVideoPreview from '@/components/opetation/PreviewVideo'
+import Tag from '@/components/tag/tag'
 
 
 import OperationTextAdd from '@/components/opetation/textAdd'
@@ -62,6 +63,11 @@ export default new Router({
           path: 'published',
           name: 'published',
           component: Published
+        },
+        {
+          path: 'tag',
+          name: 'tag',
+          component: Tag
         },
         {
           path: 'edit/:id',

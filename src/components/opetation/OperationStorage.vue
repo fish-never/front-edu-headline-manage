@@ -189,9 +189,11 @@
         const params = {
           id:row.id
         };
+         const loadingInstance = this.$loading({ fullscreen: true });
         operationService.publishData(params).then(data=>{
-          console.log(data.data.code)
+         // console.log(data.data.code)
           if(data.data.code==0){
+            loadingInstance.close();
             this.loadList()
         }else{
           this.open("发布信息失败")
@@ -211,7 +213,7 @@
               ids:this.ids
             };
             operationService.deleteData(params).then(data=>{
-              console.log(data)
+            //  console.log(data)
               if(data.code==0){
                 this.loadList()
             }else{
@@ -223,8 +225,6 @@
         }else{
            this.open("请先对需要删除的数据进行勾选")
         }
-
-
     
       },
       handleSelectionChange(val) {
@@ -241,12 +241,12 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-            console.log(index, row.id);
+          //  console.log(index, row.id);
             const params = {
               ids:row.id
             };
             operationService.deleteData(params).then(data=>{
-              console.log(data)
+            //  console.log(data)
               if(data.code==0){
                 this.loadList()
             }

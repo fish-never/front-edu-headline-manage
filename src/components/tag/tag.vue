@@ -121,10 +121,10 @@
 </template>
 
 <script>
-import publishedService from "../../service/published";
+import publishedService from "../../service/tag";
 import commonService from "../../service/common";
 export default {
-  name: "published",
+  name: "tag",
   data() {
     return {
       pageShow: false,
@@ -185,10 +185,9 @@ export default {
         rangeType: this.value2,
         typeId: this.value3
       };
-       const loadingInstance = this.$loading({ fullscreen: true });
+      // console.log(params);
       publishedService.sourceList(params).then(data => {
         if (data.code == 0) {
-          loadingInstance.close();
           this.page = parseInt(data.data.page);
           this.pageNum = parseInt(data.data.pageNum);
           this.total = parseInt(data.data.count);
