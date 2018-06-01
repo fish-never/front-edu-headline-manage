@@ -66,25 +66,25 @@
     <el-table-column
       label="浏览量" width="60px">
       <template slot-scope="scope">
-        <span>{{ scope.row.come_from }}</span>
+        <span>{{ scope.row.come_from  | money}}</span>
       </template>
     </el-table-column>
     <el-table-column
       label="点赞数"  width="60px">
       <template slot-scope="scope">
-        <span>{{ scope.row.like_count }}</span>
+        <span>{{ scope.row.like_count | money}}</span>
       </template>
     </el-table-column>
     <el-table-column
       label="评论数"  width="60px">
       <template slot-scope="scope">
-        <span>{{ scope.row.comment_count }}</span>
+        <span>{{ scope.row.comment_count  | money }}</span>
       </template>
     </el-table-column>
     <el-table-column
       label="转发数"  width="60px">
       <template slot-scope="scope">
-        <span>{{ scope.row.share_count }}</span>
+        <span>{{ scope.row.share_count  | money }}</span>
       </template>
     </el-table-column>
     <el-table-column
@@ -121,142 +121,153 @@
 </template>
 
 <script>
-  import publishedService from '../../service/published';
-  import commonService from '../../service/common';
-  export default {
-    name: 'published',
-    data() {
-      return {
-        pageShow:false,
-        loading: true,
-        page:1,
-        total: 10,
-        pageNum: 10,
-        types:"",
-        data:[],
-        value:"",
-        value2:"2",
-        value3:"",
-        options:[],
-        value2:"",
-        options2: [
-          {
-            value: 1,
-            label: '今天'
-          }, {
+import publishedService from "../../service/published";
+import commonService from "../../service/common";
+export default {
+  name: "published",
+  data() {
+    return {
+      pageShow: false,
+      loading: true,
+      page: 1,
+      total: 10,
+      pageNum: 10,
+      types: "",
+      data: [],
+      value: "",
+      value2: "2",
+      value3: "",
+      options: [],
+      value2: "",
+      options2: [
+        {
+          value: 1,
+          label: "今天"
+        },
+        {
           value: 2,
-          label: '近7天'
-        }, {
+          label: "近7天"
+        },
+        {
           value: 3,
-          label: '近1一个月'
-        }, {
+          label: "近1一个月"
+        },
+        {
           value: 4,
-          label: '近1年'
-        }]
-      }
-    },
-    mounted(){
-      this.loadList();
-      publishedService.sourceData().then(data=>{
-        if(data.code==0){
+          label: "近1年"
+        }
+      ]
+    };
+  },
+  mounted() {
+    this.loadList();
+    publishedService.sourceData().then(data => {
+      if (data.code == 0) {
         this.options = data.data;
-        this.pageShow=true;
-      }else{
-        this.pageShow=false;
+        this.pageShow = true;
+      } else {
+        this.pageShow = false;
       }
     }),
       commonService.typeList().then(data => {
-        if(data.code == 0){
-        console.log(data.data)
-        this.types = data.data;
-      }
-    })
-    },
-    methods: {
-      loadList(){
-        const params = {
-          page:this.page,
-          pageNum:this.pageNum,
-          source:this.value,
-          rangeType:this.value2,
-          typeId:this.value3
-        };
-        console.log(params)
-        publishedService.sourceList(params).then(data=>{
-          if(data.code==0){
+        if (data.code == 0) {
+         // console.log(data.data);
+          this.types = data.data;
+        }
+      });
+  },
+  methods: {
+    loadList() {
+      const params = {
+        page: this.page,
+        pageNum: this.pageNum,
+        source: this.value,
+        rangeType: this.value2,
+        typeId: this.value3
+      };
+      // console.log(params);
+      publishedService.sourceList(params).then(data => {
+        if (data.code == 0) {
           this.page = parseInt(data.data.page);
           this.pageNum = parseInt(data.data.pageNum);
           this.total = parseInt(data.data.count);
           this.data = data.data.result;
-          console.log(this.data)
+        //  this.data.forEach(item => {
+        //     item.come_from = "999999";
+        //     item.like_count = "9987454";
+        //     item.share_count = "1111";
+        //   });
           this.loading = false;
-        }else{
-          this.open(data.msg)
+        } else {
+          this.open(data.msg);
         }
-      })
-      },
+      });
+    },
 
-      updataStatusDown(id,status){
-         this.$confirm('确定下架?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+    updataStatusDown(id, status) {
+      this.$confirm("确定下架?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
           const params = {
             id: id,
-            status:2
+            status: 2
           };
-          publishedService.updataStatus(params).then(data=>{
-            if(data.code==0){
-              this.loadList()
-          }else{
-            this.open(data.msg)
-          }
+          publishedService.updataStatus(params).then(data => {
+            if (data.code == 0) {
+              this.loadList();
+            } else {
+              this.open(data.msg);
+            }
+          });
         })
-        }).catch(() => {       
-        });
+        .catch(() => {});
+    },
 
-      },
-
-      updataStatusUp(id,status){
-        this.$confirm('确定发布?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-        const params = {
-          id: id,
-          status:0
-        };
-        publishedService.updataStatus(params).then(data=>{
-          if(data.code==0){
-            this.loadList()
-        }else{
-          this.open(data.msg)
-        }
+    updataStatusUp(id, status) {
+      this.$confirm("确定发布?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
       })
-        }).catch(() => {       
-        });
-
-      },
-      getSourceList(){
-        this.loadList()
-      },
-      handleSizeChange(val){
-        this.pageNum = val;
-        this.loadList();
-      },
-      handleCurrentChange(val){
-        this.page = val;
-        this.loadList();
-      }
-
+        .then(() => {
+          const params = {
+            id: id,
+            status: 0
+          };
+          publishedService.updataStatus(params).then(data => {
+            if (data.code == 0) {
+              this.loadList();
+            } else {
+              this.open(data.msg);
+            }
+          });
+        })
+        .catch(() => {});
+    },
+    getSourceList() {
+      this.loadList();
+    },
+    handleSizeChange(val) {
+      this.pageNum = val;
+      this.loadList();
+    },
+    handleCurrentChange(val) {
+      this.page = val;
+      this.loadList();
+    }
+  },
+  filters: {
+    money: function(val) {
+      let pattern = /(?=((?!\b)\d{3})+$)/g;
+      return val.replace(pattern, ",");
     }
   }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
-
 </style>

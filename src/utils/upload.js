@@ -17,7 +17,6 @@ function getOssToken(){
 
 function uploadToOss(callback, feildName){
     getOssToken().done(function(resp){
-        console.log(resp)
         if(resp.code != 0){
             return alert('获取oss token异常')
         }

@@ -120,7 +120,6 @@
 <script>
   import grabService from '../../service/grab';
   import commonService from '../../service/common';
-  import { Loading } from 'element-ui';
   export default {
     name: 'grab',
     data () {
@@ -212,21 +211,14 @@
           rangeType:this.value2,
           typeId:this.value3,
         };
-       let loadingInstance = Loading.service({ fullscreen: true });
+       const loadingInstance = this.$loading({ fullscreen: true });
         grabService.list(params).then(data=>{
           if(data.code==0){
-            this.$nextTick(() => { 
               loadingInstance.close();
-            });
           this.page = parseInt(data.data.page);
           this.pageNum = parseInt(data.data.pageNum);
           this.total = data.data.count;
           this.itemData = data.data.result;
-         // console.log(this.itemData)
-          // this.itemData.forEach(item=>{
-          //   console.log(item)
-          //   item.status = 0
-          // })
        //   console.log(this.itemData)
           this.loading = false;
           this.pageShow=true;

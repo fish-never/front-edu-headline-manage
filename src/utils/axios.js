@@ -9,8 +9,8 @@ if (process.env.NODE_ENV == 'development') {
 } else if (process.env.NODE_ENV == 'debug') {
     axios.defaults.baseURL = '';
 } else if (process.env.NODE_ENV == 'production') {
-    // axios.defaults.baseURL = "http://manage-api.ministudy.com";
-    axios.defaults.baseURL = "http://manage-api-toutiao.ministudy.com";
+     axios.defaults.baseURL = "http://manage-api.ministudy.com";
+   // axios.defaults.baseURL = "http://manage-api-toutiao.ministudy.com";
 }
 let exceptionHandler;
 axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
