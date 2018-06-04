@@ -11,9 +11,9 @@
           'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
           'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen',
           'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
-          'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 
+          'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|',
            'insertfile', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
-          'anchor', 'link', 'unlink', '|', 'upimage']" 
+          'anchor', 'link', 'unlink', '|', 'upimage']"
             @on-content-change="onContentChange"></editor>
     </div>
 
