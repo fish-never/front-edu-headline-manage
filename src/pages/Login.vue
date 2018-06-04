@@ -4,12 +4,12 @@
      <div class="login-wrap">
         <p class="login-top">登录</p>
         <div class="item">
-          <span class="login-text email-icon">邮箱</span>
-          <input class="login-input" type="email"  v-model="username"  />
+          <span class="login-text email-icon"></span>
+          <input class="login-input" type="email"  placeholder="邮箱" v-model="username"  />
         </div>
        <div class="item">
-         <span class="login-text ps-icon">密码</span>
-         <input class="login-input" type="password"  v-model="password"  @keyup.enter="login" />
+         <span class="login-text ps-icon"></span>
+         <input class="login-input" type="password" placeholder="密码" v-model="password"  @keyup.enter="login" />
        </div>
        <button class="btn" @click="login">登录</button>
       </div>
@@ -110,7 +110,7 @@ export default {
     position: relative;
     left:0px;
     display: inline-block;
-    width: 60px;
+    width: 30px;
   }
   .item{
     border-bottom:1px solid rgba(150,171,181,0.2);;

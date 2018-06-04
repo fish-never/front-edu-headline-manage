@@ -1,7 +1,10 @@
 <template>
   <div>
 
-    <p class="location"><router-link class="grey" to="/index">抓取池</router-link>>编辑   <button class="detele-btn" @click="deleteLists" title="删除"></button></p>
+    <div class="location">
+      <router-link class="grey" to="/index">抓取池</router-link>>编辑  
+       <button class="detele-btn" @click="deleteLists" title="删除"></button>
+       </div>
     <div class="wrap-margin wrap-padding">
         <XEditor :content="ruleForm.content" v-on:change="onContentChange"/>
     </div>
@@ -45,13 +48,23 @@
             <el-radio :label="5">三图</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item v-if="imgShow.length>=1">
+          <!-- <el-form-item v-if="imgShow.length>=1">
           <div v-for="(item ,index) in imgShow" :key="index">
             <div v-if="ruleForm.display_type==2">
               <img :src="item" width="180" height="114"/>
             </div>
             <div v-if="ruleForm.display_type !==1 && ruleForm.display_type !==2" class="img-item">
               <img :src="item" width="90" height="57"/>
+            </div>
+          </div>
+        </el-form-item> -->
+        <el-form-item v-if="imgShow.length>=1">
+          <div v-for="(item ,index) in imgShow" :key="index">
+            <div v-if="display_type==2 || display_type ==3" class="img-item">
+              <img :src="item.url" width="90" height="57"  @click="checkImg(item)" :class="{line: checkCover(item.url)}" />
+            </div>
+           <div v-if="display_type ==5" class="img-item">
+              <img :src="item.url" width="90" height="57"  @click="checkImg(item)" :class="{line: checkCover(item.url)}"/>
             </div>
           </div>
         </el-form-item>
@@ -101,7 +114,9 @@ export default {
       cover:[],
       imgShow:[],
       options:"",
-      btnShow:false
+      btnShow:false,
+      display_type_5:[],
+      coverages:[]
 
       
     };
@@ -109,18 +124,30 @@ export default {
 
   watch: {
     display_type:function(){ //封面
-      this.ruleForm.coverage = "";
-      this.imgShow = []      
-      if(this.display_type ==1){  //无封面
-        this.ruleForm.display_type =1;
-          return
-      }
-      if(this.display_type ==2 || this.display_type ==4){ // 690*388 单张大图
+      this.imgShow.length =0 
+      if(this.display_type ==2){ // 690*388 单张大图
+      // console.log(454545)
           this.selectedImgs(690,388);
             if(this.cover.length >0){
-              this.ruleForm.coverage  = this.cover[0];
-              this.ruleForm.display_type =this.display_type ;
-              this.imgShow = this.ruleForm.coverage.split(",")
+              this.cover.forEach(item=>{
+                let object = {
+                  url:item,
+                  selected: false
+                }
+                this.imgShow.push(object)
+              })
+              if(this.display_type == this.ruleForm.display_type){ //默认模式如果是当前模式，封面回显
+                this.imgShow.forEach(item =>{
+                    if(item.url ==  this.ruleForm.coverage){
+                      item.selected = true
+                    }else{
+                      this.imgShow.forEach(item =>{
+                          item.selected = false
+                        })
+                    }
+                  })
+              }
+             
        }else{
           this.display_type = 1;
           this.open("不符合单张大图690*388,请选择其他模式")
@@ -129,9 +156,25 @@ export default {
      if(this.display_type ==3){//220*140 单张小图
          this.selectedImgs(220,140);
         if(this.cover.length >0){
-          this.ruleForm.display_type =3;
-          this.ruleForm.coverage  = this.cover[0];
-          this.imgShow = this.ruleForm.coverage.split(",")
+             this.cover.forEach(item=>{
+                let object = {
+                  url:item,
+                  selected: false
+                }
+                this.imgShow.push(object)
+              })
+              if(this.display_type == this.ruleForm.display_type){ 
+                this.imgShow.forEach(item =>{
+                    if(item.url ==  this.ruleForm.coverage){
+                      item.selected = true
+                    }
+                  })
+              }else{
+                this.imgShow.forEach(item =>{
+                    item.selected = false
+                  })
+              }
+        
        }else{
           this.display_type = 1;
           this.open("不符合单张小图220*140标准,请选择其他模式")
@@ -140,17 +183,26 @@ export default {
       if(this.display_type ==5){ //220*140 三张图
         this.selectedImgs(220,140);
         if(this.cover.length >2){
-          this.ruleForm.display_type =5;
-          this.ruleForm.coverage  = this.cover[0] + ','+ this.cover[1] +","+ this.cover[2]
-          this.imgShow = this.ruleForm.coverage.split(",")
+             this.cover.forEach(item=>{
+                let object = {
+                  url:item,
+                  selected: false
+                }
+                this.imgShow.push(object)
+              })
+              if(this.display_type == this.ruleForm.display_type){
+                   let coverList = this.ruleForm.coverage.split(",");
+               }else{
+                this.imgShow.forEach(item =>{
+                    item.selected = false
+                  })
+              }
+
         }else{
           this.display_type = 1;
           this.open("不符合三图标准,请选择其他模式")
         }
-
-
       }
-      console.log(this.ruleForm.article_imgs)
     },
 
     inputTags: function(val) { //选择标签
@@ -169,35 +221,55 @@ export default {
     }
   },
   methods: {
-      publishData(){
-      this.btnShow = true;
-      this.ruleForm.id = this.ruleForm._id;
-      this.ruleForm.tag = this.inputTags;
-      if(this.flag){
-        this.ruleForm.type_id = this.type_name;
+    //判断是否已被选择
+     checkCover(url){
+       return this.ruleForm.coverage ? (this.ruleForm.coverage.indexOf(url) != -1) : false;
+     },
+    //选中图片
+    checkImg(item){
+       if(this.display_type ==1){
+          this.ruleForm.coverage = "";
       }
-      grabService.saveData(this.ruleForm).then(data => {
-        if (data.code == 0) {
-          const params = {
-            id:this.ruleForm._id
-          }
-          grabService.publishData(params).then(data=>{
-              if(data.code==0){
-                  this.$router.push({path:'../../index'});
-            }else{
-               this.btnShow = false;
-              this.open(data.msg)
-            }
-          })
-        } else {
-           this.btnShow = false;
-          this.open(data.msg);
+      if(this.display_type ==2 || this.display_type==3){
+          this.ruleForm.coverage = item.url;//单图情况直接赋值
+      }
+     if(this.display_type ==5){
+       //转成数组
+       var ms = this.ruleForm.coverage ? this.ruleForm.coverage.split(',') : [];
+       //获取在数据中的位置
+       var idx = ms.indexOf(item.url);
+       if(idx == -1){
+           ms.push(item.url); //不存在,添加
+        }else{
+          ms.splice(idx,1);  //存在,删除
+        }
+        if(ms.length>3){
+          ms.splice(0,1);  //长度大于3,删除第一个
+        }
+        this.ruleForm.coverage = ms.join(',');  //将数组转成逗号链接字符串
+      }
+
+    },
+   // 封面
+   selectedImgs(h,w){
+     this.cover.length=0;
+     const n = this.ruleForm.article_imgs.length;
+     let imgLists = [];
+     if(n>10){
+       imgLists = this.ruleForm.article_imgs.slice(0,14) 
+     }else{
+       imgLists = this.ruleForm.article_imgs
+     }
+     imgLists.forEach(item => {
+        let height = item.img_w*item.img_radio;
+        if(height>h && item.img_w>w){
+          this.cover.push(item.img_url)            
         }
       })
-    },
+   },
+
           //删除
       deleteLists(){
-        console.log(this.id)
            const params = {
               ids:this.id
            };
@@ -219,7 +291,6 @@ export default {
     //type
     typeNameChange(val){
       this.flag=true;
-      console.log(val)
 
     },
     inputTagsChange(){
@@ -236,34 +307,77 @@ export default {
           confirmButtonText: '确定',
         });
       },
-    // 封面
-   selectedImgs(h,w){
-      this.ruleForm.article_imgs.forEach(item => {
-            const height = item.img_w*item.img_radio;
-            if(height>h && item.img_w>w){
-              this.cover.push(item.img_url)            
-              return false;
-            }
-          })
-          },
+    // 判断封面是否符条件
+    checkCoverLength(callback){
+      this.ruleForm.display_type = this.display_type;
+      let type = this.ruleForm.display_type;
+      let imgLists= this.ruleForm.coverage ? this.ruleForm.coverage.split(',') : [];
+      let n = imgLists.length;
+      console.log(n)
+      if(type==5){
+         if(n<3){
+           this.open("封面数小于3,");
+            return
+         }
+        
+      }
+      if(type==3||type==2){
+        if(n<1){
+            this.open("请选择封面");
+             return
+         }
+      }
+      callback();
+    },
     inputHandler(val) {
       this.ruleForm.content = val;
     },
+    // 保存并预览
     saveData() {
-      this.ruleForm.tag = this.inputTags;
-
-      if(this.flag){
-        this.ruleForm.type_id = this.type_name;
-      }
-      console.log(this.type_name instanceof Number)
-      console.log(this.ruleForm.type_id)
-      grabService.saveData(this.ruleForm).then(data => {
-        if (data.code == 0) {
-          this.$router.push({ path: "../../index/publish/" + this.id });
-        } else {
-          this.open(data.msg);
-        }
+      this.checkCoverLength(item =>{
+        this.ruleForm.tag = this.inputTags;
+          if(this.flag){
+            this.ruleForm.type_id = this.type_name;
+          }
+        grabService.saveData(this.ruleForm).then(data => {
+            if (data.code == 0) {
+              this.$router.push({ path: "../../index/publish/" + this.id });
+            } else {
+              this.open(data.msg);
+            }
+          });
       });
+
+
+    },
+    //保存并发布
+    publishData(){
+      this.checkCoverLength(item =>{
+        this.btnShow = true;
+        this.ruleForm.id = this.ruleForm._id;
+        this.ruleForm.tag = this.inputTags;
+        if(this.flag){
+          this.ruleForm.type_id = this.type_name;
+        }
+        grabService.saveData(this.ruleForm).then(data => {
+          if (data.code == 0) {
+            const params = {
+              id:this.ruleForm._id
+            }
+            grabService.publishData(params).then(data=>{
+                if(data.code==0){
+                    this.$router.push({path:'../../index'});
+              }else{
+                this.btnShow = false;
+                this.open(data.msg)
+              }
+            })
+          } else {
+            this.btnShow = false;
+            this.open(data.msg);
+          }
+        })
+      })
     },
     onContentChange (val) {
       this.ruleForm.content = val;
@@ -292,13 +406,11 @@ export default {
       grabService.editData(this.id).then(data => {
       if (data.code == 0) {
         this.ruleForm = data.data;
-        this.imgShow = this.ruleForm.coverage.split(",");
         this.type_id = this.ruleForm.type_id;
         this.display_type = parseInt(this.ruleForm.display_type);
         this.inputTags = this.ruleForm.tag;
+       // 封面回显
         this.inputTagsChange();
-        console.log(3333,this.inputTags)
-        console.log( this.type_id)
       }
        commonService.typeList().then(data => {
         if (data.code == 0) {
@@ -328,6 +440,9 @@ export default {
 }
 </style>
 <style scoped>
+.line{
+    border: 3px solid #409EFF;
+}
 .disabled{
   pointer-events:none
 }
