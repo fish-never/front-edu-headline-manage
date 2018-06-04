@@ -5,18 +5,21 @@
       <el-tabs v-model="activeName" @tab-click="handleClick">
          <el-tab-pane label="图文文章" name="first">
       <el-form :model="textData" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="标题" prop="title">
+        <el-form-item label="标题" prop="title" required>
           <el-input v-model="textData.title"></el-input>
         </el-form-item>
-        <el-form-item label="文章来源" prop="source">
+        <el-form-item label="文章来源" prop="source" required>
           <el-input v-model="textData.source"></el-input>
         </el-form-item>
-        <el-form-item label="分类" prop="type_id">
+        <el-form-item label="原始地址" prop="origin_link" required>
+          <el-input v-model="textData.origin_link"></el-input>
+        </el-form-item>
+        <el-form-item label="分类" prop="type_id" required>
           <el-select v-model="textData.type_id" placeholder="请选择分类" >
             <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="封面" prop="display_type">
+        <el-form-item label="封面" prop="display_type" required>
           <el-radio-group v-model="display_type">
             <el-radio :label="1">无图</el-radio>
             <el-radio :label="2">单张大图</el-radio>
@@ -34,21 +37,21 @@
 
         </el-form-item>
         <el-form-item class='clearfloat' v-show='display_type==2'>
-          <UploadFile v-on:filechange="filechange"/> 
+          <UploadFile v-on:filechange="filechange"/>
           <p class='up-img'>图片建议尺寸690*388</p>
         </el-form-item>
        <el-form-item class='clearfloat' v-show='display_type==3'>
           <UploadFile v-on:filechange="filechange"/>
           <p class='up-img'>图片建议尺寸220*140</p>
         </el-form-item>
-        <el-form-item label="新增标签" prop="type">
+        <el-form-item label="新增标签" prop="type" required>
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
           <el-checkbox-group
             v-model="checkedTags">
             <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
-         <el-form-item label="正文编辑" prop="content">
+         <el-form-item label="正文编辑" prop="content" required>
               <XEditor :content="textData.content_html" v-on:change="onContentChange"/>
         </el-form-item>
 

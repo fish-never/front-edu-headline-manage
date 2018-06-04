@@ -7,7 +7,7 @@
     </el-tab-pane>
     <el-tab-pane label="视频文章" name="second">
             <el-form :model="videoData" label-width="100px" class="demo-videoData">
-        <el-form-item label="标题" prop="title" >
+        <el-form-item label="标题" prop="title" required>
           <el-input v-model="videoData.title"></el-input>
         </el-form-item>
         <el-form-item label="文章来源" prop="source" >

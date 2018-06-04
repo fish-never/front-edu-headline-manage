@@ -2,7 +2,7 @@
   <div  v-loading="loading">
     <div class="search-wrap">
       <span class="title">检索条件</span>
-      <el-select v-model="value1" clearable size="small" placeholder="内容源" style="width:150px;">
+      <el-select v-model="value1" clearable size="small" filterable  placeholder="内容源" style="width:150px;">
         <el-option
           v-for="item in options"
           :key="item"
