@@ -5,7 +5,7 @@
       <div class="item">
         <h2 class="title">{{data.title}}</h2>
         <p class="tag"><span>{{data.info_name}}</span><span>{{data.source}}</span><span>{{data.created_at}}</span></p>
-        <div class="text" v-html="data.content_html"></div>
+        <div class="text"  style="font-size:16px;" v-html="data.content_html"></div>
         <router-link  :to="{path:'/index/published/edit/'+data.id}" class="btn">编辑</router-link>
       </div>
 

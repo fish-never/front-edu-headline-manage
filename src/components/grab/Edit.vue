@@ -48,24 +48,14 @@
             <el-radio :label="5">三图</el-radio>
           </el-radio-group>
         </el-form-item>
-          <!-- <el-form-item v-if="imgShow.length>=1">
-          <div v-for="(item ,index) in imgShow" :key="index">
-            <div v-if="ruleForm.display_type==2">
-              <img :src="item" width="180" height="114"/>
-            </div>
-            <div v-if="ruleForm.display_type !==1 && ruleForm.display_type !==2" class="img-item">
-              <img :src="item" width="90" height="57"/>
-            </div>
-          </div>
-        </el-form-item> -->
         <el-form-item v-if="imgShow.length>=1">
           <div v-for="(item ,index) in imgShow" :key="index">
-            <div v-if="display_type==2 || display_type ==3" class="img-item">
+            <div v-if="display_type==2 || display_type ==3 || display_type ==5" class="img-item">
               <img :src="item.url" width="90" height="57"  @click="checkImg(item)" :class="{line: checkCover(item.url)}" />
             </div>
-           <div v-if="display_type ==5" class="img-item">
+           <!-- <div v-if="display_type ==5" class="img-item">
               <img :src="item.url" width="90" height="57"  @click="checkImg(item)" :class="{line: checkCover(item.url)}"/>
-            </div>
+            </div> -->
           </div>
         </el-form-item>
 
@@ -256,7 +246,7 @@ export default {
      const n = this.ruleForm.article_imgs.length;
      let imgLists = [];
      if(n>10){
-       imgLists = this.ruleForm.article_imgs.slice(0,14) 
+       imgLists = this.ruleForm.article_imgs.slice(0,10) 
      }else{
        imgLists = this.ruleForm.article_imgs
      }
