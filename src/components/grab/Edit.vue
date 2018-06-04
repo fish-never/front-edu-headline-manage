@@ -14,26 +14,28 @@
         <el-form-item label="标题" prop="title" required>
           <el-input v-model="ruleForm.title"></el-input>
         </el-form-item>
-        <el-form-item label="文章来源" prop="source">
+        <el-form-item label="文章来源" prop="source" required>
         <el-select v-model="ruleForm.source" clearable  placeholder="内容源">
-           <el-col :span="11">
+           <!--<el-col :span="11">-->
           <el-option
             v-for="item in options"
             :key="item"
             :label="item"
-            :value="item"  width="100%">
+            :value="item"
+
+            width="100%">
           </el-option>
-           </el-col>
+           <!--</el-col>-->
         </el-select>
         </el-form-item>
         <el-form-item label="时间" required>
           <el-col :span="11">
             <el-form-item prop="date1">
-              <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.created_at" style="width: 100%;"></el-date-picker>
+              <el-date-picker type="date" disabled=true placeholder="选择日期" v-model="ruleForm.created_at" style="width: 100%;"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-form-item>
-        <el-form-item label="分类" prop="type_name">
+        <el-form-item label="分类" prop="type_name" required>
            <el-col :span="11">
           <el-select v-model="type_name" placeholder="请选择分类" width="100%" @change="typeNameChange">
             <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
@@ -59,7 +61,7 @@
           </div>
         </el-form-item>
 
-        <el-form-item label="新增标签" prop="type">
+        <el-form-item label="新增标签" prop="type" required>
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
           <el-checkbox-group
             v-model="checkedTags" class="tag-wrap">
@@ -246,7 +248,7 @@ export default {
      const n = this.ruleForm.article_imgs.length;
      let imgLists = [];
      if(n>10){
-       imgLists = this.ruleForm.article_imgs.slice(10) 
+       imgLists = this.ruleForm.article_imgs.slice(0,10) 
      }else{
        imgLists = this.ruleForm.article_imgs
      }

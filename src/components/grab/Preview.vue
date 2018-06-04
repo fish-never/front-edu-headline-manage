@@ -4,7 +4,7 @@
     <div class="wrap wrap-margin wrap-padding">
       <div class="item">
         <h2 class="title-p" style="font-size:24px; color:#333;line-height:25px;">{{data.title}}</h2>
-        <p class="tag"><span>{{data.tag}}</span><span>{{data.source}}</span><span>{{data.created_at}}</span></p>
+        <p class="tag"><span>{{data.tag}}</span><span>{{data.source  + "  "}}</span><span>{{data.created_at}}</span></p>
         <p class="text" v-html="data.content"></p>
         <router-link  :to="{path:'/index/edit/'+id}" class="btn">编辑</router-link>
       </div>
