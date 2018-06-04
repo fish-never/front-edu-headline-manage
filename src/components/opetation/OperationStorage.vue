@@ -74,8 +74,6 @@
 
       <el-table-column label="操作"  width="180px">
         <template slot-scope="scope">
-          <!-- <router-link  :to="{path:'/index/operationPreview/'+scope.row.id}" class="link-a">预览</router-link>
-          <router-link  :to="{path:'/index/operationEdit/'+scope.row.id}" class="link-a">编辑</router-link> -->
           <span  @click="goPreview(scope.row.id, scope.row.display_type)" class="link-a">预览</span>
           <router-link  :to="{path:'/index/operationEdit/'+scope.row.id}" class="link-a">编辑</router-link>
           <span class="link-a"
@@ -189,11 +187,9 @@
         const params = {
           id:row.id
         };
-         const loadingInstance = this.$loading({ fullscreen: true });
         operationService.publishData(params).then(data=>{
-         // console.log(data.data.code)
+          console.log(data.data.code)
           if(data.data.code==0){
-            loadingInstance.close();
             this.loadList()
         }else{
           this.open("发布信息失败")
@@ -213,7 +209,7 @@
               ids:this.ids
             };
             operationService.deleteData(params).then(data=>{
-            //  console.log(data)
+              console.log(data)
               if(data.code==0){
                 this.loadList()
             }else{
@@ -225,6 +221,8 @@
         }else{
            this.open("请先对需要删除的数据进行勾选")
         }
+
+
     
       },
       handleSelectionChange(val) {
@@ -241,12 +239,12 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          //  console.log(index, row.id);
+            console.log(index, row.id);
             const params = {
               ids:row.id
             };
             operationService.deleteData(params).then(data=>{
-            //  console.log(data)
+              console.log(data)
               if(data.code==0){
                 this.loadList()
             }
@@ -263,8 +261,10 @@
           source:this.value,
           rangeType:this.value2
         };
+         const loadingInstance = this.$loading({ fullscreen: true });
         operationService.sourceList(params).then(data=>{
           if(data.code==0){
+            loadingInstance.close();
           this.page = parseInt(data.data.page);
           this.pageNum = parseInt(data.data.pageNum);
           this.total = parseInt(data.data.count);

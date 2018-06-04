@@ -247,14 +247,33 @@ input,button,select,textarea{outline:none}
     margin-left: 0px; 
   }
   .detele-btn{
-    background:url("./assets/imgs/detele.svg") no-repeat;
-    background-size:100%;
-    width:20px;
-    height: 20px;
-    display: block;
-    float: right;
-    margin-right: 15px;
+    display:inline-block;
+    float:right;
     top: 8px;
     position: relative;
     cursor: pointer;
+    width:50px;
+    height:32px;
+    background-color:#e6a23c;
+    border-radius: 4px ;
+    font-size:$font-size02;
+    color:rgba(255,255,255,1);
+    line-height:14px;
+    text-align: center;
+  }
+   .newadd-btn{
+     float:right;
+    display: inline-block;
+    top: 8px;
+    position: relative;
+    top: 8px;
+    cursor: pointer;
+    width:50px;
+    height:32px;
+    background-color:#67c23a;
+    border-radius: 4px ;
+    font-size:$font-size02;
+    color:rgba(255,255,255,1);
+    line-height:14px;
+    text-align: center;
   }
