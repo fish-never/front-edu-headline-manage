@@ -159,7 +159,10 @@
      },
     typeChange(val){
       this.flag=true;
-       this.getTags(val);//下拉框改变的val正好就是tpye_id
+      console.log(val);
+      if(val!=undefined){//下拉框改变的val正好就是tpye_id,但是初始化下拉列表时val为undefined
+      this.getTags(val);
+      }  
     },
      open(text) {
         this.$alert(text, '信息', {
@@ -167,8 +170,6 @@
         });
       },
       upImg(item){
-        console.log(item)
-        console.log(this.file)
         item.url = this.file;
       },
     inputTagsChange(){
