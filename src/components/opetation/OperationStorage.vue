@@ -25,10 +25,8 @@
         </el-option>
       </el-select>
       <button class="search-btn" @click="getSourceList">搜索</button>
-      <router-link class="add-btn" to="/index/add" >新建文章</router-link>
-      <button class="detele-btn" @click="deleteLists" title="删除"></button>
-
-
+      <router-link class="newadd-btn" to="/index/add">新建文章</router-link>
+      <button class="detele-btn" @click="deleteLists" title="删除">删除</button>
     </div>
 
     <el-table
@@ -295,19 +293,3 @@
   }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-  .detele-btn{
-    background:url("../../assets/imgs/detele.svg") no-repeat;
-    background-size:100%;
-    width:20px;
-    height: 20px;
-    display: block;
-    float: right;
-    margin-right: 15px;
-    top: 8px;
-    position: relative;
-    cursor: pointer;
-  }
-
-</style>

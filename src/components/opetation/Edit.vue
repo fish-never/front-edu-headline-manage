@@ -298,7 +298,7 @@
         if(data.code==0){
         this.ruleForm = data.data;
         this.imgShow = this.ruleForm.coverage.split(",");
-        this.type_id = this.ruleForm.type_id;
+      //  this.type_id = this.ruleForm.type_id;
         this.display_type = parseInt(this.ruleForm.display_type);
         this.inputTags = this.ruleForm.tag;
         this.inputTagsChange();
@@ -307,14 +307,16 @@
       commonService.typeList().then(data => {
         if(data.code == 0){
         this.types = data.data;
+        console.log(JSON.stringify(this.types));
           this.types.forEach(item => {
             if(this.type_id==item.id){
                 this.type_name = item.typeName;
-                }     
+                }   
       })
         }
-        })
- commonService.typetags({type_id:this.type_id}).then(data => {
+        });
+        console.log(this.type_id);
+        commonService.typetags({type_id:this.type_id}).then(data => {
           if (data.code == 0) {
            this.tags =data.data;
           

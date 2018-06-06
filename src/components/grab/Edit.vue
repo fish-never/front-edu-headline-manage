@@ -3,7 +3,7 @@
 
     <div class="location">
       <router-link class="grey" to="/index">抓取池</router-link>>编辑  
-       <button class="detele-btn" @click="deleteLists" title="删除"></button>
+       <button class="detele-btn" @click="deleteLists" title="删除">删除</button>
        </div>
     <div class="wrap-margin wrap-padding">
         <XEditor :content="ruleForm.content" v-on:change="onContentChange"/>
@@ -109,8 +109,6 @@ export default {
       btnShow:false,
       display_type_5:[],
       coverages:[]
-
-      
     };
   },
 
@@ -201,9 +199,9 @@ export default {
       this.inputTagsChange(val)
     },
     checkedTags: function(val) {
-      this.tags.forEach(item => {
-        this.inputTags = this.inputTags.replace(item.tag_name + ",", "");
-      });
+      // this.tags.forEach(item => {
+      //   this.inputTags = this.inputTags.replace(item.tag_name + ",", "");
+      // });
       val.forEach(item => {
         if (this.inputTags.indexOf(item) == -1) {
           this.inputTags = item + "," + this.inputTags;
