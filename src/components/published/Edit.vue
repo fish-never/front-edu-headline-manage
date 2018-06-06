@@ -25,7 +25,7 @@
         </el-form-item>
         <el-form-item label="分类" prop="type_name">
            <el-col :span="11">
-          <el-select v-model="type_name" placeholder="请选择分类" width="100%" @change="typeNameChange">
+          <el-select v-model="type_name" placeholder="请选择分类" width="100%" @change="typeChange">
             <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
           </el-select>
            </el-col>
@@ -49,7 +49,7 @@
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
           <el-checkbox-group
             v-model="checkedTags">
-            <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
+            <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id" checked  :value="item.id">{{item.tag_name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="浏览量" required>
@@ -102,8 +102,6 @@
       flag:false,
       options:"",
       btnShow:false
-
-
       }
     },
     created(){
@@ -111,7 +109,7 @@
     },
     watch:{
       display_type: function(){
-        console.log(this.cover)
+      //  console.log(this.cover)
       },
     // display_type:function(){ //封面
     //   this.imgShow.length =0 
@@ -172,11 +170,11 @@
 
     //选中封面
     checkCover(url){
-      console.log(url)
+   //   console.log(url)
       return this.ruleForm.coverage ? this.ruleForm.coverage.indexOf(url) != -1 : false;
     },
     checkImg(item){
-      console.log(item)
+    //  console.log(item)
       if(this.display_type == 5){
          let ms = this.ruleForm.coverage ? this.ruleForm.coverage.split(",") : [];
          let idx = ms.indexOf(item)
@@ -239,10 +237,25 @@
         });
 
       },
-    //type
-    typeNameChange(val){
+    //根据分类查询标签
+     getTags(type_id){
+       commonService.typetags({type_id:type_id}).then(data => {
+          if (data.code == 0) {
+           // console.log(JSON.stringify(data.data));
+            const temp =[];
+            data.data.forEach(item =>{
+              if(item.is_default ==="1"){
+                 temp.push(item);
+              }
+            });
+           this.tags =temp;
+         // console.log(JSON.stringify(this.tags));
+          }
+        });
+     },
+    typeChange(val){
       this.flag=true;
-      console.log(val)
+      this.getTags(val);//下拉框改变的val正好就是tpye_id
 
     },
     inputTagsChange(){
@@ -308,14 +321,6 @@
         return Promise.resolve();
       }
     }).then(data=>{
-      commonService.tagList().then(data => {
-          if (data.code == 0) {
-            this.tags = data.data;
-            return Promise.resolve();
-          }
-        });
-
-    }).then(data=>{
 
       publishedService.view(this.id).then(data=>{ 
         if(data.code==0){
@@ -324,25 +329,19 @@
         this.display_type = parseInt(this.ruleForm.display_type);
         this.inputTags = this.ruleForm.tag;
         let cover1 = this.ruleForm.coverage.split(",")
-
-        console.log(this.ruleForm.content_html)
         let html = $(this.ruleForm.content_html);
         let n = html.find('img').length; //最多获取10张
-
-
         if(n>10){
-         
           for(let i =0; i<10;i++){
             let src = html.find("img").eq(i).attr("src")
             this.cover.push(src)
           }
         }else{
           for(let i =0; i<n;i++){
-            console.log(html.find("img").eq(i))
+         //   console.log(html.find("img").eq(i))
           let src = html.find("img").eq(i).attr("src")
           this.cover.push(src)
-           console.log( html.find("img").eq(i))
-
+         //  console.log( html.find("img").eq(i))
         }
         }
         cover1.forEach(item =>{
@@ -350,15 +349,10 @@
               this.cover.push(item)
           }
         })
-    
-       console.log(this.cover)
-      
-
-
+      // console.log(this.cover)
         // this.cover = this.ruleForm.coverage.split(",")
         // console.log(this.cover)
-        this.inputTagsChange();
-
+      //  this.inputTagsChange();
       }
        commonService.typeList().then(data => {
         if (data.code == 0) {
@@ -367,12 +361,10 @@
             if(this.type_id==item.id){
                 this.type_name = item.typeName;
             }
-            
           });
+          this.getTags(this.type_id);
         }
       })
-    }).then(data => {
-      
     })
   })    
     },

@@ -332,31 +332,18 @@ export default {
     // console.log(JSON.stringify(this.tagList));
    //  console.log(JSON.stringify(this.tagcomplement));
     // console.log(JSON.stringify(this.checkTags));
-      //     this.tagList.forEach(item => {
-      //    this.checkTags.forEach(item02 => {
-      //   if (item.tag_name == item02) {
-      //     tagspost[item.id] = "1";
-      //     }
-      //   });
-      //   this.tagcomplement.forEach(item03 => {
-      //    if (item.tag_name == item03) {
-      //    tagspost[item.id] = "0";
-      //   }
-      // });
-      // });
-     
-     for(let i=0; i < this.tagList.length; i++){   
-        for(let j=0; j < this.checkTags.length; j++){ 
-            if(this.tagList[i].tag_name == this.checkTags[j]){
-            tagspost[this.tagList[i].id] = "1";  
-             } 
-        } 
-        for(let j=0; j < this.tagcomplement.length; j++){  
-            if(this.tagList[i].tag_name == this.tagcomplement[j]){                
-            tagspost[this.tagList[i].id] = "0";     
-        }    
-    }   
-     } 
+          this.tagList.forEach(item => {
+         this.checkTags.forEach(item02 => {
+        if (item.tag_name == item02) {
+          tagspost[item.id] = "1";
+          }
+        });
+        this.tagcomplement.forEach(item03 => {
+         if (item.tag_name == item03) {
+         tagspost[item.id] = "0";
+        }
+      });
+      }); 
       return tagspost;
     },
     newadding(){
