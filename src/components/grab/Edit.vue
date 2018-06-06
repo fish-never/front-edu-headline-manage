@@ -380,6 +380,10 @@ export default {
     this.id = this.$route.params.id;
   },
   mounted() {
+     if (localStorage.getItem("account") == null) {
+      this.$router.push({ path: "/" });
+      return;
+    }
     grabService.sourceList().then(data=>{
       if(data.code==0){
         this.options = data.data;

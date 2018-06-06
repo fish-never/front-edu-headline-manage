@@ -71,6 +71,10 @@
 
     },
     mounted(){
+       if (localStorage.getItem("account") == null) {
+          this.$router.push({ path: "/" });
+          return;
+        }
       operationService.detailData(this.id).then(data=>{
         if(data.code==0){
         this.data = data.data;

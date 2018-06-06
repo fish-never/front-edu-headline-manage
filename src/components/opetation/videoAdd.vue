@@ -142,6 +142,10 @@
       },
     },
     mounted(){
+      if (localStorage.getItem("account") == null) {
+          this.$router.push({ path: "/" });
+          return;
+        }
       commonService.typeList().then(data => {
         if(data.code == 0){
         this.types = data.data;

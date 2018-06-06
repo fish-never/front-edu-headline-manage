@@ -3,7 +3,7 @@
 
   <p class="location">
     <router-link to="/index/operationStorage" class="grey">运营池</router-link>>编辑
-    <button class="detele-btn" @click="deleteLists" title="删除"></button>
+    <button class="detele-btn" @click="deleteLists" title="删除">删除</button>
     
   </p>
     <div class="wrap-margin wrap-padding">
@@ -57,6 +57,8 @@
 
         <el-form-item label="新增标签" prop="type">
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
+        </el-form-item>
+        <el-form-item label="展示标签" prop="type">
           <el-checkbox-group
             v-model="checkedTags">
             <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
@@ -162,7 +164,7 @@
       });
       },
     inputTags: function(val) { //选择标签
-      this.inputTagsChange(val)
+      this.inputTagsChange(val);
     },
       checkedTags: function(val){
         this.tags.forEach(item=>{
@@ -238,6 +240,7 @@
           this.checkedTags.push(item.tag_name);
         }
       });
+      
     },
     //弹框
      open(text) {
@@ -287,6 +290,10 @@
       this.id = this.$route.params.id
     },
     mounted(){
+       if (localStorage.getItem("account") == null) {
+      this.$router.push({ path: "/" });
+      return;
+    }
       operationService.detailData(this.id).then(data=>{
         if(data.code==0){
         this.ruleForm = data.data;
@@ -307,12 +314,18 @@
       })
         }
         })
-      commonService.tagList().then(data => {
-        if(data.code == 0){
+ commonService.typetags({type_id:this.type_id}).then(data => {
+          if (data.code == 0) {
+           this.tags =data.data;
+          
+          }
+        });
+    //   commonService.tagList().then(data => {
+    //     if(data.code == 0){
 
-        this.tags = data.data;
-      }
-    })
+    //     this.tags = data.data;
+    //   }
+    // })
 
     },
   components: {

@@ -156,6 +156,10 @@
       }
     },
     mounted(){
+       if (localStorage.getItem("account") == null) {
+          this.$router.push({ path: "/" });
+          return;
+        }
       this.loadList();
       publishedService.sourceData().then(data=>{
         if(data.code==0){
