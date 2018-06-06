@@ -27,15 +27,15 @@ export default {
   //   })
   // },
 
-  // // 更新
-  // update(params) {
-  //   return api.post('information/tag/update', qs.stringify(params)).then(resp => {
-  //     return Promise.resolve(resp.data)
-  //   })
-  // },
+  // 改变显示状态
+  update(params) {
+    return api.post('information/tag/update', params).then(resp => {
+      return Promise.resolve(resp.data)
+    })
+   },
   //添加
   add(params) {
-    return api.post('information/tag/add', qs.stringify(params)).then(resp => {
+    return api.post('information/tag/add',params).then(resp => {
       return Promise.resolve(resp.data);
     })
   },

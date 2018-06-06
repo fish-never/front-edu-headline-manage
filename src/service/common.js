@@ -17,6 +17,12 @@ export default {
         return Promise.resolve(resp.data)
       })
   },
+  // 查询分类下标签
+  typetags(data) {
+    return api.get('information/tag/v2-index?'+qs.stringify(data)).then(resp => {
+      return Promise.resolve(resp.data);
+    })
+  },
   // 登出
   logout(){
     return api.get('login/index/logout').then((resp)=>{

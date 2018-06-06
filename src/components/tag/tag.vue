@@ -3,7 +3,7 @@
     <div class="clearfloat wrap-main">
       <div class="search-wrap">
         <span class="title">检索条件</span>
-        <el-select v-model="tagname" size="small" clearable placeholder="标签名称" style="width:150px;"><!--v-model默认显示的只是初始值，关联值自然是根据el-option的选择而变化（显示为:label，值为：value）-->
+        <el-select v-model="tag_name" size="small" clearable placeholder="标签名称" style="width:150px;"><!--v-model默认显示的只是初始值，关联值自然是根据el-option的选择而变化（显示为:label，值为：value）-->
         <el-option
           v-for="item in tagList"
           :label="item.tag_name" 
@@ -70,11 +70,9 @@
       <el-table-column
         label="默认展示">
         <template slot-scope="scope"  width="100px">
-          <!-- <span v-if="scope.row.status==1">已发布</span>
-          <span v-if="scope.row.status==0">未发布</span> -->
           <template>
-          <el-radio v-model="scope.row.is_default" label="1">是</el-radio>
-          <el-radio v-model="scope.row.is_default" label="0">否</el-radio>
+          <el-radio v-model="scope.row.is_default" label="1" @change="radiochange(scope.row)">是</el-radio>
+          <el-radio v-model="scope.row.is_default" label="0" @change="radiochange(scope.row)">否</el-radio>
         </template>
         </template>
       </el-table-column>
@@ -95,28 +93,30 @@
       :total="total"><!-- current-page当前页数，支持 .sync 修饰符；page-size	每页显示条目个数；page-sizes	每页显示个数选择器的选项设置；layout	组件布局，子组件名用逗号分隔；total	总条目数 -->
     </el-pagination><!-- size-change	pageSize改变时会触发（也就是page-sizes值改变）；current-change	currentPage 改变时会触发。前后翻函数未定义却可以使用？-->
 
+
+
     <el-dialog title="添加标签类型" :visible.sync="dialognewadd">
-      <el-form :model="form">
+      <el-form :model="formdata">
         <el-form-item label="标签名称" :label-width="formLabelWidth" required style="margin-right:0.2rem;width:30rem;">
-          <el-input v-model="form.tagname" auto-complete="off"></el-input>
+          <el-input v-model="formdata.tagname" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="备注" :label-width="formLabelWidth" style="margin-right:0.2rem;width:30rem;">
-          <el-input type="textarea" v-model="form.desc"></el-input>
+          <el-input type="textarea" v-model="formdata.remark" ></el-input>
         </el-form-item>
         <el-form-item label="对应分类" required style="margin-left:0.2rem;">
-        <el-checkbox-group v-model="allclassifycheck" @change="newaddChange">
+        <el-checkbox-group v-model="checkclassify" @change="newaddChange">
         <el-checkbox v-for="item in tagList" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item label="默认显示"  style="margin-left:0.2rem;">
-        <el-checkbox-group v-model="classify">
-          <el-checkbox v-for="item in classify" :label="item" :key="item" >{{item}}</el-checkbox>
+        <el-checkbox-group v-model="checkTags">
+          <el-checkbox v-for="item in showTags" :label="item" :key="item.id"  :value="item" >{{item}}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialognewadd = false">取 消</el-button>
-        <el-button type="primary" @click="newadding">确 定</el-button>
+        <el-button type="primary" @click="newadding()">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -129,7 +129,6 @@ export default {
   data() {
     return {
       pageShow: false,
-      loading: true,
       itemData: [],
       page: 1,
       ids: "",
@@ -138,9 +137,9 @@ export default {
       types: "",
       total: 10,
       pageNum: 10,
-      tagname: "",
-      typeName: "",
       typeid: "",
+      tag_name: "",
+      typeName:"",
       isdefault: "",
       options2: [
         {
@@ -152,19 +151,13 @@ export default {
           label: "否"
         }
       ],
-      showing: true,
-      tempData: {},
-      allcheckTags: "",
-      allclassify: [],
-      allclassifycheck: [],
-      checkTags: "",
-      classify: [],
-      classifycheck: [],
-      form: {
+      checkclassify: [],// 总分类被选中的，没有意义
+      showTags:[],  // 默认展示的标签
+      checkTags:[], // 被选中的标签
+      tagcomplement:[], //差集
+      formdata: {
         tagname: "",
-        checkbox01: [],
-        checkbox02: [],
-        desc: ""
+        remark: ""
       },
       formLabelWidth: "100px",
       rules: {
@@ -172,16 +165,7 @@ export default {
           { required: true, message: "请输入标签名称", trigger: "blur" },
           { min: 1, max: 10, message: "长度在1 到10个字符", trigger: "blur" }
         ],
-        checkbox01: [
-          {
-            type: "array",
-            required: true,
-            message: "请至少选择一个分类",
-            trigger: "change"
-          }
-        ],
-        checkbox02: [{ type: "array", trigger: "change" }],
-        desc: [
+        remark: [
           { required: true, message: "请填写备注" },
           { min: 1, max: 50, message: "长度在 1 到 50 个字符" }
         ]
@@ -206,28 +190,17 @@ export default {
         this.tagList = data.data;
       }
     });
-   //this.classify = this.allclassifycheck;
+
   },
   watch: {
-    allclassifycheck: function(check) {
- 
-      this.tempData = check;
-      check.forEach(item => {
-        if (this.checkTags.indexOf(item) == -1) {
-          this.checkTags = item + "," + this.checkTags;
-        }
-        this.checkTags = this.checkTags.replace(/,$/, "");
-      });
-    },
-    //   classify:function(val){
-    //    val.forEach(item => {
-    //       if (this.checkTags.indexOf(item) == -1) {
-    //        this.checkTags = this.checkTags.push(item);
-    //       }
-
-    //  });
-
-    // },
+    // classifycheck: function(check) {
+    //   check.forEach(item => {
+    //     if (this.checkTags.indexOf(item) == -1) {
+    //       this.checkTags = item + "," + this.checkTags;
+    //     }
+    //     this.checkTags = this.checkTags.replace(/,$/, "");
+    //   });
+    // }
   },
   methods: {
     //弹框
@@ -260,8 +233,8 @@ export default {
         page: this.page,
         pageNum: this.pageNum,
         is_default: this.isdefault,
-        tag_name: this.tagname,
-        type_id: this.typeidtypeid
+        tag_name: this.tag_name,
+        type_id: this.typeid
       };
       const loadingInstance = this.$loading({ fullscreen: true });
       tagService.pagination(params).then(data => {
@@ -281,7 +254,6 @@ export default {
       const params = {
         ids: ids
       };
-      // console.log(ids)
       this.$confirm("确定删除?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -302,11 +274,13 @@ export default {
         });
     },
     newadd() {
+      this.formdata.tagname = "";
+       this.formdata.remark = "";
+       this.tagcomplement = [];
       this.dialognewadd = true;
     },
     //删除
     deleteLists() {
-        console.log(this.ids)
       if (this.ids.length > 0) {
         const params = {
           ids: this.ids
@@ -338,9 +312,72 @@ export default {
       this.page = val; // 改变页码
       this.loadList(); // 重新请求
     },
+    complement(a, b){ // 求差集，a数组元素比b多
+      const c = [];
+      for(let i=0; i < a.length; i++){   
+       let flag = true;   
+        for(let j=0; j < b.length; j++){   
+            if(a[i] == b[j])   
+            flag = false;   
+        }   
+        if(flag){  
+        c.push(a[i]); 
+        }   
+    } 
+    return c;   
+    },
+    getTagsid(){//emlment-ui复选框只能获取显示和值其中的一种，故需要重新匹配来获取另一个
+     const tagspost = {};
+     this.tagcomplement = this.complement(this.showTags, this.checkTags);
+    // console.log(JSON.stringify(this.tagList));
+   //  console.log(JSON.stringify(this.tagcomplement));
+    // console.log(JSON.stringify(this.checkTags));
+      //     this.tagList.forEach(item => {
+      //    this.checkTags.forEach(item02 => {
+      //   if (item.tag_name == item02) {
+      //     tagspost[item.id] = "1";
+      //     }
+      //   });
+      //   this.tagcomplement.forEach(item03 => {
+      //    if (item.tag_name == item03) {
+      //    tagspost[item.id] = "0";
+      //   }
+      // });
+      // });
+     
+     for(let i=0; i < this.tagList.length; i++){   
+        for(let j=0; j < this.checkTags.length; j++){ 
+            if(this.tagList[i].tag_name == this.checkTags[j]){
+            tagspost[this.tagList[i].id] = "1";  
+             } 
+        } 
+        for(let j=0; j < this.tagcomplement.length; j++){  
+            if(this.tagList[i].tag_name == this.tagcomplement[j]){                
+            tagspost[this.tagList[i].id] = "0";     
+        }    
+    }   
+     } 
+      return tagspost;
+    },
     newadding(){
-      tagService.add(params).then(data => {
+      if(!this.formdata.tagname){
+       this.open("请填写标签名称");
+       return false;
+     }
+     if(this.showTags.length <= 0){ //this.tagcomplement和this.checkTags可以为空
+       this.open("请选择标签");
+       return false;
+     }
+    //  console.log(this.formdata.tagname.toString());
+    //   console.log(this.formdata.remark);
+    //   console.log(JSON.stringify(this.getTagsid()));
+      tagService.add({
+          tag_name:JSON.stringify(this.formdata.tagname), 
+          remark:this.formdata.remark,
+          type_json:JSON.stringify(this.getTagsid())
+        }).then(data => {
               if (data.code == 0) {
+                this.dialognewadd = false;
                 this.loadList();
               } else {
                 this.open(data.msg);
@@ -348,12 +385,24 @@ export default {
             });
     },
     newaddChange(val) {
-        //   console.log(this.allclassifycheck);
-      // let item = {
-      //   name : val,
-      //   selected: true
-      // }
-      this.classify.push(this.allclassifycheck);
+      //console.log(JSON.stringify(this.classifycheck));
+      this.checkTags = val;
+      this.showTags = val;
+    },
+    radiochange(rowdata){
+      tagService.update({
+          id:rowdata.id,
+          remark:rowdata.remark,
+          is_default:rowdata.is_default,
+          type_id:rowdata.type_id,
+          tag_name:rowdata.tag_name
+         }).then(data => {
+              if (data.code == 0) {
+                this.loadList();
+              } else {
+                this.open(data.msg);
+              }
+            });
     }
   }
 };

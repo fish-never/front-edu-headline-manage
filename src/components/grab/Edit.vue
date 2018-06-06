@@ -31,7 +31,7 @@
         <el-form-item label="时间" required>
           <el-col :span="11">
             <el-form-item prop="date1">
-              <el-date-picker type="date" disabled=true placeholder="选择日期" v-model="ruleForm.created_at" style="width: 100%;"></el-date-picker>
+              <el-date-picker type="date" disabled placeholder="选择日期" v-model="ruleForm.created_at" style="width: 100%;"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-form-item>
@@ -61,7 +61,7 @@
           </div>
         </el-form-item>
 
-        <el-form-item label="新增标签" prop="type" required>
+        <el-form-item label="新增标签" prop="type">
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
           <el-checkbox-group
             v-model="checkedTags" class="tag-wrap">
@@ -305,7 +305,6 @@ export default {
       let type = this.ruleForm.display_type;
       let imgLists= this.ruleForm.coverage ? this.ruleForm.coverage.split(',') : [];
       let n = imgLists.length;
-      console.log(n)
       if(type==5){
          if(n<3){
            this.open("封面数小于3");
@@ -390,6 +389,7 @@ export default {
       commonService.tagList().then(data => {
           if (data.code == 0) {
             this.tags = data.data;
+            console.log(JSON.stringify(this.tags));
             return Promise.resolve();
           }
         });

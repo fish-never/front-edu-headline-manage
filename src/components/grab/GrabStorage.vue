@@ -27,7 +27,7 @@
         </el-option>
       </el-select>
         <button class="search-btn" @click="getSourceList">搜索</button>
-         <button class="detele-btn" @click="deleteLists" title="删除"></button>
+         <button class="detele-btn" @click="deleteLists" title="删除">删除</button>
 
       </div>
       <!-- <div class="item-wrap"  v-for="data in itemData" :key="data._id">
