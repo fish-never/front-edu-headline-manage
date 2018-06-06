@@ -9,11 +9,11 @@ export default {
     })
   },
   // 标签列表
-  tagList() {
-    return api.get('information/tag/index?').then((resp) => {
-      return Promise.resolve(resp.data)
-    })
-  },
+  // tagList() {
+  //   return api.get('information/tag/index?').then((resp) => {
+  //     return Promise.resolve(resp.data)
+  //   })
+  // },
   // 分页
   pagination(params){
     return api.get('information/tag/pagination?' + qs.stringify(params)).then((resp) => {

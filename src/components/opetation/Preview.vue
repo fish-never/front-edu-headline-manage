@@ -3,12 +3,15 @@
     <p class="location"><router-link to="/index/operationStorage" class="grey">运营池</router-link>>预览</p>
     <div class="wrap">
       <div class="item">
-        <el-form :model="data" label-width="60px" class="demo-ruleForm">
+        <el-form :model="data" label-width="90px" class="demo-ruleForm">
           <el-form-item label="标题：" prop="title">
             <p v-text="data.title"></p>
           </el-form-item>
           <el-form-item label="来源：" prop="source">
             <p v-text="data.source"></p>
+          </el-form-item>
+          <el-form-item label="原始链接：" prop="origin_link">
+            <p v-text="data.origin_link"></p>
           </el-form-item>
           <el-form-item label="分类：" prop="type_name">
             <p v-text="data.type_name"></p>

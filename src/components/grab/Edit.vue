@@ -274,6 +274,7 @@ export default {
         }
       })
    },
+
           //删除
       deleteLists(){
            const params = {
@@ -344,7 +345,6 @@ export default {
           if(this.flag){
             this.ruleForm.type_id = this.type_name;
           }
-          return false;
         grabService.saveData(this.ruleForm).then(data => {
             if (data.code == 0) {
               this.$router.push({ path: "../../index/publish/" + this.id });

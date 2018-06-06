@@ -18,13 +18,16 @@
         <el-form-item label="文章来源" prop="source" required>
           <el-input v-model="ruleForm.source"></el-input>
         </el-form-item>
+        <el-form-item label="原始链接" prop="origin_link">
+          <el-input v-model="ruleForm.origin_link"></el-input>
+        </el-form-item>
         <el-form-item label="时间">
           <p>{{ruleForm.created_at}}</p>
         </el-form-item>
         <el-form-item label="分类" prop="type_name">
            <el-col :span="11">
-          <el-select v-model="ruleForm.type_name" placeholder="请选择分类" width="100%"  @change="typeChange">
-            <el-option v-for="item in types" :label="item.typeName" checked :key="item.id" :value="item.id">{{item.typeName}}</el-option>
+          <el-select v-model="ruleForm.type_name" placeholder="请选择分类" width="100%"  @change="typeNameChange">
+            <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
           </el-select>
            </el-col>
         </el-form-item>
@@ -325,9 +328,6 @@
         this.imgShow = this.ruleForm.coverage.split(",");
         this.type_id = this.ruleForm.type_id;
         this.display_type = parseInt(this.ruleForm.display_type);
-        // this.inputTags = this.ruleForm.tag;
-        // this.inputTagsChange();
-
         if(this.display_type !==5){
           this.files[0].url = this.ruleForm.coverage
         }else{
@@ -336,6 +336,8 @@
           })
         }
         this.showOpen = true;
+       // this.inputTags = this.ruleForm.tag;
+      //  this.inputTagsChange();
       }
 
       commonService.typeList().then(data => {
@@ -347,14 +349,12 @@
                 }     
           })
         }
-        // 根据分类id查询该分类下的标签
-       this.getTags(this.type_id);
-        });
-
         })
-
+     this.getTags(this.type_id);
     })
 
+
+    })
     },
   components: {
     XEditor,

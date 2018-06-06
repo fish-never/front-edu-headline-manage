@@ -1,8 +1,8 @@
 <template>
   <el-container>
     <el-header class="herder-wrap">
-        <el-col :span="19"><img src="../../assets/imgs/logo.svg" align="center"/></el-col>
-        <el-col :span="5" class="header-right">
+        <el-col :span="14"><img src="../../assets/imgs/logo.svg" align="center"/></el-col>
+        <el-col :span="10" class="header-right">
           <img :src="avatar" width=30 align="center" />
           {{account}}<span style="background: #E3E3E3;height:8px ;width:1px;display:inline-block;margin:0 10px;"></span> 
           <p class='logout' @click="logout">退出登录</p>

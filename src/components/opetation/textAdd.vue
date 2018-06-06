@@ -11,11 +11,11 @@
         <el-form-item label="文章来源" prop="source">
           <el-input v-model="textData.source"></el-input>
         </el-form-item>
-        <el-form-item label="原始地址" prop="origin_link">
+        <el-form-item label="原始链接" prop="origin_link">
           <el-input v-model="textData.origin_link"></el-input>
         </el-form-item>
-        <el-form-item label="分类" prop="type_id" >
-          <el-select v-model="textData.type_id" placeholder="请选择分类" @change="typeChange">
+        <el-form-item label="分类" prop="type_id">
+          <el-select v-model="textData.type_id" filterable clearable placeholder="请选择分类" @change="typeChange">
             <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
           </el-select>
         </el-form-item>
@@ -104,6 +104,7 @@
         tags: [],
         id:'',
         textData:{
+          display_type:5,
           content_html:"",
           coverage:"",
           origin_link:'',
@@ -302,6 +303,6 @@
   }
 .cover-list{
   float:left;
-  margin-left:20px; 
+  margin-right:20px; 
 }
 </style>

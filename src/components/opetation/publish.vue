@@ -1,6 +1,6 @@
 <template>
 <div  v-loading="loading">
-    <p class="location"><router-link to="/index/operationStorage" class="grey">运营池7777</router-link>>预览999999</p>
+    <p class="location"><router-link to="/index/operationStorage" class="grey">运营池</router-link>>预览</p>
     <div class="wrap wrap-margin wrap-padding">
       <div class="item">
         <h2 class="title-p" style="font-size:24px; color:#333;line-height:25px;">{{data.title}}</h2>

@@ -182,6 +182,7 @@ export default {
     tagService.typeList().then(data => {
       if (data.code == 0) {
         this.types = data.data;
+        this.tagList = data.data;
         //  console.log(this.types)
       }
     });

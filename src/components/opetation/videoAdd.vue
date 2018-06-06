@@ -13,6 +13,9 @@
         <el-form-item label="文章来源" prop="source" >
           <el-input v-model="videoData.source"></el-input>
         </el-form-item>
+        <el-form-item label="原始链接" prop="origin_link">
+          <el-input v-model="videoData.origin_link"></el-input>
+        </el-form-item>
         <el-form-item label="分类" prop="region">
           <el-select v-model="videoData.type_id" placeholder="请选择分类" >
             <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
@@ -78,7 +81,7 @@
         videoData:{
             content_html:"",
             coverage:"  ",
-            origin_link:'111',
+            origin_link:' ',
             source:'',
             video_uri:'',
            display_type:4
@@ -179,6 +182,16 @@
 </script>
 
 <style scoped>
+.up-img{
+    display: inline-block;
+    margin-left: 10px;
+    position: relative;
+    top: 8px;
+}
+.cover-list{
+  float:left;
+  margin-right:20px; 
+}
   .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;

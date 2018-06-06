@@ -154,41 +154,6 @@
       }
     },
     watch:{
-      display_type: function(){
-      //  console.log(this.cover)
-      },
-    // display_type:function(){ //封面
-    //   this.imgShow.length =0 
-    //   if(this.display_type ==2){ // 690*388 单张大图
-    //   // console.log(454545)
-    //       this.selectedImgs(690,388);
-    //         if(this.cover.length >0){
-    //           this.cover.forEach(item=>{
-    //             this.imgShow.push(item)
-    //           })
-             
-    //    }else{
-    //       this.display_type = 1;
-    //       this.open("不符合单张大图690*388,请选择其他模式")
-    //    }
-    //   }
-    //  if(this.display_type ==3){//220*140 单张小图
-    //      this.selectedImgs(220,140);
-    //     if(this.cover.length >0){
-    //          this.cover.forEach(item=>{
-    //             this.imgShow.push(item)
-    //           })   
-    //    }else{
-    //       this.display_type = 1;
-    //       this.open("不符合单张小图220*140标准,请选择其他模式")
-    //    }
-    //   }
-    //   if(this.display_type ==5){ //220*140 三张图
-    //     this.selectedImgs(220,140);
-    //     if(this.cover.length >2){
-    //          this.cover.forEach(item=>{
-    //             this.imgShow.push(item)
-    //           })
 
     display_type:function(){ //封面
     this.showImgs = false;
@@ -320,7 +285,6 @@
     },
 
     //选中封面
-
     checkCover(src){
       return this.ruleForm.coverage ? this.ruleForm.coverage.indexOf(src) != -1 : false;
     },

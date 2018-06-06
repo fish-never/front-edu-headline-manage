@@ -122,13 +122,13 @@
             label: '今天'
           }, {
           value: 2,
-          label: '近7天'
+          label: '近七天'
         }, {
           value: 3,
-          label: '近1一个月'
+          label: '近一个月'
         }, {
           value: 4,
-          label: '近1年'
+          label: '近一年'
         }]
       }
     },
