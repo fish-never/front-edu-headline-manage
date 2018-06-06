@@ -6,7 +6,7 @@ function getOssToken(){
         // url: 'http://manage-api.ministudy.com/oss/upload/token',
         // url: 'http://tmp-manage-api.ministudy.com/oss/upload/token',
 
-           url: 'http://manage-api.ministudy.com/oss/upload/token',
+        url: (API_URL || 'http://manage-api.ministudy.com/')+'oss/upload/token',
         // url: 'http://manage-api-toutiao.ministudy.com/oss/upload/token',
         
         headers:{
@@ -17,12 +17,13 @@ function getOssToken(){
 
 function uploadToOss(callback, feildName){
     getOssToken().done(function(resp){
+        console.log(resp)
         if(resp.code != 0){
             return alert('获取oss token异常')
         }
         var filePath = $('[name=localUrl]').val();
         if(filePath == ''){
-            return alert('请选择文件');
+            return alert('请选择文件')
         }
 
         var tokenObj = resp.data;

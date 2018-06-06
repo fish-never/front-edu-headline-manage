@@ -59,7 +59,7 @@ KindEditor.plugin('upmedia', function(K) {
 		lang.width= '宽度';
 		lang.height  = '高度';
 		lang.autostart = '自动播放';
-		lang.upload = '上传';
+		lang.upload = '选择';
 		lang.viewServer = '文件空间';
 
 	self.plugin.upmedia = {

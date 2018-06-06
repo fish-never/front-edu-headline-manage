@@ -67,6 +67,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         ? 'index.html'
         : config.build.index,
       template: 'index.html',
+      API_URL: process.env.API_URL,
       inject: true,
       minify: {
         removeComments: true,

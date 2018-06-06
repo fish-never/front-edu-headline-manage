@@ -1,31 +1,32 @@
 <template>
   <div>
-    <p class="location"><router-link to="/index/operationStorage" class="grey">运营池</router-link>>图文文章预览</p>
+    <p class="location"><router-link to="/index/operationStorage" class="grey">运营池</router-link>>预览</p>
     <div class="wrap">
       <div class="item">
-        <!-- <el-form :model="data" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="标题" prop="title">
+        <el-form :model="data" label-width="60px" class="demo-ruleForm">
+          <el-form-item label="标题：" prop="title">
             <p v-text="data.title"></p>
           </el-form-item>
-          <el-form-item label="来源" prop="source">
+          <el-form-item label="来源：" prop="source">
             <p v-text="data.source"></p>
           </el-form-item>
-          <el-form-item label="分类" prop="type">
-            <p v-text="data.type"></p>
+          <el-form-item label="分类：" prop="type_name">
+            <p v-text="data.type_name"></p>
           </el-form-item>
-          <el-form-item label="封面" prop="source">
-            <p v-text="data.source"></p>
+          <el-form-item label="标签：" prop="tag">
+            <p v-text="data.tag"></p>
+          
           </el-form-item>
-            <el-form-item  prop="content">
-            <p v-html="data.content_html"></p>
+          <el-form-item label="封面：" prop="coverage" >
+            <p v-if="display_type == 1" >无图模式</p>
+           <img :src="data.coverage" v-if="display_type != 5 && display_type != 1 "  class="img-wrap"/>
+           <img v-for="item in coverList" :key="item" :src="item" v-if="display_type == 5"  class="img-wrap" /> 
+          </el-form-item>
+
+          <el-form-item  prop="content" class="wrap-html">
+            <div v-html="data.content_html" ></div>
           </el-form-item>
         </el-form>
-        <button class="btn" @click="publishData">发布</button>
-        <router-link  :to="{path:'/index/operationEdit/'+data._id}" class="btn">编辑</router-link> -->
-
-        <h2 class="title">{{data.title}}</h2>
-        <p class="tag"><span>{{data.info_name}}</span><span>{{data.source}}</span><span>{{data.created_at}}</span></p>
-        <div class="text" v-html="data.content_html"></div>
         <button class="btn" @click="publishData">发布</button>
         <router-link  :to="{path:'/index/operationEdit/'+data.id}" class="btn">编辑</router-link>
       </div>
@@ -41,13 +42,19 @@
     name: 'preview',
     data () {
       return {
-        data:[],
+        display_type:"",
+        data:{},
         id:"",
+
+        coverList:[]
       }
     },
     created(){
-      this.id = this.$route.query.id
+        this.id = this.$route.params.id
       console.log(this.id)
+    },
+    computed:{
+
     },
     methods:{
        open(text) {
@@ -71,13 +78,23 @@
 
     },
     mounted(){
-       if (localStorage.getItem("account") == null) {
+    if (localStorage.getItem("account") == null) {
           this.$router.push({ path: "/" });
           return;
         }
-      operationService.detailData(this.id).then(data=>{
+      const param = {
+        id:this.id
+      }
+      operationService.detailData(param).then(data=>{
         if(data.code==0){
         this.data = data.data;
+        this.display_type = this.data.display_type;
+        
+        console.log(this.data)
+        if(this.data.display_type == 5){
+         this.coverList = this.data.coverage.split(",");
+        }
+      
         console.log(this.data)
       }else{
         this.open(data.msg)
@@ -90,8 +107,19 @@
 </script>
 
 <style scoped>
-
-
+.wrap-html{
+  border-radius:1px;
+  border:1px solid rgba(150,171,181,0.2);
+  padding:26px;
+  margin-bottom:40px;
+  font-size:16px;
+}
+  .img-wrap{
+    width:94px;
+    height:60px;
+    display: inline-block;
+    margin-right:10px;
+  }
   .wrap{
     /*display: table-cell;*/
     /*overflow-y: scroll;*/

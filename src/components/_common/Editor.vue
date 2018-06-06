@@ -6,11 +6,11 @@
         :items="['source', '|', 'undo', 'redo', '|', 'preview', 'cut', 'copy', 'paste',
       'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
       'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
-      'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen',
+      'superscript', 'quickformat', 'selectall', '|', 'fullscreen',
       'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
       'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 
         'table', 'hr', 'pagebreak',
-      'anchor', 'link', 'unlink', '|', 'upimage', 'upmedia']" 
+      'anchor', 'link', 'unlink', '|', 'upimage', 'upmedia', 'clearcode']" 
       :htmlTags="{
       font: ['color', 'size', 'face', '.background-color'],
       span: ['style'],

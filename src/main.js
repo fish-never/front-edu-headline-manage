@@ -14,8 +14,10 @@ import '../static/kindeditor/kindeditor.js'
 import 'kindeditor/themes/default/default.css'
 import '../static/kindeditor/plugins/upimage/upimage.js'
 import '../static/kindeditor/plugins/upmedia/upmedia.js'
+import '../static/kindeditor/plugins/clearcode/clearcode.js'
 KindEditor.lang.upimage='upimage'
 KindEditor.lang.upmedia='upmedia'
+KindEditor.lang.clearcode='clearcode'
 Vue.use(VueKindEditor)
 import $ from 'jquery';   
 window.$ = $;
@@ -40,3 +42,7 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+
+console.log('API_URL')
+console.log(process.env.API_URL)

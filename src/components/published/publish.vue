@@ -6,8 +6,10 @@
         <h2 class="title-p" style="font-size:24px; color:#333;line-height:25px;">{{data.title}}</h2>
         <p class="tag"><span>{{data.tag}}</span><span>{{data.source}}</span><span>{{data.created_at}}</span></p>
         <p class="text" v-html="data.content_html"  style="font-size:16px;"></p>
-        <button class="btn" @click="publishData">发布</button>
-        <router-link  :to="{path:'/index/published/edit/'+data.id}" class="publish-btn">编辑</router-link>
+        <div style="margin-top:30px;">
+         <button class="btn" @click="publishData">发布</button>
+         <router-link  :to="{path:'/index/published/edit/'+data.id}" class="publish-btn">编辑</router-link>
+        </div>
       </div>
     </div>
 

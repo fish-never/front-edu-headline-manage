@@ -71,7 +71,7 @@
 
         <el-form-item>
           <button @click="saveData" class="btn" type="button">保存并预览</button>
-          <button class="btn" type="button" v-if="btnShow">保存并发布</button>
+          <button class="gray-btn" type="button" v-if="btnShow">正在发布</button>
           <button class="btn" @click="publishData" type="button"  v-if="!btnShow">保存并发布</button>
 
         </el-form-item>
@@ -109,6 +109,8 @@ export default {
       btnShow:false,
       display_type_5:[],
       coverages:[]
+
+      
     };
   },
 
@@ -116,7 +118,6 @@ export default {
     display_type:function(){ //封面
       this.imgShow.length =0 
       if(this.display_type ==2){ // 690*388 单张大图
-      // console.log(454545)
           this.selectedImgs(690,388);
             if(this.cover.length >0){
               this.cover.forEach(item=>{
@@ -332,6 +333,7 @@ export default {
       }
       callback();
     },
+
     inputHandler(val) {
       this.ruleForm.content = val;
     },
@@ -355,6 +357,14 @@ export default {
 
     },
     //保存并发布
+    inputTagsChange(){
+      this.checkedTags = [];
+      this.tags.forEach(item => {
+        if (this.inputTags.indexOf(item.tag_name) != -1) {
+          this.checkedTags.push(item.tag_name);
+        }
+      });
+    },
     publishData(){
       this.checkCoverLength(item =>{
         this.btnShow = true;
