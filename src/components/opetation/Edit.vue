@@ -30,8 +30,8 @@
         </el-form-item>
         <el-form-item label="分类" prop="type_name">
            <el-col :span="11">
-          <el-select v-model="ruleForm.type_name" placeholder="请选择分类" width="100%"  @change="typeNameChange">
-            <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
+          <el-select v-model="ruleForm.type_name" placeholder="请选择分类" width="100%"  @change="typeChange">
+            <el-option v-for="item in types" :label="item.typeName" checked :key="item.id" :value="item.id">{{item.typeName}}</el-option>
           </el-select>
            </el-col>
         </el-form-item>
@@ -61,7 +61,7 @@
         <el-form-item label="展示标签" prop="type">
           <el-checkbox-group
             v-model="checkedTags">
-            <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
+            <el-checkbox v-for="item in tags" :label="item.tag_name" checked :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
         <el-form-item>
@@ -179,6 +179,22 @@
     }
   },
   methods: {
+     //根据分类查询标签
+     getTags(type_id){
+       commonService.typetags({type_id:type_id}).then(data => {
+          if (data.code == 0) {
+           // console.log(JSON.stringify(data.data));
+            const temp =[];
+            data.data.forEach(item =>{
+              if(item.is_default ==="1"){
+                 temp.push(item);
+              }
+            });
+           this.tags =temp;
+         // console.log(JSON.stringify(this.tags));
+          }
+        });
+     },
     //发布
     publishData(){
       this.btnShow = true;
@@ -228,10 +244,9 @@
         })
       },
         //type
-    typeNameChange(val){
+    typeChange(val){
       this.flag=true;
- 
-
+      this.getTags(val);//下拉框改变的val正好就是tpye_id
     },
     inputTagsChange(){
       this.checkedTags = [];
@@ -298,10 +313,10 @@
         if(data.code==0){
         this.ruleForm = data.data;
         this.imgShow = this.ruleForm.coverage.split(",");
-      //  this.type_id = this.ruleForm.type_id;
+        this.type_id = this.ruleForm.type_id;
         this.display_type = parseInt(this.ruleForm.display_type);
-        this.inputTags = this.ruleForm.tag;
-        this.inputTagsChange();
+        // this.inputTags = this.ruleForm.tag;
+        // this.inputTagsChange();
       }
     })
       commonService.typeList().then(data => {
@@ -314,21 +329,10 @@
                 }   
       })
         }
+        // 根据分类id查询该分类下的标签
+       this.getTags(this.type_id);
         });
-        console.log(this.type_id);
-        commonService.typetags({type_id:this.type_id}).then(data => {
-          if (data.code == 0) {
-           this.tags =data.data;
-          
-          }
-        });
-    //   commonService.tagList().then(data => {
-    //     if(data.code == 0){
-
-    //     this.tags = data.data;
-    //   }
-    // })
-
+        
     },
   components: {
     XEditor

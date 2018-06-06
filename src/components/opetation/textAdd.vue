@@ -15,7 +15,7 @@
           <el-input v-model="textData.origin_link"></el-input>
         </el-form-item>
         <el-form-item label="分类" prop="type_id" required>
-          <el-select v-model="textData.type_id" placeholder="请选择分类" >
+          <el-select v-model="textData.type_id" placeholder="请选择分类" @change="typeChange">
             <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
           </el-select>
         </el-form-item>
@@ -44,11 +44,11 @@
           <UploadFile v-on:filechange="filechange"/>
           <p class='up-img'>图片建议尺寸220*140</p>
         </el-form-item>
-        <el-form-item label="新增标签" prop="type" required>
+        <el-form-item label="新增标签" prop="type">
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
           <el-checkbox-group
             v-model="checkedTags">
-            <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
+            <el-checkbox v-for="item in tags" :label="item.tag_name" checked :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
          <el-form-item label="正文编辑" prop="content" required>
@@ -139,6 +139,26 @@
       }
     },
     methods:{
+    //根据分类查询标签
+     getTags(type_id){
+       commonService.typetags({type_id:type_id}).then(data => {
+          if (data.code == 0) {
+           // console.log(JSON.stringify(data.data));
+            const temp =[];
+            data.data.forEach(item =>{
+              if(item.is_default ==="1"){
+                 temp.push(item);
+              }
+            });
+           this.tags =temp;
+         // console.log(JSON.stringify(this.tags));
+          }
+        });
+     },
+    typeChange(val){
+      this.flag=true;
+       this.getTags(val);//下拉框改变的val正好就是tpye_id
+    },
      open(text) {
         this.$alert(text, '信息', {
           confirmButtonText: '确定',
@@ -200,14 +220,15 @@
         if(data.code == 0){
         this.types = data.data;
       }
-    }),
-    commonService.tagList().then(data => {
-    if (data.code == 0) {
-      console.log(1111,data.data)
-      this.tags = data.data;
-      return Promise.resolve();
-    }
-  });
+    })
+  // ,
+  //   commonService.tagList().then(data => {
+  //   if (data.code == 0) {
+  //     console.log(1111,data.data)
+  //     this.tags = data.data;
+  //     return Promise.resolve();
+  //   }
+  // });
 
     },
   components: {
