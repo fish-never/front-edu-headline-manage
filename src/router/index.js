@@ -105,7 +105,7 @@ export default new Router({
           component: OperationEdit
         },
         {
-          path: 'operationPreview',
+          path: 'operationPreview/:id',
           name: 'OperationPreview',
           component:OperationPreview
         },

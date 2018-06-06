@@ -18,13 +18,6 @@
         <el-form-item label="文章来源" prop="source" required>
           <el-input v-model="ruleForm.source"></el-input>
         </el-form-item>
-        <!-- <el-form-item label="时间" required>
-          <el-col :span="11">
-            <el-form-item prop="date1">
-              <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.created_at" style="width: 100%;"></el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-form-item> -->
         <el-form-item label="时间">
           <p>{{ruleForm.created_at}}</p>
         </el-form-item>
@@ -44,21 +37,28 @@
             <el-radio :label="5" v-if="display_type !==4">三图</el-radio>
           </el-radio-group>
         </el-form-item>
-         <el-form-item v-if="imgShow.length>=1">
-          <div v-for="(item ,index) in imgShow" :key="index">
-            <div v-if="display_type==2 || display_type==4">
-              <img :src="item" width="180" height="114"/>
+          <el-form-item class='clearfloat' v-show='display_type==5'>
+            <div v-for='item in files' :key="item.id" class="cover-list">
+                <UploadFile v-model="item.url" />
             </div>
-            <div v-if="display_type ==3 || display_type ==5" class="img-item">
-              <img :src="item" width="90" height="57"/>
+            <p class='up-img'>图片建议尺寸220*140</p>
+
+          </el-form-item>
+          <el-form-item class='clearfloat' v-show='display_type==2 || display_type==4'>
+            <div  class="cover-list">
+              <UploadFile v-model="files[0].url" />
             </div>
-          </div>
-        </el-form-item>
+            <p class='up-img'>图片建议尺寸690*388</p>
+          </el-form-item>
+         <el-form-item class='clearfloat' v-show='display_type==3'>
+            <div  class="cover-list">
+              <UploadFile v-model="files[0].url" />
+            </div>
+            <p class='up-img'>图片建议尺寸220*140</p>
+          </el-form-item>
 
         <el-form-item label="新增标签" prop="type">
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
-        </el-form-item>
-        <el-form-item label="展示标签" prop="type">
           <el-checkbox-group
             v-model="checkedTags">
             <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
@@ -66,7 +66,7 @@
         </el-form-item>
         <el-form-item>
           <button @click="saveData" class="btn" type="button">保存并预览</button>
-          <button class="btn" type="button" v-if="btnShow">保存并发布</button>
+          <button class="gray-btn" type="button" v-if="btnShow">正在发布</button>
           <button @click="publishData"  type="button" class="btn" v-if="!btnShow">保存并发布</button>
         </el-form-item>
       </el-form>
@@ -78,10 +78,25 @@
   import operationService from '../../service/operation';
   import commonService from '../../service/common';
   import XEditor from "../_common/Editor";
+  import UploadFile from "../_common/UploadFile";
   export default {
     name: 'edit',
     data () {
       return {
+        files:[
+          {
+            id:1,
+            url:""
+          },
+          {
+            id:2,
+            url:""
+          },
+          {
+            id:3,
+            url:""
+          },
+        ],
         radio2: 1,
         input:'',
         editorText:"",
@@ -100,6 +115,7 @@
         cover:[],
         imgShow:[],
         options:"",
+        showOpen:false,
         btnShow:false
 
       
@@ -108,49 +124,27 @@
 
   watch: {
     display_type:function(){ //封面 
-      this.imgShow = []      
+      this.imgShow = []     
+      console.log(this.display_type) 
+      if(this.showOpen){
+
       if(this.display_type ==1){  //无封面
         this.ruleForm.display_type =1;
           return
       }
-      if(this.display_type ==2 || this.display_type ==4){ // 690*388 单张大图
-          this.selectedImgs(690,388);
-           if(this.cover.length >0){
-          this.ruleForm.coverage  = this.cover[0];
-           this.ruleForm.display_type =this.display_type ;
-            this.imgShow = this.ruleForm.coverage.split(",")
-       }else{
-          this.display_type = 1;
-          this.open("不符合单张大图,请选择其他模式")
-       }
-      }
-     if(this.display_type ==3){//220*140 单张小图
-        this.selectedImgs(690,388);
-        if(this.cover.length >0){
-          this.ruleForm.display_type =3;
-          this.selectedImgs(220,140);
-          this.ruleForm.coverage  = this.cover[0];
-          this.imgShow = this.ruleForm.coverage.split(",")
-       }else{
-          this.display_type = 1;
-          this.open("不符合单张小图,请选择其他模式")
-       }
-     
-    
-
+      if(this.display_type ==2 || this.display_type ==3 || this.display_type == 4 ){ // 690*388 单张大图
+      // console.log(this.ruleForm.coverage)
+      //     this.file = this.ruleForm.coverage
+      //     console.log(this.file)
       }
       if(this.display_type ==5){ //220*140 三张图
-        this.selectedImgs(220,140);
-        if(this.cover.length >2){
-          this.ruleForm.display_type =5;
-          this.ruleForm.coverage  = this.cover[0] + ','+ this.cover[1] +","+ this.cover[2]
-          this.imgShow = this.ruleForm.coverage.split(",")
-        }else{
-          this.display_type = "";
-          this.open("不符合三图标准,请选择其他模式")
-        }
+    
+        
 
 
+      }
+
+        
       }
 
     },
@@ -164,7 +158,8 @@
       });
       },
     inputTags: function(val) { //选择标签
-      this.inputTagsChange(val);
+   
+      this.inputTagsChange(val)
     },
       checkedTags: function(val){
         this.tags.forEach(item=>{
@@ -179,13 +174,32 @@
     }
   },
   methods: {
+    filechange(resp){
+      this.file = resp.data.host
+      },
+      // 封面 
+      selectedCover(){
+        if(this.ruleForm.display_type ==1 ){
+          this.ruleForm.coverage = "";
+        }else if(this.ruleForm.display_type ==5 ){
+          this.ruleForm.coverage = "";
+          this.files.forEach(item => {
+          this.ruleForm.coverage += item.url +","
+          })
+           this.ruleForm.coverage  =  this.ruleForm.coverage .replace(/,$/,'')
+        }else{
+          this.ruleForm.coverage = this.files[0].url;
+        }
+      },
     //发布
     publishData(){
       this.btnShow = true;
-    this.ruleForm.tag = this.inputTags;
+      this.ruleForm.tag = this.inputTags;
+      this.ruleForm.display_type = this.display_type ;
      if(this.flag){
         this.ruleForm.type_id = this.type_name;
       }
+     this.selectedCover();
       operationService.editData(this.ruleForm).then(data => {
         if (data.code == 0) {
             const params = {
@@ -197,7 +211,6 @@
 
               }else{
                 this.btnShow = false;
-                this.open(data.data.msg)
               }
             })
         } else {
@@ -240,7 +253,6 @@
           this.checkedTags.push(item.tag_name);
         }
       });
-      
     },
     //弹框
      open(text) {
@@ -248,31 +260,19 @@
           confirmButtonText: '确定',
         });
       },
-    // 封面
-   selectedImgs(h,w){
-     if(this.ruleForm.article_imgs !== undefined){
-      this.ruleForm.article_imgs.forEach(item => {
-            const height = item.img_w*item.img_radio;
-            if(height>h && item.img_w>w){
-              this.cover.push(item.img_url)            
-              return false;
-
-            }
-          })
-     }
-
-          },
     inputHandler(val) {
       this.ruleForm.content_html = val;
     },
     saveData() {
-      this.ruleForm.tag = this.inputTags;
+     this.ruleForm.tag = this.inputTags;
+     this.ruleForm.display_type = this.display_type ;
+     this.selectedCover();
      if(this.flag){
         this.ruleForm.type_id = this.type_name;
       }
       operationService.editData(this.ruleForm).then(data => {
         if (data.code == 0) {
-          this.$router.push({ path: "../../index/publish/" + this.id });
+          this.$router.push({ path: "../../index/operationPreview/"+this.ruleForm.id});
         } else {
           // this.open();
           this.open(data.msg)
@@ -290,58 +290,78 @@
       this.id = this.$route.params.id
     },
     mounted(){
-       if (localStorage.getItem("account") == null) {
-      this.$router.push({ path: "/" });
-      return;
-    }
-      operationService.detailData(this.id).then(data=>{
+ 	if (localStorage.getItem("account") == null) {
+	      this.$router.push({ path: "/" });
+	      return;
+	    }
+    commonService.tagList().then(data => {
+        if(data.code == 0){
+
+        this.tags = data.data;
+      }
+    }).then(data => {
+      const param = {
+        id: this.id
+      }
+      operationService.detailData(param).then(data=>{
         if(data.code==0){
         this.ruleForm = data.data;
         this.imgShow = this.ruleForm.coverage.split(",");
-      //  this.type_id = this.ruleForm.type_id;
+        this.type_id = this.ruleForm.type_id;
         this.display_type = parseInt(this.ruleForm.display_type);
+        if(this.display_type !==5){
+          this.files[0].url = this.ruleForm.coverage
+        }else{
+          this.imgShow.forEach((item,index)=> {
+            this.files[index].url = item
+          })
+        }
+        this.showOpen = true;
         this.inputTags = this.ruleForm.tag;
         this.inputTagsChange();
       }
-    })
+
       commonService.typeList().then(data => {
         if(data.code == 0){
         this.types = data.data;
-        console.log(JSON.stringify(this.types));
           this.types.forEach(item => {
             if(this.type_id==item.id){
                 this.type_name = item.typeName;
-                }   
-      })
+                }     
+          })
         }
-        });
-        console.log(this.type_id);
-        commonService.typetags({type_id:this.type_id}).then(data => {
-          if (data.code == 0) {
-           this.tags =data.data;
-          
-          }
-        });
-    //   commonService.tagList().then(data => {
-    //     if(data.code == 0){
+        })
 
-    //     this.tags = data.data;
-    //   }
-    // })
+    })
 
+
+    })
     },
   components: {
-    XEditor
+    XEditor,
+    UploadFile
   }
       }
 
 </script>
 <style>
+
 .mce-branding {
   display: none !important;
 }
 </style>
 <style scoped>
+
+.up-img{
+  display: inline-block;
+  position: relative;
+  top:-20px;
+  margin-left:10px;
+}
+.cover-list{
+  display: inline-block;
+  margin-right:15px;
+}
  .detele-btn{
    vertical-align: middle;
    top: 22px;

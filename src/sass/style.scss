@@ -170,7 +170,7 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px white inset !important;
 }
 input,button,select,textarea{outline:none}
-.btn,.publish-btn{
+.btn,.publish-btn,.gray-btn{
   width:100px;
   height:36px;
   background:linear-gradient(90deg,rgba(252,148,116,1),rgba(251,116,95,1));
@@ -184,6 +184,9 @@ input,button,select,textarea{outline:none}
   margin-left:20px;
   float:left;
   cursor: pointer;
+}
+.gray-btn{
+  background:gray;
 }
 .tag{
   font-size:12px;

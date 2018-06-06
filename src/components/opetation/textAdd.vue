@@ -5,21 +5,18 @@
       <el-tabs v-model="activeName" @tab-click="handleClick">
          <el-tab-pane label="图文文章" name="first">
       <el-form :model="textData" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="标题" prop="title" required>
+        <el-form-item label="标题" prop="title">
           <el-input v-model="textData.title"></el-input>
         </el-form-item>
-        <el-form-item label="文章来源" prop="source" required>
+        <el-form-item label="文章来源" prop="source">
           <el-input v-model="textData.source"></el-input>
         </el-form-item>
-        <el-form-item label="原始地址" prop="origin_link" required>
-          <el-input v-model="textData.origin_link"></el-input>
-        </el-form-item>
-        <el-form-item label="分类" prop="type_id" required>
+        <el-form-item label="分类" prop="type_id">
           <el-select v-model="textData.type_id" placeholder="请选择分类" >
             <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="封面" prop="display_type" required>
+        <el-form-item label="封面" prop="display_type">
           <el-radio-group v-model="display_type">
             <el-radio :label="1">无图</el-radio>
             <el-radio :label="2">单张大图</el-radio>
@@ -28,35 +25,37 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item class='clearfloat' v-show='display_type==5'>
-          <div v-for='item in files' :key="item.id">
-          <UploadFile v-model="item.url" />
-          <!-- <UploadFile v-on:filechange="filechange"/>
-          <UploadFile v-on:filechange="filechange"/> -->
+          <div v-for='item in files' :key="item.id" class="cover-list">
+           <UploadFile v-model="item.url" />
           </div>
           <p class='up-img'>图片建议尺寸220*140</p>
 
         </el-form-item>
         <el-form-item class='clearfloat' v-show='display_type==2'>
-          <UploadFile v-on:filechange="filechange"/>
+          <div  class="cover-list">
+             <UploadFile v-model="files[0].url" />
+          </div>
           <p class='up-img'>图片建议尺寸690*388</p>
         </el-form-item>
        <el-form-item class='clearfloat' v-show='display_type==3'>
-          <UploadFile v-on:filechange="filechange"/>
+          <div  class="cover-list">
+            <UploadFile v-model="files[0].url" />
+          </div>
           <p class='up-img'>图片建议尺寸220*140</p>
         </el-form-item>
-        <el-form-item label="新增标签" prop="type" required>
+        <el-form-item label="新增标签" prop="type">
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
           <el-checkbox-group
             v-model="checkedTags">
             <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
-         <el-form-item label="正文编辑" prop="content" required>
+         <el-form-item label="正文编辑" prop="content">
               <XEditor :content="textData.content_html" v-on:change="onContentChange"/>
         </el-form-item>
-
         <el-form-item>
-          <button @click="textSaveData"  type="button" class="btn">保存并预览</button>
+          <button @click="textSaveData"  type="button" class="btn"  v-if="!btnShow">保存并预览</button>
+          <button class="gray-btn" type="button" v-if="btnShow">正在保存</button>
         </el-form-item>
       </el-form>
 
@@ -78,17 +77,10 @@
     name: 'opedit',
     data () {
       return {
-         file:require("../../assets/imgs/add.png"),
-        activeName: 'first',
-        display_type:0,
-        radio2: 1,
-        input:'',
-        editorText:"",
-        inputTags: "",
         files:[
           {
             id:1,
-            url:"https://img-toutiao.ministudy.com/2018_05_30/Desert.jpg"
+            url:""
           },
           {
             id:2,
@@ -96,9 +88,15 @@
           },
           {
             id:3,
-            url:"https://img-toutiao.ministudy.com/2018_05_30/Desert.jpg"
+            url:""
           },
         ],
+        activeName: 'first',
+        display_type:5,
+        radio2: 1,
+        input:'',
+        editorText:"",
+        inputTags: "",
         checkedTags: [],
         tags: [],
         id:'',
@@ -110,7 +108,7 @@
           video_uri:''
         },
         imageUrl: '',
-
+        btnShow:false,
         types:""
 
       }
@@ -158,14 +156,7 @@
       });
     },
     filechange(resp){
-      console.log('upload id:' + resp.id)
-      console.log(resp.url)
-      this.textData.coverage = resp.url;
-      this.file = resp.url
-       if(this.display_type==5){
-          console.log()
-        }
-        console.log(resp.url);
+      console.log(respl);
       },
       handleClick(tab, event) {
           if(tab.index==1){
@@ -179,11 +170,24 @@
     },
       // 保存
       textSaveData(){
+        this.btnShow = true;
+        if(this.textData.display_type ==1 ){
+          this.textData.coverage = "";
+        }else if(this.textData.display_type ==5 ){
+          this.textData.coverage = "";
+          this.files.forEach(item => {
+          this.textData.coverage += item.url +","
+          })
+           this.textData.coverage  =  this.textData.coverage .replace(/,$/,'')
+        }else{
+          this.textData.coverage = this.files[0].url;
+        }
         this.textData.tag = this.inputTags;
         operationService.newData(this.textData).then(data=>{
          if(data.code==0){
-            this.$router.push({ path: "../../index/operationStorage" })
+            this.$router.push({ path: "../../index/operationPreview/"+data.data.result })
           }else{
+            this.btnShow = false;
             this.open(data.msg)
           }
       })
@@ -222,7 +226,7 @@
     display: inline-block;
     margin-left: 10px;
     position: relative;
-    top: -25px;
+    top: 8px;
 }
   .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
@@ -272,5 +276,8 @@
     color:rgba(102,102,102,1);
     line-height:20px;
   }
-
+.cover-list{
+  float:left;
+  margin-left:20px; 
+}
 </style>

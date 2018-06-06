@@ -71,7 +71,7 @@
 
         <el-form-item>
           <button @click="saveData" class="btn" type="button">保存并预览</button>
-          <button class="btn" type="button" v-if="btnShow">保存并发布</button>
+          <button class="gray-btn" type="button" v-if="btnShow">正在发布</button>
           <button class="btn" @click="publishData" type="button"  v-if="!btnShow">保存并发布</button>
 
         </el-form-item>
@@ -109,6 +109,8 @@ export default {
       btnShow:false,
       display_type_5:[],
       coverages:[]
+
+      
     };
   },
 
@@ -199,9 +201,9 @@ export default {
       this.inputTagsChange(val)
     },
     checkedTags: function(val) {
-      // this.tags.forEach(item => {
-      //   this.inputTags = this.inputTags.replace(item.tag_name + ",", "");
-      // });
+      this.tags.forEach(item => {
+        this.inputTags = this.inputTags.replace(item.tag_name + ",", "");
+      });
       val.forEach(item => {
         if (this.inputTags.indexOf(item) == -1) {
           this.inputTags = item + "," + this.inputTags;
@@ -303,6 +305,7 @@ export default {
       let type = this.ruleForm.display_type;
       let imgLists= this.ruleForm.coverage ? this.ruleForm.coverage.split(',') : [];
       let n = imgLists.length;
+      console.log(n)
       if(type==5){
          if(n<3){
            this.open("封面数小于3");
@@ -318,6 +321,7 @@ export default {
       }
       callback();
     },
+
     inputHandler(val) {
       this.ruleForm.content = val;
     },
@@ -340,6 +344,14 @@ export default {
 
     },
     //保存并发布
+    inputTagsChange(){
+      this.checkedTags = [];
+      this.tags.forEach(item => {
+        if (this.inputTags.indexOf(item.tag_name) != -1) {
+          this.checkedTags.push(item.tag_name);
+        }
+      });
+    },
     publishData(){
       this.checkCoverLength(item =>{
         this.btnShow = true;
@@ -391,7 +403,6 @@ export default {
       commonService.tagList().then(data => {
           if (data.code == 0) {
             this.tags = data.data;
-            console.log(JSON.stringify(this.tags));
             return Promise.resolve();
           }
         });
@@ -403,6 +414,7 @@ export default {
         this.type_id = this.ruleForm.type_id;
         this.display_type = parseInt(this.ruleForm.display_type);
         this.inputTags = this.ruleForm.tag;
+        console.log(this.inputTags)
        // 封面回显
         this.inputTagsChange();
       }

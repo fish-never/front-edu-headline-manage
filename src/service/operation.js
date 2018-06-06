@@ -50,7 +50,7 @@ export default {
     },
   //  获取运营文章详情
   detailData(id){
-    return api.get('information/operation/view?id='+id).then((resp)=>{
+    return api.get('information/operation/view?'+qs.stringify(id)).then((resp)=>{
         return Promise.resolve(resp.data)
       })
   },

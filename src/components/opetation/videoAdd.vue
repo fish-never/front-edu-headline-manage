@@ -1,13 +1,13 @@
 <template>
   <div>
-    <p class="location"><router-link to="/index/operationStorage" class="grey">运营池</router-link>>新建文章9999</p>
+    <p class="location"><router-link to="/index/operationStorage" class="grey">运营池</router-link>>新建文章</p>
     <div class="wrap-margin wrap-padding">
       <el-tabs v-model="activeName" @tab-click="handleClick">
          <el-tab-pane label="图文文章" name="first">
     </el-tab-pane>
     <el-tab-pane label="视频文章" name="second">
             <el-form :model="videoData" label-width="100px" class="demo-videoData">
-        <el-form-item label="标题" prop="title" required>
+        <el-form-item label="标题" prop="title" >
           <el-input v-model="videoData.title"></el-input>
         </el-form-item>
         <el-form-item label="文章来源" prop="source" >
@@ -20,7 +20,10 @@
         </el-form-item>
         <el-form-item label="封面" prop="region" >
          <el-form-item>
-          <UploadFile v-on:filechange="filechange"/>
+          <div  class="cover-list">
+             <UploadFile v-model="files[0].url" />
+          </div>
+           <p class='up-img'>图片建议尺寸690*388</p>
         </el-form-item>
         </el-form-item>
         <el-form-item label="视频链接" prop="video_uri" >
@@ -56,7 +59,12 @@
     name: 'opedit',
     data () {
       return {
-        file:require("../../assets/imgs/add.png"),
+        files:[
+          {
+            id:1,
+            url:""
+          }
+        ],
         activeName: 'second',
         radio2: 1,
         input:'',
@@ -130,10 +138,12 @@
     },
       // 保存
     textSaveData(){
+       this.videoData.coverage = this.files[0].url
+       this.videoData.display_type = 4;
         this.videoData.tag = this.inputTags;
         operationService.newData(this.videoData).then(data=>{
         if(data.code==0){
-            this.$router.push({ path: "../../index/operationStorage" })
+            this.$router.push({ path: "../../index/operationPreview/"+data.data.result })
           }else{
             this.open(data.msg)
           }

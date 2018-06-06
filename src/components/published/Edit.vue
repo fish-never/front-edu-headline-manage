@@ -40,12 +40,13 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item v-if="display_type!==1">
-          <div v-for="(item,index) in cover" :key="index" class="img-item">
-            <img :src="item" width="90" height="57" @click="checkImg(item)" :class="{line:checkCover(item)}"/>
+          <div v-for="(item,index) in imgShow" :key="index" class="img-item">
+            <img :src="item.src" width="90" height="57" @click="checkImg(item)" :class="{line:checkCover(item.src)}"/>
           </div>
         </el-form-item>
 
         <el-form-item label="新增标签" prop="type">
+        
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
           <el-checkbox-group
             v-model="checkedTags">
@@ -82,8 +83,8 @@
     name: 'edit',
     data () {
       return {
-        article_imgs:[],
         radio2: 1,
+        showImgs:true,
         input:'',
         editorText:"",
         inputTags:'',
@@ -101,57 +102,146 @@
       imgShow:[],
       flag:false,
       options:"",
-      btnShow:false
-
-
+      btnShow:false,
+      showOpen:false,
+      article_imgs:[]
       }
     },
     created(){
-      this.id = this.$route.params.id; 
+      this.id = this.$route.params.id;
+      
+    },
+    computed:{
+      coverList:function(){
+        return this.article_imgs.slice(0,10);
+        console.log(this.display_type)
+              if(this.display_type ==1){
+        this.ruleForm.coverage = ""
+      }
+      if(this.display_type ==2  || this.display_type ==4){ // 690*388 单张大图
+          this.imgShow.length = 0;
+          let data = this.article_imgs.slice(0,10)
+            data.forEach(item => {
+              if(item.w >=690 && item.h >=388){
+                  this.imgShow.push(item)
+              }
+            })
+            if(this.imgShow.length <= 0){
+             this.display_type = 1;
+             this.open("不符合单张大图690*388,请选择其他模式")
+           }
+      }
+     if(this.display_type ==3){//220*140 单张小图    
+        let data = this.article_imgs.slice(0,10)
+        if(data.length >0){
+                this.imgShow = data;
+       }else{
+         this.display_type = 1;
+          this.open("不符合单张小图220*140标准,请选择其他模式")
+       }
+      }
+      if(this.display_type ==5){ //220*140 三张图
+        let data = this.article_imgs.slice(0,10)
+        if(data.length >2){
+                this.imgShow = data;
+       }else{
+         console.log( this.ruleForm.display_type)
+            console.log(this.display_type)
+          this.display_type = 1;
+          this.open("不符合三图标准,请选择其他模式")
+        }
+      }
+      }
     },
     watch:{
-      display_type: function(){
-        console.log(this.cover)
-      },
-    // display_type:function(){ //封面
-    //   this.imgShow.length =0 
-    //   if(this.display_type ==2){ // 690*388 单张大图
-    //   // console.log(454545)
-    //       this.selectedImgs(690,388);
-    //         if(this.cover.length >0){
-    //           this.cover.forEach(item=>{
-    //             this.imgShow.push(item)
-    //           })
-             
-    //    }else{
-    //       this.display_type = 1;
-    //       this.open("不符合单张大图690*388,请选择其他模式")
-    //    }
-    //   }
-    //  if(this.display_type ==3){//220*140 单张小图
-    //      this.selectedImgs(220,140);
-    //     if(this.cover.length >0){
-    //          this.cover.forEach(item=>{
-    //             this.imgShow.push(item)
-    //           })   
-    //    }else{
-    //       this.display_type = 1;
-    //       this.open("不符合单张小图220*140标准,请选择其他模式")
-    //    }
-    //   }
-    //   if(this.display_type ==5){ //220*140 三张图
-    //     this.selectedImgs(220,140);
-    //     if(this.cover.length >2){
-    //          this.cover.forEach(item=>{
-    //             this.imgShow.push(item)
-    //           })
 
-    //     }else{
-    //       this.display_type = 1;
-    //       this.open("不符合三图标准,请选择其他模式")
-    //     }
-    //   }
-    // },
+    display_type:function(){ //封面
+    this.showImgs = false;
+      this.imgShow.length =0 
+      if(this.showOpen){
+      if(this.display_type ==1){
+        this.ruleForm.coverage = ""
+      }
+      if(this.display_type ==2  || this.display_type ==4){ // 690*388 单张大图
+          this.imgShow.length = 0;
+          let data = this.article_imgs.slice(0,10)
+            data.forEach(item => {
+              if(item.w >=690 && item.h >=388){
+                  this.imgShow.push(item)
+              }
+            })
+            if(this.imgShow.length <= 0){
+             this.display_type = 1;
+             this.open("不符合单张大图690*388,请选择其他模式")
+           }
+      }
+     if(this.display_type ==3){//220*140 单张小图    
+        let data = this.article_imgs.slice(0,10);
+      //   let arr = [];
+      //   let item = this.ruleForm.coverage.split(",")
+      //   data.forEach(item => {
+      //     arr.push(item.src)
+      //   })
+      //   item.forEach(i => {
+      //     if(arr.indexOf(i)<0){
+      //       let param = {
+      //         w:230,
+      //         h:150,
+      //         src:i
+      //       }
+      //       data.unshift(param)
+      //     }
+
+      //   })
+      //   console.log(item)
+      // console.log(this.article_imgs)
+      // data = this.filterCovers(data)
+       
+      //  this.imgShow = data.slice(0,10)
+        console.log(this.imgShow)
+        if(data.length >0){
+                this.imgShow = data;
+       }else{
+         this.display_type = 1;
+          this.open("不符合单张小图220*140标准,请选择其他模式")
+       }
+      }
+      if(this.display_type ==5){ //220*140 三张图
+        let data = this.article_imgs.slice(0,10);
+      //   let arr = [];
+      //   let item = this.ruleForm.coverage.split(",")
+      //   data.forEach(item => {
+      //     arr.push(item.src)
+      //   })
+      //   item.forEach(i => {
+      //     if(arr.indexOf(i)<0){
+      //       let param = {
+      //         w:230,
+      //         h:150,
+      //         src:i
+      //       }
+      //       data.unshift(param)
+      //     }
+
+      //   })
+      //   console.log(item)
+      // console.log(this.article_imgs)
+      // data = this.filterCovers(data)
+       
+      //  this.imgShow = data.slice(0,10)
+      //   console.log(this.imgShow)
+        if(data.length >2){
+                this.imgShow = data;
+       }else{
+         console.log( this.ruleForm.display_type)
+            console.log(this.display_type)
+          this.display_type = 1;
+          this.open("不符合三图标准,请选择其他模式")
+        }
+      }
+
+      }
+    },
     inputTags: function(val) { //选择标签
       this.inputTagsChange(val)
     },
@@ -168,20 +258,43 @@
     }
   },
   methods: {
-   // 获取封面列表
+    filterCovers(list){
+      var src = "";
+      var result = [];
+      list.forEach(item=>{
+        if(src.indexOf(item.src) == -1){
+          result.push(item);
+          src+= item.src + ',';
+        }
+      })
+      return result;
+    },
+//图片加载
+    globalImgOnload(img){
+      let data = {
+        w: img.width,
+        h: img.height,
+        src: img.src
+      }
+      let imgs = [];
+      if(img.width>220 && img.height >140){
+        this.article_imgs.push(data)
+      }
+      this.showOpen = true;
+
+    },
 
     //选中封面
-    checkCover(url){
-      console.log(url)
-      return this.ruleForm.coverage ? this.ruleForm.coverage.indexOf(url) != -1 : false;
+    checkCover(src){
+      return this.ruleForm.coverage ? this.ruleForm.coverage.indexOf(src) != -1 : false;
     },
     checkImg(item){
       console.log(item)
       if(this.display_type == 5){
          let ms = this.ruleForm.coverage ? this.ruleForm.coverage.split(",") : [];
-         let idx = ms.indexOf(item)
+         let idx = ms.indexOf(item.src)
          if(idx == -1){
-           ms.push(item)
+           ms.push(item.src)
          }else{
            ms.splice(idx,1);
          }
@@ -192,7 +305,7 @@
       }else if(this.display_type == 1){
           this.ruleForm.coverage = "";
       }else{
-         this.ruleForm.coverage = item
+         this.ruleForm.coverage = item.src
       }
 
     },
@@ -205,7 +318,7 @@
       console.log(n)
       if(type==5){
          if(n<3){
-           this.open("封面数小于3,");
+           this.open("封面数小于3");
             return
          }
         
@@ -253,12 +366,7 @@
         }
       });
     },
-  //      // 封面
-  //  selectedImgs(){
-  //    this.getCover();
-  //    this.cover.length=0;
-  //   this.cover= this.article_imgs
-  //  },
+
 
     //弹框
      open(text) {
@@ -294,10 +402,9 @@
     afterChange () {
     }
     },
-    created(){
-      this.id = this.$route.params.id
-    },
+ 
     mounted(){
+       window.globalImgOnload = this.globalImgOnload;
        if (localStorage.getItem("account") == null) {
           this.$router.push({ path: "/" });
           return;
@@ -323,40 +430,8 @@
         this.type_id = this.ruleForm.type_id;
         this.display_type = parseInt(this.ruleForm.display_type);
         this.inputTags = this.ruleForm.tag;
-        let cover1 = this.ruleForm.coverage.split(",")
-
-        console.log(this.ruleForm.content_html)
-        let html = $(this.ruleForm.content_html);
-        let n = html.find('img').length; //最多获取10张
-
-
-        if(n>10){
-         
-          for(let i =0; i<10;i++){
-            let src = html.find("img").eq(i).attr("src")
-            this.cover.push(src)
-          }
-        }else{
-          for(let i =0; i<n;i++){
-            console.log(html.find("img").eq(i))
-          let src = html.find("img").eq(i).attr("src")
-          this.cover.push(src)
-           console.log( html.find("img").eq(i))
-
-        }
-        }
-        cover1.forEach(item =>{
-          if(this.cover.indexOf(item)<0){
-              this.cover.push(item)
-          }
-        })
-    
-       console.log(this.cover)
-      
-
-
-        // this.cover = this.ruleForm.coverage.split(",")
-        // console.log(this.cover)
+        let cont_html = this.ruleForm.content_html.replace(/\<img /ig, "<img onload='globalImgOnload(this)' ");
+        let html = $(cont_html); 
         this.inputTagsChange();
 
       }

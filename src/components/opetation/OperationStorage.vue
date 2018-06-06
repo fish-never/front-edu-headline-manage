@@ -10,7 +10,7 @@
           :value="item">
         </el-option>
       </el-select>
-      <el-select v-model="value2" clearable size="small" placeholder="近7天" style="width:150px;">
+      <el-select v-model="value2" clearable size="small" filterable placeholder="近7天" style="width:150px;">
         <el-option
           v-for="item in options2"
           :key="item.value"
@@ -18,7 +18,7 @@
           :value="item.value">
         </el-option>
       </el-select>
-      <el-select v-model="value3" size="small" clearable placeholder="所属分类" style="width:150px;">
+      <el-select v-model="value3" size="small" clearable filterable placeholder="所属分类" style="width:150px;">
         <el-option
           v-for="item in types"
           :label="item.typeName" :key="item.id" :value="item.id">
@@ -72,7 +72,7 @@
 
       <el-table-column label="操作"  width="180px">
         <template slot-scope="scope">
-          <span  @click="goPreview(scope.row.id, scope.row.display_type)" class="link-a">预览</span>
+          <router-link   :to="{path:'/index/operationPreview/'+scope.row.id}" class="link-a">预览</router-link>
           <router-link  :to="{path:'/index/operationEdit/'+scope.row.id}" class="link-a">编辑</router-link>
           <span class="link-a"
             type="button"
@@ -87,7 +87,7 @@
                    @size-change="handleSizeChange"
                    @current-change="handleCurrentChange"
                    :current-page="page"
-                   :page-sizes="[10,20,30,50,100,200]"
+                   :page-sizes="[10,50,100,200,500,1000,2000,3000]"
                    :page-size="pageNum"
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
@@ -259,10 +259,11 @@
         const params = {
           typeId:this.value3,
           page:this.page,
+           source:this.value1,
           pageNum:this.pageNum,
-          source:this.value,
           rangeType:this.value2
         };
+        console.log(params)
          const loadingInstance = this.$loading({ fullscreen: true });
         operationService.sourceList(params).then(data=>{
           if(data.code==0){
@@ -278,6 +279,7 @@
       })
       },
       getSourceList(){
+        this.page = 1;
         this.loadList()
       },
       handleSizeChange(val){
@@ -293,3 +295,8 @@
   }
 </script>
 
+
+<style scoped lang="scss">
+
+
+</style>

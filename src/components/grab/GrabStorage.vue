@@ -4,7 +4,8 @@
     <div class="clearfloat wrap-main">
       <div class="search-wrap">
         <span class="title">检索条件</span>
-        <el-select v-model="value" clearable size="small" placeholder="内容源" style="width:150px;">
+
+        <el-select v-model="value" clearable size="small" filterable placeholder="内容源" style="width:150px;">
           <el-option
             v-for="item in options"
             :key="item"
@@ -12,7 +13,7 @@
             :value="item">
           </el-option>
         </el-select>
-        <el-select v-model="value2" size="small" clearable placeholder="请选择" style="width:150px;">
+        <el-select v-model="value2" size="small" clearable filterable placeholder="请选择" style="width:150px;">
           <el-option
             v-for="item in options2"
             :key="item.value"
@@ -20,7 +21,7 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <el-select v-model="value3" size="small" clearable placeholder="所属分类" style="width:150px;">
+        <el-select v-model="value3" size="small" clearable filterable placeholder="所属分类" style="width:150px;">
         <el-option
           v-for="item in types"
           :label="item.typeName" :key="item.id" :value="item.id">
@@ -30,18 +31,6 @@
          <button class="detele-btn" @click="deleteLists" title="删除">删除</button>
 
       </div>
-      <!-- <div class="item-wrap"  v-for="data in itemData" :key="data._id">
-        <el-col :span="24" class="item clearfloat">
-          <h2 class="title">{{data.title}}</h2>
-          <p class="tag"><span>{{data.source}}</span><span>{{data.created_at}}</span></p>
-          <p class="text">{{data.desciption}}</p>
-        </el-col>
-        <el-row class="opera">
-          <el-col :span="8"><router-link  :to="{path:'/index/preview/'+data._id}">预览</router-link></el-col>
-          <el-col :span="8" class="border-c"><router-link  :to="{path:'/index/edit/'+data._id}">编辑</router-link></el-col>
-          <el-col :span="8" class="border-c"><button  @click="detele(data._id)">删除</button></el-col>
-        </el-row>
-      </div> -->
 
     </div>
     <el-table
@@ -94,10 +83,7 @@
       <el-table-column label="操作"  width="150px">
         <template slot-scope="scope">
           <router-link class="link-a" :to="{path:'/index/preview/'+ scope.row._id}">预览</router-link>
-          <!-- <p @click="mark(scope.row.status)" >
-            {{scope.row.status}} -->
           <router-link class="link-a" :to="{path:'/index/edit/'+ scope.row._id}">编辑</router-link>
-          <!-- </p> -->
           <span class="link-a"
             type="button"
             @click="Detele(scope.row._id)">删除</span>
@@ -109,7 +95,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="page"
-      :page-sizes="[10,20,30,50,100,200]"
+      :page-sizes="[10,50,100,200,500,1000,2000,3000]"
       :page-size="pageNum"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
@@ -206,6 +192,7 @@
         this.loadList()
       },
       getSourceList(){
+        this.page = 1;
         this.loadList()
       },
       loadList(){
@@ -304,6 +291,7 @@
 </script>
 
 <style scoped lang="scss">
+
   .link-a:visited{
   color:red;
 }
