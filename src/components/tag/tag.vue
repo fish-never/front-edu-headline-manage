@@ -112,6 +112,7 @@
           <el-input v-model="formdata.tagname" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="备注" :label-width="formLabelWidth" prop="remark" style="width:95%;">
+
           <el-input type="textarea" v-model="formdata.remark" ></el-input>
         </el-form-item>
         <el-form-item label="对应分类" required style="margin-left:22px;">
