@@ -26,7 +26,7 @@
         </el-form-item>
         <el-form-item label="分类" prop="type_name">
            <el-col :span="11">
-          <el-select v-model="ruleForm.type_name" placeholder="请选择分类" width="100%"  @change="typeNameChange">
+          <el-select v-model="ruleForm.type_name" placeholder="请选择分类" width="100%"  @change="typeChange">
             <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
           </el-select>
            </el-col>
@@ -62,8 +62,7 @@
 
         <el-form-item label="新增标签" prop="type">
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
-          <el-checkbox-group
-            v-model="checkedTags">
+          <el-checkbox-group v-model="checkedTags">
             <el-checkbox v-for="item in tags" :label="item.tag_name" checked :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
@@ -141,13 +140,7 @@
       //     console.log(this.file)
       }
       if(this.display_type ==5){ //220*140 三张图
-    
-        
-
-
-      }
-
-        
+      }  
       }
 
     },
@@ -263,7 +256,9 @@
         //type
     typeChange(val){
       this.flag=true;
+       if(val!=undefined){
       this.getTags(val);//下拉框改变的val正好就是tpye_id
+      }
     },
     inputTagsChange(){
       this.checkedTags = [];
@@ -313,15 +308,7 @@
 	      this.$router.push({ path: "/" });
 	      return;
 	    }
-    commonService.tagList().then(data => {
-        if(data.code == 0){
-
-        this.tags = data.data;
-      }
-    }).then(data => {
-      const param = {
-        id: this.id
-      }
+      const param = {        id: this.id      };
       operationService.detailData(param).then(data=>{
         if(data.code==0){
         this.ruleForm = data.data;
@@ -351,9 +338,6 @@
         }
         })
      this.getTags(this.type_id);
-    })
-
-
     })
     },
   components: {

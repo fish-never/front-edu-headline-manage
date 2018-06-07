@@ -208,32 +208,10 @@
       }
       if(this.display_type ==5){ //220*140 三张图
         let data = this.article_imgs.slice(0,10);
-      //   let arr = [];
-      //   let item = this.ruleForm.coverage.split(",")
-      //   data.forEach(item => {
-      //     arr.push(item.src)
-      //   })
-      //   item.forEach(i => {
-      //     if(arr.indexOf(i)<0){
-      //       let param = {
-      //         w:230,
-      //         h:150,
-      //         src:i
-      //       }
-      //       data.unshift(param)
-      //     }
-
-      //   })
-      //   console.log(item)
-      // console.log(this.article_imgs)
-      // data = this.filterCovers(data)
-       
-      //  this.imgShow = data.slice(0,10)
-      //   console.log(this.imgShow)
         if(data.length >2){
                 this.imgShow = data;
        }else{
-         console.log( this.ruleForm.display_type)
+            console.log( this.ruleForm.display_type)
             console.log(this.display_type)
           this.display_type = 1;
           this.open("不符合三图标准,请选择其他模式")
@@ -315,7 +293,6 @@
       let type = this.ruleForm.display_type;
       let imgLists= this.ruleForm.coverage ? this.ruleForm.coverage.split(',') : [];
       let n = imgLists.length;
-      console.log(n)
       if(type==5){
          if(n<3){
            this.open("封面数小于3");
@@ -439,7 +416,7 @@
         this.inputTags = this.ruleForm.tag;
         let cont_html = this.ruleForm.content_html.replace(/\<img /ig, "<img onload='globalImgOnload(this)' ");
         let html = $(cont_html); 
-        this.inputTagsChange();s
+        this.inputTagsChange();
       }
        commonService.typeList().then(data => {
         if (data.code == 0) {

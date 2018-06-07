@@ -171,7 +171,7 @@
     }),
       commonService.typeList().then(data => {
         if(data.code == 0){
-        console.log(data.data)
+        console.log(JSON.stringify(data.data))
         this.types = data.data;
       }
     })
