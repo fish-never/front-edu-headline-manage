@@ -11,7 +11,10 @@ npm install
 # serve with hot reload at localhost:8080
 npm run dev
 
-# build for production with minification
+# build for Test with minification  http://manage-api.ministudy.com
+npm run build-test
+
+# build for production with minification   http://manage-api-toutiao.ministudy.com
 npm run build
 
 # build for production and view the bundle analyzer report

@@ -170,6 +170,8 @@
         });
       },
       upImg(item){
+        console.log(item)
+        console.log(this.file)
         item.url = this.file;
       },
     inputTagsChange(){
