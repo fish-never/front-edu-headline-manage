@@ -47,27 +47,25 @@
       <el-table-column
         type="index"
         label="序号"
-        width="60">
+        width="100">
       </el-table-column>
-      <el-table-column
-        label="标签名称">
+      <el-table-column   label="标签名称"  width="200">
         <template slot-scope="scope"><!-- 普通情况可以使用prop属性直接接受参数，这里为了表格可以编辑并将子组件的值传到父组件供使用，使用了slot-scope。vue原生slot-scope的值将被用作一个临时变量名接收父组件传过来的值, 而在element中的table对slot-scope的值封装成了一个大对象（这里slot-scope对应的就是:data绑定的数据源对象）,对象里面有属性row(行),column(列),$index(索引),store,所以我们可以通过scope.row拿到对应的单个值.-->
           <span>{{ scope.row.tag_name }}</span>
         </template>
       </el-table-column><!--若给el-table-column加上show-overflow-tooltip="true"，文字超过一行自动出现省略号，鼠标悬停时以Tooltip形式显示全部内容-->
       <el-table-column
-        label="对应分类" width="120px">
+        label="对应分类" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.type_name }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="备注">
+      <el-table-column   label="备注"  width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.remark }}</span>
         </template>
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         label="默认展示">
         <template slot-scope="scope"  width="100px">
           <template>
@@ -75,10 +73,23 @@
           <el-radio v-model="scope.row.is_default" label="0" @change="radiochange(scope.row)">否</el-radio>
         </template>
         </template>
-      </el-table-column>
-      <el-table-column label="操作"  width="150px">
+      </el-table-column> -->
+      <el-table-column
+      label="状态"  width="140">
+      <template slot-scope="scope">
+        <span  v-if="scope.row.is_default==0">
+          隐藏
+        </span>
+        <span v-if="scope.row.is_default==1">
+          显示
+        </span>
+      </template>
+    </el-table-column>
+      <el-table-column label="操作"  width="190px">
         <template slot-scope="scope">
           <span class="link-a" type="button" @click="Detele(scope.row.id)">删除</span>
+           <span class="link-status"  v-if="scope.row.is_default==0"  @click="updataStatusShow(scope.row)">显示</span>
+        <span class="link-status"  v-if="scope.row.is_default==1" @click="updataStatusHide(scope.row)" >隐藏</span>
         </template>
       </el-table-column>
     </el-table>
@@ -390,7 +401,53 @@ export default {
                 this.open(data.msg);
               }
             });
-    }
+    },
+    updataStatusShow(rowdata){
+         this.$confirm('确定显示?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          tagService.update({
+          id:rowdata.id,
+          remark:rowdata.remark,
+          is_default:1,
+          type_id:rowdata.type_id,
+          tag_name:rowdata.tag_name
+         }).then(data => {
+              if (data.code == 0) {
+                this.loadList();
+              } else {
+                this.open(data.msg);
+              }
+            });
+        }).catch(() => {       
+        });
+
+      },
+      updataStatusHide(rowdata){
+        this.$confirm('确定隐藏?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+        tagService.update({
+          id:rowdata.id,
+          remark:rowdata.remark,
+          is_default:0,
+          type_id:rowdata.type_id,
+          tag_name:rowdata.tag_name
+         }).then(data => {
+              if (data.code == 0) {
+                this.loadList();
+              } else {
+                this.open(data.msg);
+              }
+            });
+        }).catch(() => {       
+        });
+
+      }
   }
 };
 </script>
