@@ -31,5 +31,9 @@ export default {
 	width: 16px;
 	height: 16px;
 }
-
+.ke-icon-clearimg {
+	background-position: 0px -976px;
+	width: 16px;
+	height: 16px;
+}
 </style>

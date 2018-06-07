@@ -15,7 +15,7 @@
           <el-input v-model="textData.origin_link"></el-input>
         </el-form-item>
         <el-form-item label="分类" prop="type_id">
-          <el-select v-model="textData.type_id" filterable clearable placeholder="请选择分类" @change="typeChange">
+          <el-select v-model="textData.type_id" filterable clearable placeholder="请选择分类" >
             <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
           </el-select>
         </el-form-item>
@@ -50,7 +50,7 @@
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
           <el-checkbox-group
             v-model="checkedTags">
-            <el-checkbox v-for="item in tags" :label="item.tag_name" checked :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
+            <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
          <el-form-item label="正文编辑" prop="content">
@@ -141,35 +141,14 @@
       }
     },
     methods:{
-    //根据分类查询标签
-     getTags(type_id){
-       commonService.typetags({type_id:type_id}).then(data => {
-          if (data.code == 0) {
-           // console.log(JSON.stringify(data.data));
-            const temp =[];
-            data.data.forEach(item =>{
-              if(item.is_default ==="1"){
-                 temp.push(item);
-              }
-            });
-           this.tags =temp;
-         // console.log(JSON.stringify(this.tags));
-          }
-        });
-     },
-    typeChange(val){
-      this.flag=true;
-      console.log(val);
-      if(val!=undefined){//下拉框改变的val正好就是tpye_id,但是初始化下拉列表时val为undefined
-      this.getTags(val);
-      }  
-    },
      open(text) {
         this.$alert(text, '信息', {
           confirmButtonText: '确定',
         });
       },
       upImg(item){
+        console.log(item)
+        console.log(this.file)
         item.url = this.file;
       },
     inputTagsChange(){
@@ -196,6 +175,7 @@
       // 保存
       textSaveData(){
         this.btnShow = true;
+        console.log(this.textData.display_type)
         if(this.textData.display_type ==1 ){
           this.textData.coverage = "";
         }else if(this.textData.display_type ==5 ){
@@ -229,15 +209,14 @@
         if(data.code == 0){
         this.types = data.data;
       }
-    })
-  // ,
-  //   commonService.tagList().then(data => {
-  //   if (data.code == 0) {
-  //     console.log(1111,data.data)
-  //     this.tags = data.data;
-  //     return Promise.resolve();
-  //   }
-  // });
+    }),
+    commonService.tagList().then(data => {
+    if (data.code == 0) {
+      console.log(1111,data.data)
+      this.tags = data.data;
+      return Promise.resolve();
+    }
+  });
 
     },
   components: {

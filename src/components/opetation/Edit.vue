@@ -308,7 +308,7 @@
 	      this.$router.push({ path: "/" });
 	      return;
 	    }
-      const param = {        id: this.id      };
+      const param = {id: this.id};
       operationService.detailData(param).then(data=>{
         if(data.code==0){
         this.ruleForm = data.data;

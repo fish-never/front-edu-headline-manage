@@ -31,7 +31,7 @@
              <i class="icon4 icon" :class="{curr4: path=='/index/comment'}"></i>
               <span>评论管理</span>
             </el-menu-item>
-            <el-menu-item index="5" :class="{curr: path=='/index/tag'}" @click="goto('/index/tag')">
+            <el-menu-item index="4" :class="{curr: path=='/index/tag'}" @click="goto('/index/tag')">
              <i class="icon5 icon" :class="{curr5: path=='/index/tag'}"></i>
               <span>标签管理</span>
             </el-menu-item>
@@ -126,7 +126,7 @@ export default {
      background:url("../../assets/imgs/icon4.svg") center center no-repeat;
 }
 .icon5{
-     background:url("../../assets/imgs/icon5.svg") center center no-repeat;
+     background:url("../../assets/imgs/icon4.svg") center center no-repeat;
 }
   .curr1{
      background:url("../../assets/imgs/icon11.svg") center center no-repeat;
@@ -144,7 +144,7 @@ export default {
      background:url("../../assets/imgs/icon44.svg") center center no-repeat;
 }
 .curr5{
-     background:url("../../assets/imgs/icon55.svg") center center no-repeat;
+     background:url("../../assets/imgs/icon44.svg") center center no-repeat;
 }
   .el-main{
     padding:0;
