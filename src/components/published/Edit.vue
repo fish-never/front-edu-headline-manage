@@ -315,15 +315,14 @@
      getTags(type_id){
        commonService.typetags({type_id:type_id}).then(data => {
           if (data.code == 0) {
-           // console.log(JSON.stringify(data.data));
-            const temp =[];
-            data.data.forEach(item =>{
-              if(item.is_default ==="1"){
-                 temp.push(item);
-              }
-            });
-           this.tags =temp;
-         // console.log(JSON.stringify(this.tags));
+             //   const temp =[];
+          //   data.data.forEach(item =>{
+          //     if(item.is_default ==="1"){
+          //        temp.push(item);
+          //     }
+          //   });
+          //  this.tags =temp;
+           this.tags = data.data;
           }
         });
      },

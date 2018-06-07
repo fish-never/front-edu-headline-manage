@@ -118,9 +118,7 @@ export default {
       options:"",
       btnShow:false,
       display_type_5:[],
-      coverages:[]
-
-      
+      coverages:[] 
     };
   },
 
@@ -206,10 +204,11 @@ export default {
       }
     },
 
-    inputTags: function(val) { //选择标签
-      this.inputTagsChange(val)
+    inputTags: function() { //选择标签
+      this.inputTagsChange()
     },
     checkedTags: function(val) {
+      
       this.tags.forEach(item => {
         this.inputTags = this.inputTags.replace(item.tag_name + ",", "");
       });
@@ -255,15 +254,14 @@ export default {
      getTags(type_id){
        commonService.typetags({type_id:type_id}).then(data => {
           if (data.code == 0) {
-           // console.log(JSON.stringify(data.data));
-            const temp =[];
-            data.data.forEach(item =>{
-              if(item.is_default ==="1"){
-                 temp.push(item);
-              }
-            });
-           this.tags =temp;
-         // console.log(JSON.stringify(this.tags));
+          //   const temp =[];
+          //   data.data.forEach(item =>{
+          //     if(item.is_default ==="1"){
+          //        temp.push(item);
+          //     }
+          //   });
+          //  this.tags =temp;
+           this.tags = data.data;
           }
         });
      },
@@ -306,8 +304,11 @@ export default {
         })
       },
     typeChange(val){
-      this.flag=true;
-       this.getTags(val);//下拉框改变的val正好就是tpye_id
+      this.flag=true; 
+      if(val!= undefined){
+        this.getTags(val);//下拉框改变的val正好就是tpye_id
+      }
+       
     },
     inputTagsChange(){
       this.checkedTags = [];
