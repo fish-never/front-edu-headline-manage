@@ -84,8 +84,8 @@
           显示
         </span>
       </template>
-    </el-table-column>
-      <el-table-column label="操作"  width="190px">
+      </el-table-column>
+      <el-table-column label="操作"  width="150px">
         <template slot-scope="scope">
           <span class="link-a" type="button" @click="Detele(scope.row.id)">删除</span>
            <span class="link-status"  v-if="scope.row.is_default==0"  @click="updataStatusShow(scope.row)">显示</span>
@@ -98,7 +98,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="page"
-      :page-sizes="[10,20,30,50,100,200]"
+      :page-sizes="[10,50,100,200,500,1000,2000,3000]"
       :page-size="pageNum"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total"><!-- current-page当前页数，支持 .sync 修饰符；page-size	每页显示条目个数；page-sizes	每页显示个数选择器的选项设置；layout	组件布局，子组件名用逗号分隔；total	总条目数 -->

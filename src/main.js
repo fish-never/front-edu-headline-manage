@@ -16,9 +16,9 @@ import '../static/kindeditor/plugins/upimage/upimage.js'
 import '../static/kindeditor/plugins/upmedia/upmedia.js'
 import '../static/kindeditor/plugins/clearcode/clearcode.js'
 KindEditor.lang({
-  upimage : '上传图片',
-  upmedia : '上传视频',
-  clearcode : '格式化',
+  upimage : '????',
+  upmedia : '????',
+  clearcode : '???',
   },'zh-CN');
 // KindEditor.lang.upimage='upimage'
 // KindEditor.lang.upmedia='upmedia'
