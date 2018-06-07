@@ -65,7 +65,7 @@
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
           <el-checkbox-group
             v-model="checkedTags" class="tag-wrap">
-            <el-checkbox v-for="item in tags" :label="item.tag_name" checked :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
+            <el-checkbox v-for="item in tags" :label="item.tag_name"  :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
 
@@ -330,6 +330,9 @@ export default {
         if(n<1){
             this.open("请选择封面");
              return
+         }else if(n>1){
+           this.open("封面数大于1");
+           return
          }
       }
       callback();

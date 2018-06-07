@@ -63,7 +63,7 @@
         <el-form-item label="新增标签" prop="type">
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
           <el-checkbox-group v-model="checkedTags">
-            <el-checkbox v-for="item in tags" :label="item.tag_name" checked :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
+            <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
         <el-form-item>
@@ -135,9 +135,7 @@
           return
       }
       if(this.display_type ==2 || this.display_type ==3 || this.display_type == 4 ){ // 690*388 单张大图
-      // console.log(this.ruleForm.coverage)
-      //     this.file = this.ruleForm.coverage
-      //     console.log(this.file)
+
       }
       if(this.display_type ==5){ //220*140 三张图
       }  

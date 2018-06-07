@@ -50,7 +50,7 @@
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
           <el-checkbox-group
             v-model="checkedTags">
-            <el-checkbox v-for="item in tags" :label="item.tag_name" checked :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
+            <el-checkbox v-for="item in tags" :label="item.tag_name"  :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
          <el-form-item label="正文编辑" prop="content">
