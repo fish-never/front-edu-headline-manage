@@ -10,7 +10,7 @@
     </div>
 
     <div class="wrap-margin wrap-padding">
-      <el-form :model="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-form :model="ruleForm" label-width="100px" class="demo-ruleForm" :rules="rules">
         <el-form-item label="标题" prop="title" required>
           <el-input v-model="ruleForm.title"></el-input>
         </el-form-item>
@@ -98,6 +98,16 @@ export default {
       id: "",
       ruleForm: {
         content: "",
+      },
+      rules: {
+        title: [
+          { required: true, message: "请输入标题", trigger: "blur" },
+          { min: 1, max: 40, message: "长度在1到40个字", trigger: "blur" }
+        ],
+        source:[
+          { required: true, message: "请选择来源",trigger: "blur"},
+          { min: 1, message: "长度至少1个字符",trigger: "blur" }
+        ]
       },
       types: "",
       type_name:"",

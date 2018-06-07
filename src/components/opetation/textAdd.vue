@@ -4,7 +4,7 @@
     <div class="wrap-margin wrap-padding">
       <el-tabs v-model="activeName" @tab-click="handleClick">
          <el-tab-pane label="图文文章" name="first">
-      <el-form :model="textData" label-width="100px" class="demo-ruleForm">
+      <el-form :model="textData" label-width="100px" class="demo-ruleForm" :rules="rules">
         <el-form-item label="标题" prop="title">
           <el-input v-model="textData.title"></el-input>
         </el-form-item>
@@ -113,8 +113,18 @@
         },
         imageUrl: '',
         btnShow:false,
-        types:""
-
+        types:"",
+      rules: {
+        title: [
+          { required: true, message: "请输入标题", trigger: "blur" },
+          { min: 1, max: 40, message: "长度在1到40个字", trigger: "blur" }
+        ],
+        source:[
+          { required: true, message: "请选择来源",trigger: "blur"},
+          { min: 1, message: "长度至少1个字符",trigger: "blur" }
+        ]
+      }
+        
       }
     },
     watch:{
