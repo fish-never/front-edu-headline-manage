@@ -97,18 +97,18 @@
 
     <el-dialog title="添加标签类型" :visible.sync="dialognewadd">
       <el-form :model="formdata">
-        <el-form-item label="标签名称" :label-width="formLabelWidth" required style="margin-right:0.2rem;width:30rem;">
+        <el-form-item label="标签名称" :label-width="formLabelWidth" required style="width:400px;">
           <el-input v-model="formdata.tagname" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="备注" :label-width="formLabelWidth" style="margin-right:0.2rem;width:30rem;">
+        <el-form-item label="备注" :label-width="formLabelWidth" style="width:400px;">
           <el-input type="textarea" v-model="formdata.remark" ></el-input>
         </el-form-item>
-        <el-form-item label="对应分类" required style="margin-left:0.2rem;">
+        <el-form-item label="对应分类" required style="margin-left:22px;">
         <el-checkbox-group v-model="checkclassify" @change="newaddChange">
         <el-checkbox v-for="item in tagList" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
-      <el-form-item label="默认显示"  style="margin-left:0.2rem;">
+      <el-form-item label="默认显示"  style="margin-left:22px;">
         <el-checkbox-group v-model="checkTags">
           <el-checkbox v-for="item in showTags" :label="item" :key="item.id"  :value="item" >{{item}}</el-checkbox>
         </el-checkbox-group>
@@ -332,31 +332,18 @@ export default {
     // console.log(JSON.stringify(this.tagList));
    //  console.log(JSON.stringify(this.tagcomplement));
     // console.log(JSON.stringify(this.checkTags));
-      //     this.tagList.forEach(item => {
-      //    this.checkTags.forEach(item02 => {
-      //   if (item.tag_name == item02) {
-      //     tagspost[item.id] = "1";
-      //     }
-      //   });
-      //   this.tagcomplement.forEach(item03 => {
-      //    if (item.tag_name == item03) {
-      //    tagspost[item.id] = "0";
-      //   }
-      // });
-      // });
-     
-     for(let i=0; i < this.tagList.length; i++){   
-        for(let j=0; j < this.checkTags.length; j++){ 
-            if(this.tagList[i].tag_name == this.checkTags[j]){
-            tagspost[this.tagList[i].id] = "1";  
-             } 
-        } 
-        for(let j=0; j < this.tagcomplement.length; j++){  
-            if(this.tagList[i].tag_name == this.tagcomplement[j]){                
-            tagspost[this.tagList[i].id] = "0";     
-        }    
-    }   
-     } 
+          this.tagList.forEach(item => {
+         this.checkTags.forEach(item02 => {
+        if (item.tag_name == item02) {
+          tagspost[item.id] = "1";
+          }
+        });
+        this.tagcomplement.forEach(item03 => {
+         if (item.tag_name == item03) {
+         tagspost[item.id] = "0";
+        }
+      });
+      }); 
       return tagspost;
     },
     newadding(){

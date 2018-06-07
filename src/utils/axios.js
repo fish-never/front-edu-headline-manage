@@ -4,12 +4,12 @@ let axios = Axios.create({});
 
 
 if (process.env.NODE_ENV == 'development') {
-    axios.defaults.baseURL = API_URL||"http://manage-api.ministudy.com";
+    axios.defaults.baseURL = API_URL || "http://manage-api.ministudy.com";
     // axios.defaults.baseURL = "http://manage-api-toutiao.ministudy.com";
 } else if (process.env.NODE_ENV == 'debug') {
     axios.defaults.baseURL = '';
 } else if (process.env.NODE_ENV == 'production') {
-    axios.defaults.baseURL =  API_URL||"http://manage-api.ministudy.com";
+    axios.defaults.baseURL =  API_URL || "http://manage-api.ministudy.com";
     // axios.defaults.baseURL = "http://manage-api-toutiao.ministudy.com";
 }
 let exceptionHandler;
