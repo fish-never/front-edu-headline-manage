@@ -50,7 +50,7 @@
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
           <el-checkbox-group
             v-model="checkedTags">
-            <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id" checked  :value="item.id">{{item.tag_name}}</el-checkbox>
+            <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id"   :value="item.id">{{item.tag_name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="浏览量" required>
@@ -177,27 +177,6 @@
       }
      if(this.display_type ==3){//220*140 单张小图    
         let data = this.article_imgs.slice(0,10);
-      //   let arr = [];
-      //   let item = this.ruleForm.coverage.split(",")
-      //   data.forEach(item => {
-      //     arr.push(item.src)
-      //   })
-      //   item.forEach(i => {
-      //     if(arr.indexOf(i)<0){
-      //       let param = {
-      //         w:230,
-      //         h:150,
-      //         src:i
-      //       }
-      //       data.unshift(param)
-      //     }
-
-      //   })
-      //   console.log(item)
-      // console.log(this.article_imgs)
-      // data = this.filterCovers(data)
-       
-      //  this.imgShow = data.slice(0,10)
         console.log(this.imgShow)
         if(data.length >0){
                 this.imgShow = data;
@@ -304,6 +283,9 @@
         if(n<1){
             this.open("请选择封面");
              return
+         }else if(n>1){
+           this.open("封面数大于1");
+           return
          }
       }
       callback();

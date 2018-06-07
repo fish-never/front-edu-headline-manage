@@ -3,7 +3,7 @@
     <div class="clearfloat wrap-main">
       <div class="search-wrap">
         <span class="title">检索条件</span>
-        <el-select v-model="tag_name" size="small" clearable placeholder="标签名称" style="width:150px;"><!--v-model默认显示的只是初始值，关联值自然是根据el-option的选择而变化（显示为:label，值为：value）-->
+        <el-select v-model="tag_name" size="small" clearable filterable placeholder="标签名称" style="width:150px;"><!--v-model默认显示的只是初始值，关联值自然是根据el-option的选择而变化（显示为:label，值为：value）-->
         <el-option
           v-for="item in tagList"
           :label="item.tag_name" 
@@ -11,7 +11,7 @@
           :value="item.id"> <!--:label和:value绑定到数据源tagList的属性，其中:label对应显示文字，:value对应值（传给select），注意:key对应也是值-->
         </el-option>
       </el-select>
-        <el-select v-model="typeName" clearable size="small" placeholder="对应分类" style="width:150px;">
+        <el-select v-model="typeName" clearable filterable size="small" placeholder="对应分类" style="width:150px;">
           <el-option
             v-for="item in types"
             :label="item.typeName"
@@ -19,7 +19,7 @@
             :value="item.id">
           </el-option>
         </el-select>
-        <el-select v-model="isdefault" size="small" clearable placeholder="默认展示" style="width:150px;">
+        <el-select v-model="isdefault" size="small" filterable clearable placeholder="默认展示" style="width:150px;">
           <el-option
             v-for="item in options2"
             :key="item.value"
@@ -55,12 +55,12 @@
         </template>
       </el-table-column><!--若给el-table-column加上show-overflow-tooltip="true"，文字超过一行自动出现省略号，鼠标悬停时以Tooltip形式显示全部内容-->
       <el-table-column
-        label="对应分类" width="200">
+        label="对应分类">
         <template slot-scope="scope">
           <span>{{ scope.row.type_name }}</span>
         </template>
       </el-table-column>
-      <el-table-column   label="备注"  width="200">
+      <el-table-column   label="备注" >
         <template slot-scope="scope">
           <span>{{ scope.row.remark }}</span>
         </template>
@@ -106,23 +106,27 @@
 
 
 
-    <el-dialog title="添加标签类型" :visible.sync="dialognewadd">
+    <el-dialog title="添加标签类型" :visible.sync="dialognewadd" width="65%">
       <el-form :model="formdata">
-        <el-form-item label="标签名称" :label-width="formLabelWidth" required style="width:400px;">
+        <el-form-item label="标签名称" :label-width="formLabelWidth" required style="width:95%;">
           <el-input v-model="formdata.tagname" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="备注" :label-width="formLabelWidth" style="width:400px;">
+        <el-form-item label="备注" :label-width="formLabelWidth" style="width:95%;">
           <el-input type="textarea" v-model="formdata.remark" ></el-input>
         </el-form-item>
         <el-form-item label="对应分类" required style="margin-left:22px;">
-        <el-checkbox-group v-model="checkclassify" @change="newaddChange">
-        <el-checkbox v-for="item in tagList" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
-        </el-checkbox-group>
+          <div style="margin-left:82px;">
+            <el-checkbox-group v-model="checkclassify" @change="newaddChange">
+            <el-checkbox v-for="item in tagList" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
+            </el-checkbox-group>
+          </div>
       </el-form-item>
       <el-form-item label="默认显示"  style="margin-left:22px;">
-        <el-checkbox-group v-model="checkTags">
-          <el-checkbox v-for="item in showTags" :label="item" :key="item.id"  :value="item" >{{item}}</el-checkbox>
-        </el-checkbox-group>
+        <div style="margin-left:82px;">
+          <el-checkbox-group v-model="checkTags">
+            <el-checkbox v-for="item in showTags" :label="item" :key="item.id"  :value="item" >{{item}}</el-checkbox>
+          </el-checkbox-group>
+        </div>
       </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
