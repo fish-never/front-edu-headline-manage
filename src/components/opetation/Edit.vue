@@ -31,6 +31,12 @@
           </el-select>
            </el-col>
         </el-form-item>
+        <el-form-item label="新增标签" required>
+          <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
+          <el-checkbox-group v-model="checkedTags">
+            <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
         <el-form-item label="封面">
           <el-radio-group v-model="display_type">
             <el-radio :label="1" v-if="display_type !==4">无图</el-radio>
@@ -60,12 +66,7 @@
             <p class='up-img'>图片建议尺寸220*140</p>
           </el-form-item>
 
-        <el-form-item label="新增标签" required>
-          <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
-          <el-checkbox-group v-model="checkedTags">
-            <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
+
         <el-form-item>
           <button @click="saveData" class="btn" type="button">保存并预览</button>
           <button class="gray-btn" type="button" v-if="btnShow">正在发布</button>
@@ -190,14 +191,16 @@
      getTags(type_id){
        commonService.typetags({type_id:type_id}).then(data => {
           if (data.code == 0) {
-             //   const temp =[];
-          //   data.data.forEach(item =>{
-          //     if(item.is_default ==="1"){
-          //        temp.push(item);
-          //     }
-          //   });
-          //  this.tags =temp;
-           this.tags = data.data;
+               const temp =[];
+            data.data.forEach(item =>{
+              if(item.is_default ==="1"){
+                 temp.push(item);
+              }
+            });
+           this.tags =temp;
+            this.inputTags = "";
+           this.inputTagsChange()
+          //  this.tags = data.data;
           }
         });
      },
@@ -352,7 +355,22 @@
           })
         }
         })
-     this.getTags(this.type_id);
+    //  this.getTags(this.type_id);
+      commonService.typetags({type_id:this.type_id}).then(data => {
+          if (data.code == 0) {
+               const temp =[];
+            data.data.forEach(item =>{
+              if(item.is_default ==="1"){
+                 temp.push(item);
+              }
+            });
+           this.tags =temp;
+          //  this.tags = data.data;
+          this.tags =temp;
+          this.inputTags = this.ruleForm.tag;
+          this.inputTagsChange()
+          }
+        });
     })
     },
   components: {
