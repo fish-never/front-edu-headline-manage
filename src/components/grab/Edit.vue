@@ -41,6 +41,12 @@
           </el-select>
            </el-col>
         </el-form-item>
+        <el-form-item label="新增标签"  prop="taging">
+          <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
+          <el-checkbox-group  v-model="checkedTags" class="tag-wrap">
+            <el-checkbox v-for="item in tags" :label="item.tag_name"  :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
         <el-form-item label="封面" >
           <el-radio-group v-model="display_type">
             <el-radio :label="1">无图</el-radio>
@@ -60,12 +66,7 @@
           </div>
         </el-form-item>
 
-        <el-form-item label="新增标签"  prop="taging">
-          <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
-          <el-checkbox-group  v-model="checkedTags" class="tag-wrap">
-            <el-checkbox v-for="item in tags" :label="item.tag_name"  :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
+
 
         <el-form-item>
           <button @click="saveData" class="btn" type="button">保存并预览</button>
@@ -212,11 +213,11 @@ export default {
       }
     },
 
-    inputTags: function() { //选择标签
-      this.inputTagsChange()
+    inputTags: function(val) { //选择标签
+      this.inputTagsChange(val)
     },
     checkedTags: function(val) {
-      
+      this.inputTags = "";
       this.tags.forEach(item => {
         this.inputTags = this.inputTags.replace(item.tag_name + ",", "");
       });
@@ -260,18 +261,19 @@ export default {
     },
     //根据分类查询标签
      getTags(type_id){
-       console.log(JSON.stringify(type_id));
        commonService.typetags({type_id:type_id}).then(data => {
           if (data.code == 0) {
-          //   const temp =[];
-          //   data.data.forEach(item =>{
-          //     if(item.is_default ==="1"){
-          //        temp.push(item);
-          //     }
-          //   });
-          //  this.tags =temp;
-           this.tags = data.data;
-           console.log(JSON.stringify(this.tags));
+            const temp =[];
+            data.data.forEach(item =>{
+              if(item.is_default ==="1"){
+                 temp.push(item);
+              }
+            });
+            console.log("here")
+           this.tags =temp;
+           this.inputTags = "";
+           this.inputTagsChange()
+
           }
         });
      },
@@ -442,9 +444,8 @@ export default {
         this.ruleForm = data.data;
         this.type_id = this.ruleForm.type_id;
         this.display_type = parseInt(this.ruleForm.display_type);
-       // this.inputTags = this.ruleForm.tag;
-       // 封面回显
-        //this.inputTagsChange();
+        this.inputTags = this.ruleForm.tag;
+        this.getTags(this.type_id)
       }
        commonService.typeList().then(data => {
         if (data.code == 0) {
@@ -458,7 +459,22 @@ export default {
         }
       });
       // 根据分类id查询该分类下的标签
-       this.getTags(this.type_id);
+      //  this.getTags(this.type_id);
+      commonService.typetags({type_id:this.type_id}).then(data => {
+          if (data.code == 0) {
+               const temp =[];
+            data.data.forEach(item =>{
+              if(item.is_default ==="1"){
+                 temp.push(item);
+              }
+            });
+           this.tags =temp;
+          //  this.tags = data.data;
+          this.tags =temp;
+          this.inputTags = this.ruleForm.tag;
+          this.inputTagsChange()
+          }
+        });
     })
   })
      

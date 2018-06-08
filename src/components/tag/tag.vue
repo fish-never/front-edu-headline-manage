@@ -11,7 +11,7 @@
           :value="item.tag_name"> <!--:label和:value绑定到数据源tagList的属性，其中:label对应显示文字，:value对应值（传给select），注意:key对应也是值-->
         </el-option>
       </el-select>
-        <el-select v-model="typeName" clearable filterable size="small" placeholder="对应分类" style="width:150px;">
+        <el-select v-model="typeid" clearable filterable size="small" placeholder="对应分类" style="width:150px;">
           <el-option
             v-for="item in typeList"
             :label="item.typeName"
@@ -154,7 +154,7 @@ export default {
       pageNum: 10,
       typeid: "",
       tag_name: "",
-      typeName:"",
+      typeid:"",
       isdefault: "",
       options2: [
         {
@@ -248,7 +248,7 @@ export default {
         pageNum: this.pageNum,
         is_default: this.isdefault,
         tag_name: this.tag_name,
-        type_id: this.typeName
+        type_id: this.typeid
       };
       const loadingInstance = this.$loading({ fullscreen: true });
       tagService.pagination(params).then(data => {

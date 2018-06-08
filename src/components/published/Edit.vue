@@ -30,6 +30,14 @@
           </el-select>
            </el-col>
         </el-form-item>
+        <el-form-item label="新增标签" prop="taging">
+        
+          <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
+          <el-checkbox-group
+            v-model="checkedTags">
+            <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id"   :value="item.id">{{item.tag_name}}</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
         <el-form-item label="封面">
           <el-radio-group v-model="display_type">
             <el-radio :label="1" v-if="display_type !==4">无图</el-radio>
@@ -45,14 +53,7 @@
           </div>
         </el-form-item>
 
-        <el-form-item label="新增标签" prop="taging">
-        
-          <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
-          <el-checkbox-group
-          <el-checkbox-group   v-model="checkedTags">
-            <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id"   :value="item.id">{{item.tag_name}}</el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
+
         <el-form-item label="浏览量" required>
           <el-input v-model="ruleForm.read_count" placeholder="" type="num"></el-input>
         </el-form-item>
@@ -333,14 +334,17 @@
      getTags(type_id){
        commonService.typetags({type_id:type_id}).then(data => {
           if (data.code == 0) {
-             //   const temp =[];
-          //   data.data.forEach(item =>{
-          //     if(item.is_default ==="1"){
-          //        temp.push(item);
-          //     }
-          //   });
-          //  this.tags =temp;
-           this.tags = data.data;
+               const temp =[];
+            data.data.forEach(item =>{
+              if(item.is_default ==="1"){
+                 temp.push(item);
+              }
+            });
+           this.tags =temp;
+          //  this.tags = data.data;
+          this.tags =temp;
+          this.inputTags = "";
+          this.inputTagsChange()
           }
         });
      },
@@ -425,7 +429,22 @@
                 this.type_name = item.typeName;
             }
           });
-          this.getTags(this.type_id);
+          // this.getTags(this.type_id);
+       commonService.typetags({type_id:this.type_id}).then(data => {
+          if (data.code == 0) {
+               const temp =[];
+            data.data.forEach(item =>{
+              if(item.is_default ==="1"){
+                 temp.push(item);
+              }
+            });
+           this.tags =temp;
+          //  this.tags = data.data;
+          this.tags =temp;
+          this.inputTags = this.ruleForm.tag;
+          this.inputTagsChange()
+          }
+        });
         }
       })
     })
