@@ -9,28 +9,28 @@
     </div>
 
     <div class="wrap-margin wrap-padding">
-      <el-form :model="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="标题" prop="title" required>
+      <el-form :model="ruleForm" label-width="100px" class="demo-ruleForm" :rules="rules">
+        <el-form-item label="标题" prop="title">
           <el-input v-model="ruleForm.title"></el-input>
         </el-form-item>
-        <el-form-item label="文章来源" prop="source" required>
+        <el-form-item label="文章来源" prop="source">
           <el-input v-model="ruleForm.source"></el-input>
         </el-form-item>
         <el-form-item label="时间" required>
           <el-col :span="11">
             <el-form-item prop="date1">
-              <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.created_at" style="width: 100%;"></el-date-picker>
+              <el-date-picker type="date" disabled placeholder="选择日期" v-model="ruleForm.created_at" style="width: 100%;"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-form-item>
-        <el-form-item label="分类" prop="type_name">
+        <el-form-item label="分类" prop="typing">
            <el-col :span="11">
           <el-select v-model="type_name" placeholder="请选择分类" width="100%" @change="typeChange">
             <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
           </el-select>
            </el-col>
         </el-form-item>
-        <el-form-item label="封面" prop="display_type">
+        <el-form-item label="封面">
           <el-radio-group v-model="display_type">
             <el-radio :label="1" v-if="display_type !==4">无图</el-radio>
             <el-radio :label="2" v-if="display_type !==4">单张大图</el-radio>
@@ -45,11 +45,9 @@
           </div>
         </el-form-item>
 
-        <el-form-item label="新增标签" prop="type">
-        
+        <el-form-item label="新增标签" prop="taging">
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
-          <el-checkbox-group
-            v-model="checkedTags">
+          <el-checkbox-group   v-model="checkedTags">
             <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id"   :value="item.id">{{item.tag_name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
@@ -104,7 +102,25 @@
       options:"",
       btnShow:false,
       showOpen:false,
-      article_imgs:[]
+      article_imgs:[],
+      rules: {
+        title: [
+          { required: true, message: "请输入标题", trigger: "blur" },
+          { min: 1, max: 40, message: "长度在1到40个字", trigger: "blur" }
+        ],
+        source:[
+          { required: true, message: "请选择来源",trigger: "blur"},
+          { min: 1, message: "长度至少1个字符",trigger: "blur" }
+        ],
+        typing:[
+          { required: true, message: "请选择分类", trigger: "blur" },
+           { min: 1, message: "长度至少1个字符",trigger: "blur" }
+        ],
+        taging:[
+          { required: true, message: "请选择或输入输入标签", trigger: "blur" },
+          { min: 1, message: "请选择或输入输入标签",trigger: "blur" }
+        ],
+      }
       }
     },
     created(){
