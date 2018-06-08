@@ -8,12 +8,12 @@
           v-for="item in tagList"
           :label="item.tag_name" 
           :key="item.id" 
-          :value="item.id"> <!--:label和:value绑定到数据源tagList的属性，其中:label对应显示文字，:value对应值（传给select），注意:key对应也是值-->
+          :value="item.tag_name"> <!--:label和:value绑定到数据源tagList的属性，其中:label对应显示文字，:value对应值（传给select），注意:key对应也是值-->
         </el-option>
       </el-select>
         <el-select v-model="typeName" clearable filterable size="small" placeholder="对应分类" style="width:150px;">
           <el-option
-            v-for="item in types"
+            v-for="item in typeList"
             :label="item.typeName"
             :key="item.id" 
             :value="item.id">
@@ -117,7 +117,7 @@
         <el-form-item label="对应分类" required style="margin-left:22px;">
           <div style="margin-left:82px;">
             <el-checkbox-group v-model="checkclassify" @change="newaddChange">
-            <el-checkbox v-for="item in tagList" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
+             <el-checkbox v-for="item in typeList" :label="item.typeName" :key="item.id" >{{item.typeName}}</el-checkbox> <!-- e-checkbox没有:value-->
             </el-checkbox-group>
           </div>
       </el-form-item>
@@ -149,7 +149,7 @@ export default {
       ids: "",
       dialognewadd: false,
       tagList: [],
-      types: "",
+      typeList:[],
       total: 10,
       pageNum: 10,
       typeid: "",
@@ -196,16 +196,15 @@ export default {
     this.loadList();
     tagService.typeList().then(data => {
       if (data.code == 0) {
-        this.types = data.data;
-        //  console.log(this.types)
+        this.typeList = data.data;
       }
     });
     tagService.tagList().then(data => {
       if (data.code == 0) {
         this.tagList = data.data;
+        console.log(JSON.stringify(this.tagList));
       }
     });
-
   },
   watch: {
     // classifycheck: function(check) {
@@ -249,11 +248,12 @@ export default {
         pageNum: this.pageNum,
         is_default: this.isdefault,
         tag_name: this.tag_name,
-        type_id: this.typeid
+        type_id: this.typeName
       };
       const loadingInstance = this.$loading({ fullscreen: true });
       tagService.pagination(params).then(data => {
         if (data.code == 0) {
+        //  console.log(JSON.stringify(data.data));
           loadingInstance.close();
           this.page = parseInt(data.data.page);
           this.pageNum = parseInt(data.data.pageNum);
@@ -273,8 +273,7 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      })
-        .then(() => {
+      }).then(() => {
           tagService.detele(params).then(data => {
             if (data.code == 0) {
               this.loadList();
@@ -282,8 +281,7 @@ export default {
               this.open(data.msg);
             }
           });
-        })
-        .then(() => {
+        }).then(() => {
           //第二个then的含义？
           // alert("99");
         });
@@ -304,8 +302,7 @@ export default {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
-        })
-          .then(() => {
+        }).then(() => {
             tagService.detele(params).then(data => {
               if (data.code == 0) {
                 this.loadList();
@@ -344,22 +341,23 @@ export default {
     getTagsid(){//emlment-ui复选框只能获取显示和值其中的一种，故需要重新匹配来获取另一个
      const tagspost = {};
      this.tagcomplement = this.complement(this.showTags, this.checkTags);
-    // console.log(JSON.stringify(this.tagList));
-   //  console.log(JSON.stringify(this.tagcomplement));
+    // console.log(JSON.stringify(this.typeList));
+    // console.log(JSON.stringify(this.tagcomplement));
     // console.log(JSON.stringify(this.checkTags));
-          this.tagList.forEach(item => {
+       this.typeList.forEach(item => {
          this.checkTags.forEach(item02 => {
-        if (item.tag_name == item02) {
+        if (item.typeName == item02) {
           tagspost[item.id] = "1";
           }
         });
         this.tagcomplement.forEach(item03 => {
-         if (item.tag_name == item03) {
+         if (item.typeName == item03) {
          tagspost[item.id] = "0";
         }
       });
       }); 
       return tagspost;
+      
     },
     newadding(){
       if(!this.formdata.tagname){
@@ -370,11 +368,8 @@ export default {
        this.open("请选择标签");
        return false;
      }
-    //  console.log(this.formdata.tagname.toString());
-    //   console.log(this.formdata.remark);
-    //   console.log(JSON.stringify(this.getTagsid()));
       tagService.add({
-          tag_name:JSON.stringify(this.formdata.tagname), 
+          tag_name:this.formdata.tagname.toString(),  //这里不要使用JSON.stringify()
           remark:this.formdata.remark,
           type_json:JSON.stringify(this.getTagsid())
         }).then(data => {
@@ -387,7 +382,7 @@ export default {
             });
     },
     newaddChange(val) {
-      //console.log(JSON.stringify(this.classifycheck));
+      // console.log(JSON.stringify(this.checkclassify));
       this.checkTags = val;
       this.showTags = val;
     },
