@@ -46,7 +46,9 @@
         </el-form-item>
 
         <el-form-item label="新增标签" prop="taging">
+        
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
+          <el-checkbox-group
           <el-checkbox-group   v-model="checkedTags">
             <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id"   :value="item.id">{{item.tag_name}}</el-checkbox>
           </el-checkbox-group>

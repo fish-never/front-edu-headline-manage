@@ -36,7 +36,7 @@
         </el-form-item>
         <el-form-item label="分类" prop="typing">
            <el-col :span="11">
-          <el-select v-model="type_name" placeholder="请选择分类" width="100%" @change="typeChange">
+          <el-select v-model="type_name" placeholder="请选择分类" width="100%"  @change="typeChange">
             <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
           </el-select>
            </el-col>
@@ -124,7 +124,9 @@ export default {
       options:"",
       btnShow:false,
       display_type_5:[],
-      coverages:[] 
+      coverages:[]
+
+      
     };
   },
 
@@ -258,6 +260,7 @@ export default {
     },
     //根据分类查询标签
      getTags(type_id){
+       console.log(JSON.stringify(type_id));
        commonService.typetags({type_id:type_id}).then(data => {
           if (data.code == 0) {
           //   const temp =[];
@@ -268,6 +271,7 @@ export default {
           //   });
           //  this.tags =temp;
            this.tags = data.data;
+           console.log(JSON.stringify(this.tags));
           }
         });
      },

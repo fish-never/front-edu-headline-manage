@@ -36,7 +36,8 @@ function _videoImg(blankPath, attrs) {
 	} else if (height > 0) {
 		style += 'height:' + height + 'px;';
 	}
-	var html = '<img class="ke-video" src="' + blankPath + '" ';
+	// var html = '<img  class="ke-video" src="' + blankPath + '" ';
+	var html = '<video  class="ke-video" src="' + blankPath + '" ';
 	if (style !== '') {
 		html += 'style="' + style + '" ';
 	}
@@ -102,12 +103,12 @@ KindEditor.plugin('upmedia', function(K) {
 
 					name : self.lang('yes'),
 					click : function(e) {
-						alert(444)
+					
 						var url = K.trim(urlBox.val()),
 							width = widthBox.val(),
 							height = heightBox.val();
 						if (url == 'http://' || K.invalidUrl(url)) {
-							alert(self.lang('invalidUrl'));
+							console.log(self.lang('invalidUrl'));
 							urlBox[0].focus();
 							return;
 						}
@@ -121,6 +122,7 @@ KindEditor.plugin('upmedia', function(K) {
 							heightBox[0].focus();
 							return;
 						}
+						console.log(url)
 						var html = _videoImg(self.themesPath + 'common/blank.gif', {
 								src : url,
 								type : K.mediaType(url),
@@ -129,7 +131,7 @@ KindEditor.plugin('upmedia', function(K) {
 								autostart : autostartBox[0].checked ? 'true' : 'false',
 								loop : 'true'
 							});
-							alert(html)
+						
 						self.insertHtml(html).hideDialog().focus();
 					}
 				}
@@ -148,10 +150,13 @@ KindEditor.plugin('upmedia', function(K) {
 					fieldName : filePostName,
 					extraParams : extraParams,
 					url : K.addParam(uploadJson, 'dir=media'),
+					
 					afterUpload : function(data) {
 						dialog.hideLoading();
+						
 						if (data.error === 0) {
 							var url = data.url;
+							console.log(url)
 							if (formatUploadUrl) {
 								url = K.formatUrl(url, 'absolute');
 							}

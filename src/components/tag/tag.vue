@@ -13,7 +13,7 @@
       </el-select>
         <el-select v-model="typeName" clearable filterable size="small" placeholder="对应分类" style="width:150px;">
           <el-option
-            v-for="item in typeList"
+            v-for="item in types"
             :label="item.typeName"
             :key="item.id" 
             :value="item.id">
@@ -107,18 +107,17 @@
 
 
     <el-dialog title="添加标签类型" :visible.sync="dialognewadd" width="65%">
-      <el-form :model="formdata" :rules="rules">
-        <el-form-item label="标签名称" :label-width="formLabelWidth" prop="tagname" style="width:95%;"><!-- 父级:rules加prop完成验证-->
+      <el-form :model="formdata">
+        <el-form-item label="标签名称" :label-width="formLabelWidth" required style="width:95%;">
           <el-input v-model="formdata.tagname" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="备注" :label-width="formLabelWidth"  style="width:95%;">
-
+        <el-form-item label="备注" :label-width="formLabelWidth" style="width:95%;">
           <el-input type="textarea" v-model="formdata.remark" ></el-input>
         </el-form-item>
         <el-form-item label="对应分类" required style="margin-left:22px;">
           <div style="margin-left:82px;">
             <el-checkbox-group v-model="checkclassify" @change="newaddChange">
-            <el-checkbox v-for="item in typeList" :label="item.typeName" :key="item.id" >{{item.typeName}}</el-checkbox> <!-- e-checkbox没有:value-->
+            <el-checkbox v-for="item in tagList" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
             </el-checkbox-group>
           </div>
       </el-form-item>
@@ -150,6 +149,7 @@ export default {
       ids: "",
       dialognewadd: false,
       tagList: [],
+      types: "",
       total: 10,
       pageNum: 10,
       typeid: "",
@@ -181,8 +181,8 @@ export default {
           { min: 1, max: 10, message: "长度在1 到10个字符", trigger: "blur" }
         ],
         remark: [
-          { required: true, message: "请填写备注",trigger: "blur"},
-          { min: 1, max: 50, message: "长度在 1 到 50 个字符",trigger: "blur" }
+          { required: true, message: "请填写备注" },
+          { min: 1, max: 50, message: "长度在 1 到 50 个字符" }
         ]
       }
     };
@@ -196,7 +196,8 @@ export default {
     this.loadList();
     tagService.typeList().then(data => {
       if (data.code == 0) {
-        this.typeList = data.data;
+        this.types = data.data;
+        //  console.log(this.types)
       }
     });
     tagService.tagList().then(data => {
@@ -204,6 +205,7 @@ export default {
         this.tagList = data.data;
       }
     });
+
   },
   watch: {
     // classifycheck: function(check) {
@@ -271,7 +273,8 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(() => {
+      })
+        .then(() => {
           tagService.detele(params).then(data => {
             if (data.code == 0) {
               this.loadList();
@@ -279,7 +282,8 @@ export default {
               this.open(data.msg);
             }
           });
-        }).then(() => {
+        })
+        .then(() => {
           //第二个then的含义？
           // alert("99");
         });
@@ -300,7 +304,8 @@ export default {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
-        }).then(() => {
+        })
+          .then(() => {
             tagService.detele(params).then(data => {
               if (data.code == 0) {
                 this.loadList();
@@ -339,17 +344,17 @@ export default {
     getTagsid(){//emlment-ui复选框只能获取显示和值其中的一种，故需要重新匹配来获取另一个
      const tagspost = {};
      this.tagcomplement = this.complement(this.showTags, this.checkTags);
-    // console.log(JSON.stringify(this.typeList));
-    // console.log(JSON.stringify(this.tagcomplement));
+    // console.log(JSON.stringify(this.tagList));
+   //  console.log(JSON.stringify(this.tagcomplement));
     // console.log(JSON.stringify(this.checkTags));
-       this.typeList.forEach(item => {
+          this.tagList.forEach(item => {
          this.checkTags.forEach(item02 => {
-        if (item.typeName == item02) {
+        if (item.tag_name == item02) {
           tagspost[item.id] = "1";
           }
         });
         this.tagcomplement.forEach(item03 => {
-         if (item.typeName == item03) {
+         if (item.tag_name == item03) {
          tagspost[item.id] = "0";
         }
       });
@@ -365,8 +370,11 @@ export default {
        this.open("请选择标签");
        return false;
      }
+    //  console.log(this.formdata.tagname.toString());
+    //   console.log(this.formdata.remark);
+    //   console.log(JSON.stringify(this.getTagsid()));
       tagService.add({
-          tag_name:this.formdata.tagname.toString(),  //这里不要使用JSON.stringify()
+          tag_name:JSON.stringify(this.formdata.tagname), 
           remark:this.formdata.remark,
           type_json:JSON.stringify(this.getTagsid())
         }).then(data => {
@@ -379,7 +387,7 @@ export default {
             });
     },
     newaddChange(val) {
-      // console.log(JSON.stringify(this.checkclassify));
+      //console.log(JSON.stringify(this.classifycheck));
       this.checkTags = val;
       this.showTags = val;
     },
