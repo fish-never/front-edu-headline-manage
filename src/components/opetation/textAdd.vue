@@ -138,9 +138,6 @@
       //监控封面
       display_type: function(val){
         this.textData.display_type = val;
-        console.log(val)
-        console.log(this.textData.display_type)
-
       },
       inputTags: function(val) { //选择标签
           this.inputTagsChange(val)
@@ -178,7 +175,6 @@
      },
     typeChange(val){
       this.flag=true;
-      console.log(val);
       if(val!=undefined){//下拉框改变的val正好就是tpye_id,但是初始化下拉列表时val为undefined
       this.getTags(val);
       }  
@@ -189,8 +185,6 @@
         });
       },
       upImg(item){
-        console.log(item)
-        console.log(this.file)
         item.url = this.file;
       },
     inputTagsChange(){
@@ -229,6 +223,12 @@
           this.textData.coverage = this.files[0].url;
         }
         this.textData.tag = this.inputTags;
+        console.log(JSON.stringify(this.textData));
+        return false;
+          if(this.textData.display_type == "" || this.textData.source == ""|| this.ruleForm.tag =="" || this.textData.title ==""){
+               this.open("必填项不能为空");
+               return false;
+           }
         operationService.newData(this.textData).then(data=>{
          if(data.code==0){
             this.$router.push({ path: "../../index/operationPreview/"+data.data.result })

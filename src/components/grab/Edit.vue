@@ -371,6 +371,10 @@ export default {
           if(this.flag){
             this.ruleForm.type_id = this.type_name;
           }
+            if(this.ruleForm.tag == "" || this.ruleForm.source == ""|| this.ruleForm.type_id =="" || this.ruleForm.title ==""){
+               this.open("必填项不能为空");
+               return false;
+           }
         grabService.saveData(this.ruleForm).then(data => {
             if (data.code == 0) {
               this.$router.push({ path: "../../index/publish/" + this.id });
@@ -399,6 +403,10 @@ export default {
         if(this.flag){
           this.ruleForm.type_id = this.type_name;
         }
+          if(this.ruleForm.tag == "" || this.ruleForm.source == ""|| this.ruleForm.type_id =="" || this.ruleForm.title ==""){
+               this.open("必填项不能为空");
+               return false;
+           }
         grabService.saveData(this.ruleForm).then(data => {
           if (data.code == 0) {
             const params = {

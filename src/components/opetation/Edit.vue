@@ -230,6 +230,10 @@
         this.ruleForm.type_id = this.type_name;
       }
      this.selectedCover();
+     if(this.ruleForm.tag == "" || this.ruleForm.source == ""|| this.ruleForm.type_id =="" || this.ruleForm.title ==""){
+               this.open("必填项不能为空");
+               return false;
+           }
       operationService.editData(this.ruleForm).then(data => {
         if (data.code == 0) {
             const params = {
@@ -302,6 +306,10 @@
      if(this.flag){
         this.ruleForm.type_id = this.type_name;
       }
+      if(this.ruleForm.tag == "" || this.ruleForm.source == ""|| this.ruleForm.type_id =="" || this.ruleForm.title ==""){
+               this.open("必填项不能为空");
+               return false;
+           }
       operationService.editData(this.ruleForm).then(data => {
         if (data.code == 0) {
           this.$router.push({ path: "../../index/operationPreview/"+this.ruleForm.id});
@@ -348,6 +356,7 @@
       commonService.typeList().then(data => {
         if(data.code == 0){
         this.types = data.data;
+        console.log(JSON.stringify(this.types));
           this.types.forEach(item => {
             if(this.type_id==item.id){
                 this.type_name = item.typeName;
