@@ -66,7 +66,7 @@
     <el-table-column
       label="浏览量" width="60px">
       <template slot-scope="scope">
-        <span>{{ scope.row.come_from  | money}}</span>
+        <span>{{ scope.row.read_count  | money}}</span>
       </template>
     </el-table-column>
     <el-table-column
