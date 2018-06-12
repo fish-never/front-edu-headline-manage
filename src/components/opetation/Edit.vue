@@ -356,7 +356,6 @@
       commonService.typeList().then(data => {
         if(data.code == 0){
         this.types = data.data;
-        console.log(JSON.stringify(this.types));
           this.types.forEach(item => {
             if(this.type_id==item.id){
                 this.type_name = item.typeName;

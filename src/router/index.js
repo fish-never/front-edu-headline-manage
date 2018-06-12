@@ -2,30 +2,33 @@ import Vue from 'vue'
 import Router from 'vue-router'
 //import GrabStorage from '@/components/GrabStorage'
 //import Published from '@/components/Published'
+//抓取池
 import GrabStorage from '@/components/grab/GrabStorage'
 import GrabStoragePreview from '@/components/grab/Preview'
 import GrabStorageEdit from '@/components/grab/Edit'
 import GrabStoragePublish from '@/components/grab/Publish'
-
+//已发布
 import Published from '@/components/published/Published'
 import PublishedPreview from '@/components/published/Preview'
 import PublishedEdit from '@/components/published/Edit'
 import PublishedPublish from '@/components/published/publish'
-
+//运营池
 import OperationStorage from '@/components/opetation/OperationStorage'
 import OperationPreview from '@/components/opetation/Preview'
 import OperationEdit from '@/components/opetation/Edit'
 import OperationPublish from '@/components/opetation/publish'
-import PreviewVideoPreview from '@/components/opetation/PreviewVideo'
-import Tag from '@/components/tag/tag'
-
-
 import OperationTextAdd from '@/components/opetation/textAdd'
-import OperationVideoAdd from '@/components/opetation/videoAdd'
-
+import OperationVideoAdd from '@/components/opetation/videoAdd' 
+//标签
+import Tag from '@/components/tag/tag'
+//评论
 import Comment from '@/components/Comment'
+//登陆
 import Login from '@/pages/Login'
+//框架
 import Wrap from '@/components/_common/wrap'
+//内容审核
+import contentApproval from '@/components/contentApproval/Index' 
 
 //import Preview from '@/components/Preview'
 //import Edit from '@/components/Edit'
@@ -110,11 +113,6 @@ export default new Router({
           component:OperationPreview
         },
         {
-          path: 'previewVideoPreview',
-          name: 'previewVideoPreview',
-          component:PreviewVideoPreview
-        },
-        {
           path: 'operationPublish/:id',
           name: 'OperationPublish',
           component: OperationPublish
@@ -128,6 +126,11 @@ export default new Router({
           path: 'video',
           name: 'video',
           component: OperationVideoAdd
+        },
+        {
+          path:'contentApproval/index',
+          name:'contentApproval',
+          component:contentApproval
         }
 
 

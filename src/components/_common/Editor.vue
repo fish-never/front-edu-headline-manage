@@ -18,7 +18,7 @@
       table: ['class', 'border', 'cellspacing', 'cellpadding', 'width', 'height', 'align', 'style'],
       'td,th': ['class', 'align', 'valign', 'width', 'height', 'colspan', 'rowspan', 'bgcolor', 'style'],
       a: ['class', 'href', 'target', 'name', 'style'],
-      video: ['src', 'width', 'height', 'type', 'loop', 'autostart', 'quality',
+      video: ['src', 'width', 'height', 'type', 'loop', 'autoplay', 'quality','controls',
         'style', 'align', 'allowscriptaccess', '/'],
       embed: ['src', 'width', 'height', 'type', 'loop', 'autostart', 'quality',
         'style', 'align', 'allowscriptaccess', '/'],
