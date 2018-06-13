@@ -240,6 +240,7 @@ export default {
       this.loadList();
     },
     getSourceList() {
+      this.page = 1;
       this.loadList();
     },
     loadList() {
