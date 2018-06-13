@@ -250,9 +250,10 @@ export default {
                 this.open(data.msg);
               }
             });
-        }).catch(data => { 
-          this.open(data);      
-        });
+        })
+        // .catch(data => { 
+        //   this.open(data);      
+        // });
 
       }
   }
