@@ -6,6 +6,10 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev-duanwei": "set API_URL=http://duanwei.toutiao-manage-api.com/&& webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev-zhouqing": "set API_URL=http://zhuoqing.toutiao-manage-api.com/&& webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev-haozi": "set API_URL=http://haozi.toutiao-manage-api.com/&& webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev-laosun": "set API_URL=http://laosun.toutiao-manage-api.com/&& webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "dev-test": "set API_URL=http://manage-api.ministudy.com/&& webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
@@ -13,7 +17,13 @@
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "build": "set API_URL=http://manage-api-toutiao.ministudy.com/&& node build/build.js",
-    "build-test": "set API_URL=http://manage-api.ministudy.com/&& node build/build.js"
+    "laosun": "set API_URL=http://laosun.toutiao-manage-api.com/&& node build/build.js",
+    "haozi": "set API_URL=http://haozi.toutiao-manage-api.com/&& node build/build.js",
+    "zhuoqing": "set API_URL=http://zhuoqing.toutiao-manage-api.com/&& node build/build.js",
+    "duanwei": "set API_URL=http://duanwei.toutiao-manage-api.com/&& node build/build.js",
+    "tangxin": "set API_URL=http://tangxin.toutiao-manage-api.com/&& node build/build.js",
+    "build-test": "set API_URL=http://www.toutiao-manage.com/&& node build/build.js"
+    
   },
   "dependencies": {
     "axios": "^0.18.0",
