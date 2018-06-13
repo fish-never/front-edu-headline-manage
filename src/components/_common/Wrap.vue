@@ -13,7 +13,7 @@
         <el-col :span="24">
           <el-menu
             default-active="2"
-            class="el-menu-vertical-demo">
+            class="el-menu-vertical-demo"  @open="handleOpen" @close="handleClose">
             <el-menu-item index="1" :class="{curr: path=='/index'}" @click="goto('/index')">
                 <!-- <i class="el-icon-setting"></i> -->
               <i class="icon1 icon" :class="{curr1: path=='/index/index'}"></i>
@@ -35,6 +35,19 @@
              <i class="icon5 icon" :class="{curr5: path=='/index/tag'}"></i>
               <span>标签管理</span>
             </el-menu-item>
+                <el-submenu index="6" :class="{curr: flag}">
+
+                  <template slot="title" >
+                    <i class="icon6 icon" :class="{curr6:flag}"></i>
+                    <span>社区管理</span>
+                  </template>
+                  <el-menu-item-group>
+                    <el-menu-item index="6-1"  @click="gotoChild('/index/contentApproval/index')">内容审核</el-menu-item>
+                    <el-menu-item index="6-2">发布池内容管理</el-menu-item>
+                    <el-menu-item index="6-3">热帖管理</el-menu-item>
+                    <el-menu-item index="6-4">话题管理</el-menu-item>
+                  </el-menu-item-group>
+                </el-submenu>
           </el-menu>
         </el-col>
       </el-aside>
@@ -56,7 +69,8 @@ export default {
       path: '/index',
       msg: '',
       account:'',
-      avatar:""
+      avatar:"",
+      flag:false
     }
   },
   mounted(){
@@ -64,23 +78,39 @@ export default {
     this.account = localStorage.getItem("account")
   },
   methods:{
+       handleOpen(key, keyPath) {
+        this.flag = true;
+        this.path = '/index/contentApproval/index'
+        this.$router.push(this.path)
+        console.log(4444);
+      },
+      handleClose(key, keyPath) {
+        this.flag = true;
+        this.path = '/index/contentApproval/index'
+        this.$router.push(this.path)
+        console.log(8888);
+      },
     // logout
     logout(){
      commonService.logout().then(data => {
           if (data.code == 0) {
-            localStorage.clear();
-            // localStorage.setItem("Token","")
-            // localStorage.setItem("account","")
-            // localStorage.setItem("avatar","")   
+            localStorage.clear(); 
             this.$router.push({path:'/'});
           }
         });
     },
     goto:function(path){
+      this.flag = false;
+      this.path = path
+      this.$router.push(path)
+    },
+    gotoChild:function(path){
+      this.flag = true;
       this.path = path
       this.$router.push(path)
     }
   }
+
 }
 </script>
 
@@ -91,6 +121,9 @@ export default {
   }
 </style>
 <style  lang="scss" scoped>
+.el-menu-item.is-active{
+  color:#FD782D;
+}
 .logout{
   color:#FD782D;
   display:inline-block;
@@ -128,6 +161,9 @@ export default {
 .icon5{
      background:url("../../assets/imgs/icon5.svg") center center no-repeat;
 }
+.icon6{
+     background:url("../../assets/imgs/icon66.svg") center center no-repeat;
+}
   .curr1{
      background:url("../../assets/imgs/icon11.svg") center center no-repeat;
 }
@@ -145,6 +181,9 @@ export default {
 }
 .curr5{
      background:url("../../assets/imgs/icon55.svg") center center no-repeat;
+}
+.curr6{
+     background:url("../../assets/imgs/icon6.svg") center center no-repeat;
 }
   .el-main{
     padding:0;

@@ -8,10 +8,10 @@
           v-for="item in tagList"
           :label="item.tag_name" 
           :key="item.id" 
-          :value="item.id"> <!--:label和:value绑定到数据源tagList的属性，其中:label对应显示文字，:value对应值（传给select），注意:key对应也是值-->
+          :value="item.tag_name"> <!--:label和:value绑定到数据源tagList的属性，其中:label对应显示文字，:value对应值（传给select），注意:key对应也是值-->
         </el-option>
       </el-select>
-        <el-select v-model="typeName" clearable filterable size="small" placeholder="对应分类" style="width:150px;">
+        <el-select v-model="typeid" clearable filterable size="small" placeholder="对应分类" style="width:150px;">
           <el-option
             v-for="item in typeList"
             :label="item.typeName"
@@ -107,18 +107,17 @@
 
 
     <el-dialog title="添加标签类型" :visible.sync="dialognewadd" width="65%">
-      <el-form :model="formdata" :rules="rules">
-        <el-form-item label="标签名称" :label-width="formLabelWidth" prop="tagname" style="width:95%;"><!-- 父级:rules加prop完成验证-->
+      <el-form :model="formdata">
+        <el-form-item label="标签名称" :label-width="formLabelWidth" required style="width:95%;">
           <el-input v-model="formdata.tagname" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="备注" :label-width="formLabelWidth"  style="width:95%;">
-
+        <el-form-item label="备注" :label-width="formLabelWidth" style="width:95%;">
           <el-input type="textarea" v-model="formdata.remark" ></el-input>
         </el-form-item>
         <el-form-item label="对应分类" required style="margin-left:22px;">
           <div style="margin-left:82px;">
             <el-checkbox-group v-model="checkclassify" @change="newaddChange">
-            <el-checkbox v-for="item in typeList" :label="item.typeName" :key="item.id" >{{item.typeName}}</el-checkbox> <!-- e-checkbox没有:value-->
+             <el-checkbox v-for="item in typeList" :label="item.typeName" :key="item.id" >{{item.typeName}}</el-checkbox> <!-- e-checkbox没有:value-->
             </el-checkbox-group>
           </div>
       </el-form-item>
@@ -150,11 +149,12 @@ export default {
       ids: "",
       dialognewadd: false,
       tagList: [],
+      typeList:[],
       total: 10,
       pageNum: 10,
       typeid: "",
       tag_name: "",
-      typeName:"",
+      typeid:"",
       isdefault: "",
       options2: [
         {
@@ -181,8 +181,8 @@ export default {
           { min: 1, max: 10, message: "长度在1 到10个字符", trigger: "blur" }
         ],
         remark: [
-          { required: true, message: "请填写备注",trigger: "blur"},
-          { min: 1, max: 50, message: "长度在 1 到 50 个字符",trigger: "blur" }
+          { required: true, message: "请填写备注" },
+          { min: 1, max: 50, message: "长度在 1 到 50 个字符" }
         ]
       }
     };
@@ -202,6 +202,7 @@ export default {
     tagService.tagList().then(data => {
       if (data.code == 0) {
         this.tagList = data.data;
+        console.log(JSON.stringify(this.tagList));
       }
     });
   },
@@ -252,6 +253,7 @@ export default {
       const loadingInstance = this.$loading({ fullscreen: true });
       tagService.pagination(params).then(data => {
         if (data.code == 0) {
+        //  console.log(JSON.stringify(data.data));
           loadingInstance.close();
           this.page = parseInt(data.data.page);
           this.pageNum = parseInt(data.data.pageNum);
@@ -355,6 +357,7 @@ export default {
       });
       }); 
       return tagspost;
+      
     },
     newadding(){
       if(!this.formdata.tagname){

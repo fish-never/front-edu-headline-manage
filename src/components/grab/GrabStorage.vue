@@ -215,7 +215,9 @@
           this.loading = false;
           this.pageShow=true;
         }else{
+          this.open("加载失败，请重试！")
           this.pageShow=false;
+          this.loading = false;
         }
 
       })

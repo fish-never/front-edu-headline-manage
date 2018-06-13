@@ -1,0 +1,390 @@
+<template>
+  <div  v-loading="loading">
+    <div class="location">
+      <span class="grey">社区管理</span>>内容审核
+      <div class="show-pages">
+          <span>显示文章（篇）</span>
+          <el-select v-model="value" clearable size="small" filterable placeholder="20" style="width:80px;" @change="search(value)">
+            <el-option
+              v-for="item in options"
+              :key="item"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
+        </div>
+    </div>
+    <div class="item-wrap" v-for="item in data.list" :key="item.id" @click="checked(item)" :class="{selected: item.slected}">
+     <div class="item">
+        <h2 class="title-p" style="font-size:24px; color:#333;line-height:25px;">{{item.topic}}</h2>
+        <p class="tag"><span>{{item.author}}</span><span>{{item.created_at}}</span></p>
+        <div class="text" v-html="data.content"></div>
+        <button class="pass" @click="Pass(item.id)">通过</button>
+        <button class="delete" @click="Detele(item.id)">删除</button>
+      </div>
+      <img class="checked" :src="selectedUrl" v-if="item.slected"/>
+    </div>
+    <button class="opera-btn" @click="deleteLists">删除已选中，通过未勾选</button>
+    <div style="margin-top:100px">
+    <el-pagination
+      class="page-wrap"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="[10,50,100,200,500,1000,2000,3000]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
+    </div>
+  </div>
+</template>
+
+<script>
+import contentApprovalService from '../../service/contentApproval';
+export default {
+  name: 'preview',
+  data () {
+    return {
+      loading: false,
+      slected:false,
+      
+      data:{
+       conut:2,
+       page:1,
+       pageSize:10,
+       list:[
+         {
+           id:1,
+           topic: "六一儿童节",
+          content: "asasasdasd",
+          author: "段公子",
+          created_at: "2018-06-01",
+          slected:false
+         },
+         {
+           id:2,
+           topic: "六一儿童节222",
+          content: "asasasdasd",
+          author: "段公子",
+          created_at: "2018-06-01",
+          slected:false
+         },
+         {
+           id:3,
+           topic: "六一儿童节333",
+          content: "asasasdasd",
+          author: "段公子",
+          created_at: "2018-06-01",
+          slected:false
+         },
+         {
+           id:4,
+           topic: "六一儿童节444",
+          content: "asasasdasd",
+          author: "段公子",
+          created_at: "2018-06-01",
+          slected:false
+         }
+       ]
+      },
+      id:"5b1db30a62f531394f026242",
+      pageShow:false,
+      page:1,
+      ids:"",
+      types:"",
+      total: 10,
+      pageSize: 10,
+      options:[20,50,100,200,500,1000,2000,3000],
+      value:"",
+      selectedUrl:require("../../assets/imgs/selested.svg")
+
+    }
+  },
+  created(){
+   
+  },
+  mounted(){
+     if (localStorage.getItem("account") == null) {
+      this.$router.push({ path: "/" });
+      return;
+    }
+    this.loadList()
+
+  },
+
+watch:{
+
+},
+ methods: {
+   //上面分页
+   search(value){
+     console.log(value)
+     this.pageSize = value;
+     this.loadList()
+   },
+      //获取内容列表
+      checked(item){
+        if(item.slected){
+          item.slected = false
+        }else{
+          item.slected = true;
+        }
+
+      },
+    //弹框
+     open(text) {
+        this.$alert(text, '信息', {
+          confirmButtonText: '确定',
+        });
+      },
+      getPage(num){
+        this.page = num;
+        this.loadList()
+      },
+      getPageSize(num){
+        this.pageNum = num;
+        this.loadList()
+      },
+
+      //获取内容列表
+      loadList(){
+        let params = {
+          page:this.page,
+          pageSize:this.pageSize
+        }
+        contentApprovalService.getList(params).then(data=>{
+          if(data.code==0){
+          this.data = data.data;
+          console.log(data.data)
+          this.loading = false;
+        }
+        })
+      },
+      //单个通过
+      Pass(ids){
+        console.log(ids)
+       const params = {
+            ids_delete: "",
+            ids_pass:ids
+        }
+         this.$confirm('确定通过?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          contentApprovalService.check(params).then(data=>{
+            if(data.code==0){
+               this.loadList()
+            }else{
+               this.open(data.msg)
+            }
+
+          })
+        }
+        )
+
+      },
+      //单个删除
+     Detele(ids){
+       console.log(ids)
+       const params = {
+            ids_delete: ids,
+            ids_pass:""
+        }
+         this.$confirm('确定删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          contentApprovalService.check(params).then(data=>{
+            if(data.code==0){
+            this.loadList()
+            }else{
+            this.open(data.msg)
+            }
+
+          })
+        }
+        )
+
+      },
+      //删除已选中，通过未勾选
+      deleteLists(){
+       let ids_delete = "";
+       let ids_pass ="";
+       this.data.list.forEach(item => {
+         if( item.slected){
+           ids_delete += item.id +","
+         }else{
+           ids_pass += item.id +","
+         }
+        
+       });
+       ids_delete =  ids_delete.replace(/,$/,'');
+       ids_pass =  ids_pass.replace(/,$/,'');
+        const params = {
+            ids_delete: ids_delete,
+            ids_pass:ids_pass
+        }
+        console.log(params)
+        this.$confirm('确定删除已选中，通过未勾选?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          contentApprovalService.check(params).then(data=>{
+            if(data.code==0){
+              this.loadList()
+            }else{
+              this.open(data.msg)
+            }
+
+          })
+        })
+
+      },
+      handleSizeChange(val){
+        this.pageSize = val;
+        this.loadList();
+      },
+      handleCurrentChange(val){
+        this.page = val;
+        this.loadList();
+      }
+    }
+  }
+</script>
+
+<style scoped lang="scss">
+.opera-btn{
+  width:200px;
+  height:40px;
+  display: block;
+  float:right;
+  color:#fff;
+  margin:15px 20px 0 30px;
+  background:linear-gradient(90deg,rgba(252,148,116,1),rgba(251,116,95,1));
+  border-radius:20px;
+  clear: both;
+  cursor: pointer;
+
+}
+.selected{
+  border:6px solid #FD782D;
+}
+.checked{
+    position: absolute;
+    width: 120px;
+    height:100px;
+    right: -20px;
+    bottom: -20px;
+}
+
+.item-wrap{
+  height:310px;
+  position: relative;
+  cursor: pointer;
+  margin: 10px 0px 10px 30px;
+  overflow: hidden;
+}
+
+.item{
+  background:rgba(255,255,255,1);
+  padding:30px 25px;
+  height:310px;
+  overflow-y: auto;
+  }
+.pass,.delete{
+  height:38px;
+  width:76px;
+  display: inline-block;
+  position: absolute;
+  color: #fff;
+  right:0;
+  cursor: pointer;
+}
+.pass{
+  background: #FD782D;
+  top:43px;
+}
+.delete{
+  background: #344750;
+  top:100px;
+}
+.show-pages{
+  float:right;
+
+}
+  .link-a:visited{
+  color:red;
+}
+a:visited{
+  color:red;
+}
+.red{
+  color:red;
+}
+
+
+  .opera{
+    text-align: center;
+    color:#96ABB5;
+    font-size:14px;
+    height:40px;
+
+    border-top:1px solid #EDF1F2;
+    position:absolute;
+    bottom:0;
+    width:100%;
+    button{
+      border:none;
+      background:none;
+      width:100%;
+      cursor: pointer;
+      color:#666;
+      &:hover{
+         color:#FD782D;
+      }
+    }
+    a{
+      display: block;
+       &:hover{
+         color:#FD782D;
+      }
+    }
+
+  .el-col{
+    height:39px;
+    line-height:39px;
+  }
+
+  .border-c{
+    border-left:1px solid #EDF1F2;
+    border-right:1px solid #EDF1F2;
+  }
+  }
+
+  .title{
+    font-size:16px;
+    color:rgba(52,71,80,1);
+    line-height:22px;
+    font-weight:600;
+  }
+  .tag{
+    font-size:12px;
+    color:rgba(179,179,179,0.99);
+    line-height:12px;
+    margin:16px 0;
+    span{
+      padding-right:20px;
+    }
+  }
+  .text{
+    font-size:12px;
+    color:rgba(102,102,102,1);
+    line-height:20px;
+    margin:0px 0 21px 0;
+  }
+
+</style>

@@ -11,27 +11,33 @@
     </div>
 
     <div class="wrap-margin wrap-padding">
-      <el-form :model="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-form :model="ruleForm" label-width="100px" class="demo-ruleForm" :rules="rules">
         <el-form-item label="标题" prop="title" required>
           <el-input v-model="ruleForm.title"></el-input>
         </el-form-item>
         <el-form-item label="文章来源" prop="source" required>
           <el-input v-model="ruleForm.source"></el-input>
         </el-form-item>
-        <el-form-item label="原始链接" prop="origin_link">
+        <el-form-item label="原始链接">
           <el-input v-model="ruleForm.origin_link"></el-input>
         </el-form-item>
         <el-form-item label="时间">
           <p>{{ruleForm.created_at}}</p>
         </el-form-item>
-        <el-form-item label="分类" prop="type_name">
+        <el-form-item label="分类" prop="typing">
            <el-col :span="11">
           <el-select v-model="ruleForm.type_name" placeholder="请选择分类" width="100%"  @change="typeChange">
             <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
           </el-select>
            </el-col>
         </el-form-item>
-        <el-form-item label="封面" prop="display_type">
+        <el-form-item label="新增标签" required>
+          <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
+          <el-checkbox-group v-model="checkedTags">
+            <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+        <el-form-item label="封面">
           <el-radio-group v-model="display_type">
             <el-radio :label="1" v-if="display_type !==4">无图</el-radio>
             <el-radio :label="2" v-if="display_type !==4">单张大图</el-radio>
@@ -60,12 +66,7 @@
             <p class='up-img'>图片建议尺寸220*140</p>
           </el-form-item>
 
-        <el-form-item label="新增标签" prop="type">
-          <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
-          <el-checkbox-group v-model="checkedTags">
-            <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
+
         <el-form-item>
           <button @click="saveData" class="btn" type="button">保存并预览</button>
           <button class="gray-btn" type="button" v-if="btnShow">正在发布</button>
@@ -118,7 +119,25 @@
         imgShow:[],
         options:"",
         showOpen:false,
-        btnShow:false
+        btnShow:false,
+      rules: {
+        title: [
+          { required: true, message: "请输入标题", trigger: "blur" },
+          { min: 1, max: 40, message: "长度在1到40个字", trigger: "blur" }
+        ],
+        source:[
+          { required: true, message: "请选择来源",trigger: "blur"},
+          { min: 1, message: "长度至少1个字符",trigger: "blur" }
+        ],
+        typing:[
+          { required: true, message: "请选择分类", trigger: "blur" },
+           { min: 1, message: "长度至少1个字符",trigger: "blur" }
+        ],
+        taging:[
+          { required: true, message: "请选择或输入输入标签", trigger: "blur" },
+          { min: 1, message: "请选择或输入输入标签",trigger: "blur" }
+        ],
+      },
 
       
     };
@@ -127,7 +146,6 @@
   watch: {
     display_type:function(){ //封面 
       this.imgShow = []     
-      console.log(this.display_type) 
       if(this.showOpen){
 
       if(this.display_type ==1){  //无封面
@@ -172,14 +190,16 @@
      getTags(type_id){
        commonService.typetags({type_id:type_id}).then(data => {
           if (data.code == 0) {
-             //   const temp =[];
-          //   data.data.forEach(item =>{
-          //     if(item.is_default ==="1"){
-          //        temp.push(item);
-          //     }
-          //   });
-          //  this.tags =temp;
-           this.tags = data.data;
+               const temp =[];
+            data.data.forEach(item =>{
+              if(item.is_default ==="1"){
+                 temp.push(item);
+              }
+            });
+           this.tags =temp;
+            this.inputTags = "";
+           this.inputTagsChange()
+          //  this.tags = data.data;
           }
         });
      },
@@ -210,6 +230,10 @@
         this.ruleForm.type_id = this.type_name;
       }
      this.selectedCover();
+     if(this.ruleForm.tag == "" || this.ruleForm.source == ""|| this.ruleForm.type_id =="" || this.ruleForm.title ==""){
+               this.open("必填项不能为空");
+               return false;
+           }
       operationService.editData(this.ruleForm).then(data => {
         if (data.code == 0) {
             const params = {
@@ -255,6 +279,7 @@
       this.flag=true;
        if(val!=undefined){
       this.getTags(val);//下拉框改变的val正好就是tpye_id
+      this.type_name = val;
       }
     },
     inputTagsChange(){
@@ -281,6 +306,10 @@
      if(this.flag){
         this.ruleForm.type_id = this.type_name;
       }
+      if(this.ruleForm.tag == "" || this.ruleForm.source == ""|| this.ruleForm.type_id =="" || this.ruleForm.title ==""){
+               this.open("必填项不能为空");
+               return false;
+           }
       operationService.editData(this.ruleForm).then(data => {
         if (data.code == 0) {
           this.$router.push({ path: "../../index/operationPreview/"+this.ruleForm.id});
@@ -334,7 +363,22 @@
           })
         }
         })
-     this.getTags(this.type_id);
+    //  this.getTags(this.type_id);
+      commonService.typetags({type_id:this.type_id}).then(data => {
+          if (data.code == 0) {
+               const temp =[];
+            data.data.forEach(item =>{
+              if(item.is_default ==="1"){
+                 temp.push(item);
+              }
+            });
+           this.tags =temp;
+          //  this.tags = data.data;
+          this.tags =temp;
+          this.inputTags = this.ruleForm.tag;
+          this.inputTagsChange()
+          }
+        });
     })
     },
   components: {
