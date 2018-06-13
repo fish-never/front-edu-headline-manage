@@ -35,16 +35,15 @@
              <i class="icon5 icon" :class="{curr5: path=='/index/tag'}"></i>
               <span>标签管理</span>
             </el-menu-item>
-                <el-submenu index="6" :class="{curr: flag}">
-
+             <el-submenu index="6" :class="{curr: flag}">
                   <template slot="title" >
                     <i class="icon6 icon" :class="{curr6:flag}"></i>
                     <span>社区管理</span>
                   </template>
                   <el-menu-item-group>
                     <el-menu-item index="6-1"  @click="gotoChild('/index/contentApproval/index')">内容审核</el-menu-item>
-                    <el-menu-item index="6-2">发布池内容管理</el-menu-item>
-                    <el-menu-item index="6-3">热帖管理</el-menu-item>
+                    <el-menu-item index="6-2"  @click="gotoChild('/index/contentApproval/PublishingPool')">发布池内容管理</el-menu-item>
+                    <el-menu-item index="6-3"  @click="gotoChild('/index/contentApproval/HotpostList')">热帖列表</el-menu-item>
                     <el-menu-item index="6-4">话题管理</el-menu-item>
                   </el-menu-item-group>
                 </el-submenu>
@@ -74,21 +73,19 @@ export default {
     }
   },
   mounted(){
-    this.avatar = localStorage.getItem("avatar")
-    this.account = localStorage.getItem("account")
+    this.avatar = localStorage.getItem("avatar");
+    this.account = localStorage.getItem("account");
   },
   methods:{
        handleOpen(key, keyPath) {
         this.flag = true;
-        this.path = '/index/contentApproval/index'
-        this.$router.push(this.path)
-        console.log(4444);
+        this.path = '/index/contentApproval/index';
+        this.$router.push(this.path);
       },
       handleClose(key, keyPath) {
         this.flag = true;
-        this.path = '/index/contentApproval/index'
-        this.$router.push(this.path)
-        console.log(8888);
+        this.path = '/index/contentApproval/index';
+        this.$router.push(this.path);
       },
     // logout
     logout(){
@@ -101,13 +98,13 @@ export default {
     },
     goto:function(path){
       this.flag = false;
-      this.path = path
-      this.$router.push(path)
+      this.path = path;
+      this.$router.push(path);
     },
     gotoChild:function(path){
       this.flag = true;
-      this.path = path
-      this.$router.push(path)
+      this.path = path;
+      this.$router.push(path);
     }
   }
 

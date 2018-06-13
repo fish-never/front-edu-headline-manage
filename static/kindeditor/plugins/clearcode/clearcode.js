@@ -22,6 +22,14 @@ KindEditor.plugin('clearcode', function(K) {
 		// 	'td,th' : ['rowspan', 'colspan'],
 		// 	'div,hr,br,tbody,tr,p,ol,ul,li,blockquote,h1,h2,h3,h4,h5,h6' : []
 		// });
+		// html = K.formatHtml(html, {
+		// 	a : ['href', 'target'],
+		// 	embed : ['src', 'width', 'height', 'type', 'loop', 'autostart', 'quality', '.width', '.height', 'align', 'allowscriptaccess'],
+		// 	img : ['src', 'width', 'border', 'alt', 'title'],
+		// 	table : ['border'],
+		// 	'td,th' : ['rowspan', 'colspan'],
+		// 	'div,hr,br,tbody,tr,p,ol,ul,li,blockquote,h1,h2,h3,h4,h5,h6' : []
+		// });
 		html = html.replace(/\n\r/g,'');
 		html = html.replace(/(?<!\-)color:.*?;/ig,'');
 		html = html.replace(/font-size:.*?;/ig,'');

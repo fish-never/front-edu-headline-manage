@@ -6,7 +6,7 @@ function getOssToken(){
         // url: 'http://manage-api.ministudy.com/oss/upload/token',
         // url: 'http://tmp-manage-api.ministudy.com/oss/upload/token',
 
-        url: (API_URL||'http://manage-api.ministudy.com/')+'oss/upload/token',
+        url: (API_URL ||'http://manage-api.ministudy.com')+'oss/upload/token',
         // url: 'http://manage-api-toutiao.ministudy.com/oss/upload/token',
         
         headers:{
