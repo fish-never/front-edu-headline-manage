@@ -27,14 +27,14 @@
         <el-form-item label="分类" prop="typing">
            <el-col :span="11">
           <el-select v-model="ruleForm.type_name" placeholder="请选择分类" width="100%"  @change="typeChange">
-            <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
+            <el-option v-for="(item,index) in types" :label="item.typeName" :key="index" :value="item.id">{{item.typeName}}</el-option>
           </el-select>
            </el-col>
         </el-form-item>
         <el-form-item label="新增标签" required>
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
           <el-checkbox-group v-model="checkedTags">
-            <el-checkbox v-for="item in tags" :label="item.tag_name" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
+            <el-checkbox v-for="(item,index) in tags"  @change="changeTags(item)" :label="item.tag_name" :key="index" :value="item.id">{{item.tag_name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="封面">
@@ -170,10 +170,11 @@
       });
       },
     inputTags: function(val) { //选择标签
-   
+      console.log(val)
       this.inputTagsChange(val)
     },
       checkedTags: function(val){
+        // this.inputTags = "";
         this.tags.forEach(item=>{
           this.inputTags = this.inputTags.replace(item.tag_name+',', '')
       })
@@ -186,6 +187,12 @@
     }
   },
   methods: {
+        //标签勾选
+    changeTags(val){
+      if(this.inputTags == val.tag_name){
+        this.inputTags = ""
+      }
+    },
      //根据分类查询标签
      getTags(type_id){
        commonService.typetags({type_id:type_id}).then(data => {

@@ -37,14 +37,14 @@
         <el-form-item label="分类" prop="typing">
            <el-col :span="11">
           <el-select v-model="type_name" placeholder="请选择分类" width="100%"  @change="typeChange">
-            <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
+            <el-option v-for="(item,index) in types" :label="item.typeName" :key="index" :value="item.id">{{item.typeName}}</el-option>
           </el-select>
            </el-col>
         </el-form-item>
         <el-form-item label="新增标签"  prop="taging">
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
           <el-checkbox-group  v-model="checkedTags" class="tag-wrap">
-            <el-checkbox v-for="item in tags" :label="item.tag_name"  :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
+            <el-checkbox v-for="(item,index) in tags" :label="item.tag_name"  :key="index" :value="item.id" @change="changeTags(item)" >{{item.tag_name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="封面" >
@@ -111,10 +111,10 @@ export default {
           { required: true, message: "请选择分类", trigger: "blur" },
            { min: 1, message: "长度至少1个字符",trigger: "blur" }
         ],
-        taging:[
-          { required: true, message: "请选择或输入输入标签", trigger: "blur" },
-          { min: 1, message: "请选择或输入输入标签",trigger: "blur" }
-        ],
+        // taging:[
+        //   { required: true, message: "请选择或输入输入标签", trigger: "blur" },
+        //   { min: 1, message: "请选择或输入输入标签",trigger: "blur" }
+        // ],
       },
       types: "",
       type_name:"",
@@ -212,24 +212,31 @@ export default {
         }
       }
     },
-
     inputTags: function(val) { //选择标签
       this.inputTagsChange(val)
     },
     checkedTags: function(val) {
-      this.inputTags = "";
+      // this.inputTags = "";
       this.tags.forEach(item => {
         this.inputTags = this.inputTags.replace(item.tag_name + ",", "");
       });
       val.forEach(item => {
         if (this.inputTags.indexOf(item) == -1) {
           this.inputTags = item + "," + this.inputTags;
+        }else{
+
         }
         this.inputTags = this.inputTags.replace(/,$/,'')
       });
     }
   },
   methods: {
+    //标签勾选
+    changeTags(val){
+      if(this.inputTags == val.tag_name){
+        this.inputTags = ""
+      }
+    },
     //判断是否已被选择
      checkCover(url){
        return this.ruleForm.coverage ? (this.ruleForm.coverage.indexOf(url) != -1) : false;
@@ -327,6 +334,8 @@ export default {
       this.tags.forEach(item => {
         if (this.inputTags.indexOf(item.tag_name) != -1) {
           this.checkedTags.push(item.tag_name);
+        }else{
+          console.log(5555)
         }
       });
     },
@@ -479,7 +488,7 @@ export default {
            this.tags =temp;
           //  this.tags = data.data;
           this.tags =temp;
-          this.inputTags = this.ruleForm.tag;
+          this.inputTags = this.ruleForm.tag; 
           this.inputTagsChange()
           }
         });
