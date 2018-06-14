@@ -119,10 +119,10 @@
           { required: true, message: "请选择分类", trigger: "blur" },
            { min: 1, message: "长度至少1个字符",trigger: "blur" }
         ],
-        taging:[
-          { required: true, message: "请选择或输入输入标签", trigger: "blur" },
-          { min: 1, message: "请选择或输入输入标签",trigger: "blur" }
-        ],
+        // taging:[
+        //   { required: true, message: "请选择或输入输入标签", trigger: "blur" },
+        //   { min: 1, message: "请选择或输入输入标签",trigger: "blur" }
+        // ],
       }
       }
     },
@@ -238,6 +238,10 @@
     changeTags(val){
       if(this.inputTags == val.tag_name){
         this.inputTags = ""
+      }
+      if(this.inputTags.indexOf(val.tag_name) >=0){ // 去掉勾选删去输入框相应部分
+         this.inputTags=this.inputTags.replace(val.tag_name,"");
+         this.inputTags=this.inputTags.replace(",,",",");// 去掉双逗号
       }
     },
     filterCovers(list){
@@ -361,6 +365,7 @@
     },
     inputTagsChange(){
       this.checkedTags = [];
+      this.inputTags=this.inputTags.replace(",,",","); // 去掉双逗号
       this.tags.forEach(item => {
         if (this.inputTags.indexOf(item.tag_name) != -1) {
           this.checkedTags.push(item.tag_name);
@@ -430,7 +435,8 @@
         let html = $(cont_html); 
         this.inputTagsChange();
       }
-       commonService.typeList().then(data => {
+    }).then(() => {
+      commonService.typeList().then(data => {
         if (data.code == 0) {
           this.types = data.data;
           this.types.forEach(item => {
