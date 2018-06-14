@@ -233,8 +233,14 @@ export default {
   methods: {
     //标签勾选
     changeTags(val){
+   //  console.log(this.inputTags);
+     // console.log(val.tag_name);
       if(this.inputTags == val.tag_name){
-        this.inputTags = ""
+        this.inputTags = "";
+      }
+      if(this.inputTags.indexOf(val.tag_name) >=0){ // 去掉勾选删去输入框相应部分
+         this.inputTags=this.inputTags.replace(val.tag_name,"");
+         this.inputTags=this.inputTags.replace(",,",",");// 去掉双逗号
       }
     },
     //判断是否已被选择
@@ -331,6 +337,7 @@ export default {
     },
     inputTagsChange(){
       this.checkedTags = [];
+      this.inputTags=this.inputTags.replace(",,",","); // 去掉双逗号
       this.tags.forEach(item => {
         if (this.inputTags.indexOf(item.tag_name) != -1) {
           this.checkedTags.push(item.tag_name);
