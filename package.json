@@ -23,7 +23,6 @@
     "duanwei": "set API_URL=http://duanwei.toutiao-manage-api.com/&& node build/build.js",
     "tangxin": "set API_URL=http://tangxin.toutiao-manage-api.com/&& node build/build.js",
     "build-test": "set API_URL=http://www.toutiao-manage.com/&& node build/build.js"
-    
   },
   "dependencies": {
     "axios": "^0.18.0",
