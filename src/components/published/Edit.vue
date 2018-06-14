@@ -409,7 +409,7 @@
  
     mounted(){
        window.globalImgOnload = this.globalImgOnload;
-       if (localStorage.getItem("account") == null) {
+       if (localStorage.getItem("Token") == null) {
           this.$router.push({ path: "/" });
           return;
         }

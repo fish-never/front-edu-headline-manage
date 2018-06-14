@@ -230,9 +230,7 @@
           this.textData.coverage = this.files[0].url;
         }
         this.textData.tag = this.inputTags;
-        console.log(JSON.stringify(this.textData));
-        return false;
-          if(this.textData.display_type == "" || this.textData.source == ""|| this.ruleForm.tag =="" || this.textData.title ==""){
+          if(this.textData.display_type == "" || this.textData.source == ""|| this.textData.tag =="" || this.textData.title ==""){
                this.open("必填项不能为空");
                return false;
            }
@@ -249,7 +247,7 @@
 
     },
     mounted(){
-      if (localStorage.getItem("account") == null) {
+      if (localStorage.getItem("Token") == null) {
           this.$router.push({ path: "/" });
           return;
         }
