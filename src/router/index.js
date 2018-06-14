@@ -5,7 +5,7 @@ import Router from 'vue-router'
 import GrabStorage from '@/components/grab/GrabStorage'
 import GrabStoragePreview from '@/components/grab/Preview'
 import GrabStorageEdit from '@/components/grab/Edit'
-import GrabStoragePublish from '@/components/grab/Publish'
+import GrabStoragePublish from '@/components/grab/publish'
 
 import Published from '@/components/published/Published'
 import PublishedPreview from '@/components/published/Preview'
@@ -25,7 +25,7 @@ import OperationVideoAdd from '@/components/opetation/videoAdd'
 
 import Comment from '@/components/Comment'
 import Login from '@/pages/Login'
-import Wrap from '@/components/_common/wrap'
+import Wrap from '@/components/_common/Wrap'
 
 //import Preview from '@/components/Preview'
 //import Edit from '@/components/Edit'
