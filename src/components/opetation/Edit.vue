@@ -337,7 +337,7 @@
       this.id = this.$route.params.id
     },
     mounted(){
- 	if (localStorage.getItem("Token") == null) {
+ 	if (localStorage.getItem("account") == null) {
 	      this.$router.push({ path: "/" });
 	      return;
 	    }
@@ -359,33 +359,36 @@
        // this.inputTags = this.ruleForm.tag;
       //  this.inputTagsChange();
       }
-
+    }).then(() =>{
       commonService.typeList().then(data => {
         if(data.code == 0){
         this.types = data.data;
+        console.log(JSON.stringify(this.types));
           this.types.forEach(item => {
             if(this.type_id==item.id){
                 this.type_name = item.typeName;
                 }     
           })
         }
-        })
-    //  this.getTags(this.type_id);
-      commonService.typetags({type_id:this.type_id}).then(data => {
-          if (data.code == 0) {
-               const temp =[];
-            data.data.forEach(item =>{
-              if(item.is_default ==="1"){
-                 temp.push(item);
+        }).then(()=>{
+        //  this.getTags(this.type_id);
+          commonService.typetags({type_id:this.type_id}).then(data => {
+              if (data.code == 0) {
+                  const temp =[];
+                data.data.forEach(item =>{
+                  if(item.is_default ==="1"){
+                    temp.push(item);
+                  }
+                });
+              this.tags =temp;
+              //  this.tags = data.data;
+              this.tags =temp;
+              this.inputTags = this.ruleForm.tag;
+              this.inputTagsChange()
               }
             });
-           this.tags =temp;
-          //  this.tags = data.data;
-          this.tags =temp;
-          this.inputTags = this.ruleForm.tag;
-          this.inputTagsChange()
-          }
-        });
+        })
+
     })
     },
   components: {

@@ -52,7 +52,7 @@ export default {
     }
   },
   mounted(){
-     if (localStorage.getItem("Token") == null) {
+     if (localStorage.getItem("account") == null) {
       this.$router.push({ path: "/" });
       return;
     }
