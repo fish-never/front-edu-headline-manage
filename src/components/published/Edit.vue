@@ -119,10 +119,10 @@
           { required: true, message: "请选择分类", trigger: "blur" },
            { min: 1, message: "长度至少1个字符",trigger: "blur" }
         ],
-        taging:[
-          { required: true, message: "请选择或输入输入标签", trigger: "blur" },
-          { min: 1, message: "请选择或输入输入标签",trigger: "blur" }
-        ],
+        // taging:[
+        //   { required: true, message: "请选择或输入输入标签", trigger: "blur" },
+        //   { min: 1, message: "请选择或输入输入标签",trigger: "blur" }
+        // ],
       }
       }
     },
@@ -430,7 +430,8 @@
         let html = $(cont_html); 
         this.inputTagsChange();
       }
-       commonService.typeList().then(data => {
+    }).then(() => {
+      commonService.typeList().then(data => {
         if (data.code == 0) {
           this.types = data.data;
           this.types.forEach(item => {

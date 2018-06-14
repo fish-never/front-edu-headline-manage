@@ -464,7 +464,8 @@ export default {
         this.inputTags = this.ruleForm.tag;
         this.getTags(this.type_id)
       }
-       commonService.typeList().then(data => {
+    }).then( data => {
+        commonService.typeList().then(data => {
         if (data.code == 0) {
           this.types = data.data;
           this.types.forEach(item => {
@@ -474,7 +475,7 @@ export default {
             
           });
         }
-      });
+      }).then(data=>{
       // 根据分类id查询该分类下的标签
       //  this.getTags(this.type_id);
       commonService.typetags({type_id:this.type_id}).then(data => {
@@ -492,6 +493,9 @@ export default {
           this.inputTagsChange()
           }
         });
+
+      });
+
     })
   })
      

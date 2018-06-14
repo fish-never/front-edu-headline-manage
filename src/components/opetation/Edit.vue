@@ -359,7 +359,7 @@
        // this.inputTags = this.ruleForm.tag;
       //  this.inputTagsChange();
       }
-
+    }).then(() =>{
       commonService.typeList().then(data => {
         if(data.code == 0){
         this.types = data.data;
@@ -370,23 +370,25 @@
                 }     
           })
         }
-        })
-    //  this.getTags(this.type_id);
-      commonService.typetags({type_id:this.type_id}).then(data => {
-          if (data.code == 0) {
-               const temp =[];
-            data.data.forEach(item =>{
-              if(item.is_default ==="1"){
-                 temp.push(item);
+        }).then(()=>{
+        //  this.getTags(this.type_id);
+          commonService.typetags({type_id:this.type_id}).then(data => {
+              if (data.code == 0) {
+                  const temp =[];
+                data.data.forEach(item =>{
+                  if(item.is_default ==="1"){
+                    temp.push(item);
+                  }
+                });
+              this.tags =temp;
+              //  this.tags = data.data;
+              this.tags =temp;
+              this.inputTags = this.ruleForm.tag;
+              this.inputTagsChange()
               }
             });
-           this.tags =temp;
-          //  this.tags = data.data;
-          this.tags =temp;
-          this.inputTags = this.ruleForm.tag;
-          this.inputTagsChange()
-          }
-        });
+        })
+
     })
     },
   components: {
