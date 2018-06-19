@@ -2,32 +2,32 @@ import Vue from 'vue'
 import Router from 'vue-router'
 //import GrabStorage from '@/components/GrabStorage'
 //import Published from '@/components/Published'
-//ץȡ��
+//抓取池
 import GrabStorage from '@/components/grab/GrabStorage'
 import GrabStoragePreview from '@/components/grab/Preview'
 import GrabStorageEdit from '@/components/grab/Edit'
 import GrabStoragePublish from '@/components/grab/Publish'
-//�ѷ���
+//已发布
 import Published from '@/components/published/Published'
 import PublishedPreview from '@/components/published/Preview'
 import PublishedEdit from '@/components/published/Edit'
-import PublishedPublish from '@/components/published/publish'
-//
+import PublishedPublish from '@/components/published/Publish'
+//运营池
 import OperationStorage from '@/components/opetation/OperationStorage'
 import OperationPreview from '@/components/opetation/Preview'
 import OperationEdit from '@/components/opetation/Edit'
-import OperationPublish from '@/components/opetation/publish'
-import PreviewVideoPreview from '@/components/opetation/PreviewVideo'
-import Tag from '@/components/tag/tag'
-
-import OperationTextAdd from '@/components/opetation/textAdd'
-import OperationVideoAdd from '@/components/opetation/videoAdd'
+import OperationPublish from '@/components/opetation/Publish'
+import OperationTextAdd from '@/components/opetation/TextAdd'
+import OperationVideoAdd from '@/components/opetation/VideoAdd' 
+//标签
+import Tag from '@/components/tag/Tag'
+//评论
 import Comment from '@/components/Comment'
-
+//登陆
 import Login from '@/pages/Login'
-
-import Wrap from '@/components/_common/wrap'
-
+//框架
+import Wrap from '@/components/_common/Wrap'
+//内容审核
 import contentApproval from '@/components/contentApproval/Index' 
 import PublishingPool from '@/components/contentApproval/PublishingPool'
 import PublishingPoolEdit from '@/components/contentApproval/PublishingPoolEdit'
@@ -139,11 +139,6 @@ export default new Router({
           component:OperationPreview
         },
         {
-          path: 'previewVideoPreview',
-          name: 'previewVideoPreview',
-          component:PreviewVideoPreview
-        },
-        {
           path: 'operationPublish/:id',
           name: 'OperationPublish',
           component: OperationPublish
@@ -158,6 +153,7 @@ export default new Router({
           name: 'video',
           component: OperationVideoAdd
         }
+
       ]
     }
 

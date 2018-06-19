@@ -4,7 +4,7 @@
         <el-col :span="14"><img src="../../assets/imgs/logo.svg" align="center"/></el-col>
         <el-col :span="10" class="header-right">
           <img :src="avatar" width=30 align="center" />
-          {{account}}<span style="background: #E3E3E3;height:8px ;width:1px;display:inline-block;margin:0 10px;"></span> 
+          {{account}}<span style="background: #E3E3E3;height:8px ;width:1px;display:inline-block;margin:0 10px;"></span>
           <p class='logout' @click="logout">退出登录</p>
           </el-col>
       </el-header>
@@ -44,7 +44,7 @@
                     <el-menu-item index="6-1"  @click="gotoChild('/index/contentApproval/index')">内容审核</el-menu-item>
                     <el-menu-item index="6-2"  @click="gotoChild('/index/contentApproval/PublishingPool')">发布池内容管理</el-menu-item>
                     <el-menu-item index="6-3"  @click="gotoChild('/index/contentApproval/HotpostList')">热帖列表</el-menu-item>
-                    <el-menu-item index="6-4">话题管理</el-menu-item>
+                    <el-menu-item index="6-4" @click="gotoChild('/index/contentApproval/HotpostList')">话题管理</el-menu-item>
                   </el-menu-item-group>
                 </el-submenu>
           </el-menu>
@@ -91,7 +91,7 @@ export default {
     logout(){
      commonService.logout().then(data => {
           if (data.code == 0) {
-            localStorage.clear(); 
+            localStorage.clear();
             this.$router.push({path:'/'});
           }
         });

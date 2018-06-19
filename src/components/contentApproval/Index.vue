@@ -14,15 +14,15 @@
           </el-select>
         </div>
     </div>
-    <div class="item-wrap" v-for="item in data.list" :key="item.id" @click="checked(item)" :class="{selected: item.slected}">
+    <div class="item-wrap" v-for="item in data.list" :key="item.id" @click="checked(item)"  :class="{selected: item.selected}">
      <div class="item">
-        <h2 class="title-p" style="font-size:24px; color:#333;line-height:25px;">{{item.topic}}</h2>
+        <h2 class="title-p" style="font-size:24px; color:#333;line-height:25px;">{{item.topic}}{{item.selected}}</h2>
         <p class="tag"><span>{{item.author}}</span><span>{{item.created_at}}</span></p>
-        <div class="text" v-html="data.content"></div>
+        <div class="text" v-html="item.content"></div>
         <button class="pass" @click="Pass(item.id)">通过</button>
         <button class="delete" @click="Detele(item.id)">删除</button>
       </div>
-      <img class="checked" :src="selectedUrl" v-if="item.slected"/>
+      <img class="checked" :src="selectedUrl" v-if="item.selected"/>
     </div>
     <button class="opera-btn" @click="deleteLists">删除已选中，通过未勾选</button>
     <div style="margin-top:100px">
@@ -47,47 +47,8 @@ export default {
   data () {
     return {
       loading: false,
-      slected:false,
-      
-      data:{
-       conut:2,
-       page:1,
-       pageSize:10,
-       list:[
-         {
-           id:1,
-           topic: "六一儿童节",
-          content: "asasasdasd",
-          author: "段公子",
-          created_at: "2018-06-01",
-          slected:false
-         },
-         {
-           id:2,
-           topic: "六一儿童节222",
-          content: "asasasdasd",
-          author: "段公子",
-          created_at: "2018-06-01",
-          slected:false
-         },
-         {
-           id:3,
-           topic: "六一儿童节333",
-          content: "asasasdasd",
-          author: "段公子",
-          created_at: "2018-06-01",
-          slected:false
-         },
-         {
-           id:4,
-           topic: "六一儿童节444",
-          content: "asasasdasd",
-          author: "段公子",
-          created_at: "2018-06-01",
-          slected:false
-         }
-       ]
-      },
+      selected:false,
+      data:{},
       id:"5b1db30a62f531394f026242",
       pageShow:false,
       page:1,
@@ -105,7 +66,7 @@ export default {
    
   },
   mounted(){
-     if (localStorage.getItem("Token") == null) {
+     if (localStorage.getItem("account") == null) {
       this.$router.push({ path: "/" });
       return;
     }
@@ -124,13 +85,12 @@ watch:{
      this.loadList()
    },
       //获取内容列表
-      checked(item){
-        if(item.slected){
-          item.slected = false
-        }else{
-          item.slected = true;
-        }
-
+  checked(item){
+      if(item.selected){
+        item.selected = false
+      }else{
+        item.selected = true;
+      }
       },
     //弹框
      open(text) {
@@ -155,9 +115,12 @@ watch:{
         }
         contentApprovalService.getList(params).then(data=>{
           if(data.code==0){
-          this.data = data.data;
           console.log(data.data)
           this.loading = false;
+          data.data.list.forEach(item =>{
+            item.selected = false;
+          })
+          this.data = data.data;
         }
         })
       },
@@ -172,7 +135,7 @@ watch:{
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
+        }).then((data) => {
           contentApprovalService.check(params).then(data=>{
             if(data.code==0){
                this.loadList()
@@ -214,7 +177,7 @@ watch:{
        let ids_delete = "";
        let ids_pass ="";
        this.data.list.forEach(item => {
-         if( item.slected){
+         if( item.selected){
            ids_delete += item.id +","
          }else{
            ids_pass += item.id +","

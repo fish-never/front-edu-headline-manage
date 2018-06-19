@@ -16,13 +16,13 @@
         </el-form-item>
         <el-form-item label="分类" prop="typing">
           <el-select v-model="textData.type_id" filterable clearable placeholder="请选择分类" @change="typeChange">
-            <el-option v-for="item in types" :label="item.typeName" :key="item.id" :value="item.id">{{item.typeName}}</el-option>
+            <el-option v-for="(item,index) in types" :label="item.typeName" :key="index" :value="item.id">{{item.typeName}}</el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="新增标签" prop="taging">
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
           <el-checkbox-group   v-model="checkedTags">
-            <el-checkbox v-for="item in tags" :label="item.tag_name"  @change="changeTags(item)" :key="item.id" :value="item.id">{{item.tag_name}}</el-checkbox>
+            <el-checkbox v-for="(item,index) in tags" :label="item.tag_name"  @change="changeTags(item)" :key="index" :value="item.id">{{item.tag_name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="封面">
@@ -217,7 +217,9 @@
     },
       // 保存
       textSaveData(){
+        
         this.btnShow = true;
+        console.log(77777)
         if(this.textData.display_type ==1 ){
           this.textData.coverage = "";
         }else if(this.textData.display_type ==5 ){
@@ -230,6 +232,9 @@
           this.textData.coverage = this.files[0].url;
         }
         this.textData.tag = this.inputTags;
+        // console.log(JSON.stringify(this.textData));
+        // return false;
+        console.log(this.ruleForm)
           if(this.textData.display_type == "" || this.textData.source == ""|| this.textData.tag =="" || this.textData.title ==""){
                this.open("必填项不能为空");
                return false;
