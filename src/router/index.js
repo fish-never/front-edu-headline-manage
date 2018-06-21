@@ -27,6 +27,11 @@ import Comment from '@/components/Comment'
 import Login from '@/pages/Login'
 import Wrap from '@/components/_common/Wrap'
 
+//版本管理
+import Versions from '@/components/versions/Index'
+import VersionsAdd from '@/components/versions/Add'
+import VersionsEdit from '@/components/versions/Edit'
+
 //import Preview from '@/components/Preview'
 //import Edit from '@/components/Edit'
 
@@ -125,10 +130,22 @@ export default new Router({
           component: OperationTextAdd
         },
         {
-          path: 'video',
-          name: 'video',
-          component: OperationVideoAdd
-        }
+          path: 'versions',
+          name: 'versions',
+          component: Versions
+        },
+        {
+          path: 'versionsEdit/:id',
+          name: 'versionsEdit',
+          component: VersionsEdit
+        },
+        {
+          path: 'versionsAdd',
+          name: 'versionsAdd',
+          component: VersionsAdd
+        },
+
+
 
 
 

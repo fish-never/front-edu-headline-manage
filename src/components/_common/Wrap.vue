@@ -35,6 +35,10 @@
              <i class="icon5 icon" :class="{curr5: path=='/index/tag'}"></i>
               <span>标签管理</span>
             </el-menu-item>
+             <el-menu-item index="5" :class="{curr: path=='/index/versions'}" @click="goto('/index/versions')">
+             <i class="icon6 icon" :class="{curr6: path=='/index/versions'}"></i>
+              <span>版本管理</span>
+            </el-menu-item>
           </el-menu>
         </el-col>
       </el-aside>
@@ -104,6 +108,7 @@ export default {
   padding-right:48px;
   img{
     margin-right:13px;
+    border-radius: 100%;
   }
 
 }
@@ -122,13 +127,16 @@ export default {
   .icon3{
      background:url("../../assets/imgs/icon3.svg") center center no-repeat;
 }
-  .icon4{
+.icon4{
      background:url("../../assets/imgs/icon4.svg") center center no-repeat;
 }
 .icon5{
      background:url("../../assets/imgs/icon5.svg") center center no-repeat;
 }
-  .curr1{
+.icon6{
+     background:url("../../assets/imgs/icon6.svg") center center no-repeat;
+}
+.curr1{
      background:url("../../assets/imgs/icon11.svg") center center no-repeat;
 }
   .curr2{
@@ -145,6 +153,9 @@ export default {
 }
 .curr5{
      background:url("../../assets/imgs/icon55.svg") center center no-repeat;
+}
+.curr6{
+     background:url("../../assets/imgs/icon66.svg") center center no-repeat;
 }
   .el-main{
     padding:0;
