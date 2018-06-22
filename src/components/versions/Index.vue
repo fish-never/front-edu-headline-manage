@@ -25,7 +25,8 @@
       <el-table-column
         label="是否处于审核">
         <template slot-scope="scope">
-          <span>{{ scope.row.status }}</span>
+          <span v-if="scope.row.status == 0">否</span>
+          <span v-if="scope.row.status == 1">是</span>
         </template>
       </el-table-column>
       <el-table-column

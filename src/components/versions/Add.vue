@@ -5,12 +5,12 @@
       <el-form :model="data" label-width="120px" class="demo-ruleForm" :rules="rules" >
         <el-form-item label="版本号" prop="version">
           <el-col :span="11">
-            <el-input v-model="data.version"></el-input>
+            <el-input v-model="data.version" placeholder="例如版本号2.0.1,此处填写为20001"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="是否处于审核" prop="status">
-           <el-radio v-model="data.status" label="0">0</el-radio>
-            <el-radio v-model="data.status" label="1">1</el-radio>
+          <el-radio v-model="data.status" label="1">是</el-radio>
+          <el-radio v-model="data.status" label="0">否</el-radio>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-col :span="11">
@@ -104,5 +104,10 @@
 <style scoped>
 .location {
     padding-left: 20px;
+}
+.span-grey{
+  float:left;
+  margin-left:20px;
+  color:#666;
 }
 </style>
