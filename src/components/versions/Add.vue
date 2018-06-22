@@ -42,11 +42,10 @@
     data () {
       return {
         btnShow:false,
-        status:0,
         data:{
           remark:'',
           version:'',
-          status:0
+          status:"0"
         },
         rules: {
           version: [
