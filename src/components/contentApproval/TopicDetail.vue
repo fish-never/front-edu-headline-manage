@@ -10,57 +10,41 @@
           <p class="topicDesc">#zikaozenmexue#</p>
         </div>
       </div>
-      <div class="content">
+      <div class="content" v-for="item in data.result" :key="item.id">
         <img src="../../assets/imgs/avatar.svg" class="avatar">
         <p class="userName">Lee</p>
-        <p class="createdAt">12H</p>
-        <button class="close" @click="deleteDetail"></button>
+        <p class="createdAt">{{item.created_at}}</p>
+        <button class="close" @click="deleteDetail(item.id)"></button>
         <p class="contentTitle">#zikaozenmexue#</p>
-        <p class="paragraph">教育部发出了最新消息，中考将要改革，并且教育部发出了最新消息，中考将要改革，并且教育部发出了最新消息，中考将要改革，并且教育部发出了最新消息，中考将要改革，并且教育部发出了最新消息，中考将要改革，并且教育部发出了最新消息，中考将要改革，并且教育部发出了最新消息，中考将要改革，并且教育部发出了最新消息，中考将要改革，并且</p>
-        <img src="../../assets/imgs/img.png" class="img">
-        <img src="../../assets/imgs/img.png" class="img">
+        <p class="paragraph">{{item.content.content}}</p>
+        <img :src='item.content.images[0]' class="img">
+        <img :src='item.content.images[1]' class="img">
         <br/>
         <div class="functionContent">
           <div class="function">
             <img src="../../assets/imgs/comment.svg" class="icon">
-            <p class="num">1270</p>
+            <p class="num">{{item.comment_count}}</p>
           </div>
           <div class="function">
             <img src="../../assets/imgs/prise.svg" class="icon">
-            <p class="num">3240</p>
+            <p class="num">{{item.like_count}}</p>
           </div>
           <div class="function">
             <img src="../../assets/imgs/share.svg" class="icon">
-            <p class="num">5482</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="content">
-        <img src="../../assets/imgs/1.jpg" class="avatar">
-        <p class="userName">Lee</p>
-        <p class="createdAt">12H</p>
-        <p class="contentTitle">#zikaozenmexue#</p>
-        <p class="paragraph">教育部发出了最新消息，中考将要改革，并且教育部发出了最新消息，中考将要改革，并且教育部发出了最新消息，中考将要改革，并且教育部发出了最新消息，中考将要改革，并且教育部发出了最新消息，中考将要改革，并且教育部发出了最新消息，中考将要改革，并且教育部发出了最新消息，中考将要改革，并且教育部发出了最新消息，中考将要改革，并且</p>
-        <img src="../../assets/imgs/img.png" class="img">
-        <img src="../../assets/imgs/img.png" class="img">
-        <br/>
-        <div class="functionContent">
-          <div class="function">
-            <img src="../../assets/imgs/comment.svg" class="icon">
-            <p class="num">1270</p>
-          </div>
-          <div class="function">
-            <img src="../../assets/imgs/prise.svg" class="icon">
-            <p class="num">3240</p>
-          </div>
-          <div class="function">
-            <img src="../../assets/imgs/share.svg" class="icon">
-            <p class="num">5482</p>
+            <p class="num">{{item.share_count}}</p>
           </div>
         </div>
       </div>
     </div>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="[10,50,100,200,500,1000,2000,3000]"
+      :page-size="pageNum"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
   </div>
 </template>
 
@@ -70,45 +54,120 @@
 
   export default {
     name: 'published',
+    // props:['ids'],
     data() {
       return {
-        id: 0,
+        id: this.ids,
         topicEdit:{
           topicName:'',
           topicDesc:''
         },
-        // touxiang:require("../../assets/imgs/userimg1.png")
+        // comment_count: 0,
+        // like_count: 2,
+        // read_count: 2,
+        // share_count: 2,
+        // created_at: '',
+        // content: '',
+        // images: []
+        data:{},
+        total: 10,
+        page: 1,
+        pageNum: 10,
       }
     },
-    // created: function () {
-    //   $.ajax({
-    //     method: 'post',
-    //     url: 'http://zhangyu.toutiao-manage-api.com/topic/operate/update-info',
-    //     headers:{
-    //       'Authorization': token
-    //     },
-    //     data:{
-    //       id: id,
-    //       name :name,
-    //       description: description
-    //     }
-    //
-    //   })
+
+    created: function () {
+      this.loadList();
+    },
+    // mounted() {
+    //   if (localStorage.getItem("Token") == null) {
+    //     this.$router.push({ path: "/" });
+    //     return;
+    //   }
+    //   this.loadList();
     // },
     methods: {
-      deleteDetail: function () {
-        console.log("delete!");
-        let id = 12;
-        topicManageService.deletePost(id).then(data=>{
-          if (data.code === 0){
-            console.log(data);
-            console.log(id)
-          } else {
-            console.log('err!');
-            console.log(id)
+      handleSelectionChange(val) {
+        // console.log(val)
+        this.multipleSelection = val;
+        this.ids='';
+        val.forEach(item=>{
+          this.ids = item._id + "," + this.ids;
+        });
+        this.ids = this.ids.replace(/,$/,'')
+      },
+      getPage(num){
+        this.page = num;
+        this.loadList()
+      },
+      getPageNum(num){
+        this.pageNum = num;
+        this.loadList()
+      },
+      getSourceList(){
+        this.page = 1;
+        this.loadList()
+      },
+      //加载页面
+      loadList(){
+        const params = {
+          page:this.page,
+          pageNum:this.pageNum,
+        };
+        console.log('loaded!')
+        const loadingInstance = this.$loading({ fullscreen: true });
+        topicManageService.view(params).then(data=>{
+          if(data.code === 0){
+            loadingInstance.close();
+            this.page = parseInt(data.data.page);
+            this.pageNum = parseInt(data.data.pageNum);
+            this.total = parseInt(data.data.count);
+            this.data = data.data;
+            // this.itemData = data.data.result;
+            //   console.log(this.itemData)
+            // this.loading = false;
+            // this.pageShow=true;
           }
+          // else{
+          //   this.open("加载失败，请重试！")
+          //   this.pageShow=false;
+          //   this.loading = false;
+          // }
         })
-      }
+      },
+      //删除
+      deleteDetail(id) {
+        const ids = parseInt(id);
+        console.log(ids);
+        let params = {
+          ids: parseInt(id)
+        };
+        this.$confirm("确定删除?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+          // topicManageService.deletePost(ids);
+          topicManageService.deletePost(params).then(data=>{
+            if (data.code === 0){
+              console.log(data);
+              console.log(ids);
+              this.loadList();
+            } else {
+              console.log('err!');
+              console.log(ids)
+            }
+          });
+        })
+      },
+      handleSizeChange(val){
+        this.pageNum = val;
+        this.loadList();
+      },
+      handleCurrentChange(val){
+        this.page = val;
+        this.loadList();
+      },
 
 
     },

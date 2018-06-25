@@ -4,7 +4,7 @@
   <p class="location">
     <router-link to="/index/operationStorage" class="grey">运营池</router-link>>编辑
     <button class="detele-btn" @click="deleteLists" title="删除">删除</button>
-    
+
   </p>
     <div class="wrap-margin wrap-padding">
         <XEditor :content="ruleForm.content_html" v-on:change="onContentChange"/>
@@ -139,13 +139,13 @@
         ],
       },
 
-      
+
     };
   },
 
   watch: {
-    display_type:function(){ //封面 
-      this.imgShow = []     
+    display_type:function(){ //封面
+      this.imgShow = []
       if(this.showOpen){
 
       if(this.display_type ==1){  //无封面
@@ -156,7 +156,7 @@
 
       }
       if(this.display_type ==5){ //220*140 三张图
-      }  
+      }
       }
 
     },
@@ -214,7 +214,7 @@
     filechange(resp){
       this.file = resp.data.host
       },
-      // 封面 
+      // 封面
       selectedCover(){
         if(this.ruleForm.display_type ==1 ){
           this.ruleForm.coverage = "";
@@ -272,7 +272,7 @@
               ids:this.id
             };
             operationService.deleteData(params).then(data=>{
-        
+
               if(data.code==0){
                 this.$router.push({ path: "../../index/operationStorage/"});
             }else{
@@ -367,7 +367,7 @@
           this.types.forEach(item => {
             if(this.type_id==item.id){
                 this.type_name = item.typeName;
-                }     
+                }
           })
         }
         }).then(()=>{

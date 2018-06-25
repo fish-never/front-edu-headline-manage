@@ -7,10 +7,16 @@ export default {
       return Promise.resolve(resp.data)
     })
   },
+  //话题帖子浏览
+  view(params){
+    return api.get('post/published/index?'+qs.stringify(params)).then((resp)=>{
+      return Promise.resolve(resp.data)
+    })
+  },
   //删除话题帖子
   deletePost(data){
     return api.post('post/published/delete',data,true).then((resp)=>{
       return Promise.resolve(resp.data)
     })
-  }
+  },
 }

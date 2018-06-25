@@ -29,9 +29,12 @@
         topicEdit:{
           topicName:'',
           topicDesc:''
-        }
+        },
+        page: 1,
+        pageNum: 10
       }
     },
+
     // mounted(){
     //   if (localStorage.getItem("Token") == null) {
     //     this.$router.push({ path: "/" });
@@ -53,6 +56,7 @@
     //     })
     // },
     methods: {
+
       saveData(){
         var token = localStorage.getItem('Token');
 
