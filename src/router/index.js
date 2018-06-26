@@ -145,7 +145,11 @@ export default new Router({
           component: VersionsAdd
         },
 
-
+        {
+          path: 'video',
+          name: 'video',
+          component: OperationVideoAdd
+        }
 
 
 
