@@ -65,7 +65,9 @@
             </div>
             <p class='up-img'>图片建议尺寸220*140</p>
           </el-form-item>
-
+        <el-form-item label="视频链接" prop="video_uri" v-show="display_type == 4">
+          <el-input v-model="ruleForm.video_uri"></el-input>
+        </el-form-item>
 
         <el-form-item>
           <button @click="saveData" class="btn" type="button">保存并预览</button>

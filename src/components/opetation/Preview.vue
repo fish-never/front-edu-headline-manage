@@ -10,15 +10,8 @@
           <el-form-item label="来源：" prop="source">
             <p v-text="data.source"></p>
           </el-form-item>
-          <el-form-item label="原始链接：" prop="origin_link">
-            <p v-text="data.origin_link"></p>
-          </el-form-item>
           <el-form-item label="分类：" prop="type_name">
             <p v-text="data.type_name"></p>
-          </el-form-item>
-          <el-form-item label="标签：" prop="tag">
-            <p v-text="data.tag"></p>
-          
           </el-form-item>
           <el-form-item label="封面：" prop="coverage" >
             <p v-if="display_type == 1" >无图模式</p>
@@ -26,7 +19,13 @@
            <img v-for="item in coverList" :key="item" :src="item" v-if="display_type == 5"  class="img-wrap" /> 
           </el-form-item>
 
-          <el-form-item  prop="content" class="wrap-html">
+          <el-form-item  prop="content" class="wrap-html" v-show="data.display_type !=  4">
+            <div v-html="data.content_html" ></div>
+          </el-form-item>
+          <el-form-item  prop="content" class="" v-show="data.display_type == 4">
+              <video :src="data.video_uri" controls="controls">
+                您的浏览器不支持 video 标签。
+              </video>
             <div v-html="data.content_html" ></div>
           </el-form-item>
         </el-form>
@@ -113,7 +112,7 @@
 .wrap-html{
   border-radius:1px;
   border:1px solid rgba(150,171,181,0.2);
-  padding:26px;
+  padding:26px 26px 26px 0;
   margin-bottom:40px;
   font-size:16px;
 }
