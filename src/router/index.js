@@ -29,15 +29,6 @@ import Login from '@/pages/Login'
 
 //框架
 
-//内容审核
-import contentApproval from '@/components/contentApproval/Index'
-import PublishingPool from '@/components/contentApproval/PublishingPool'
-import PublishingPoolEdit from '@/components/contentApproval/PublishingPoolEdit'
-import HotpostList from '@/components/contentApproval/HotpostList'
-import HotpostListEdit from '@/components/contentApproval/HotpostListEdit'
-import TopicEdit from '@/components/contentApproval/TopicEdit'
-import TopicDetail from '@/components/contentApproval/TopicDetail'
-
 import Wrap from '@/components/_common/Wrap'
 
 //版本管理
@@ -90,41 +81,6 @@ export default new Router({
           path: 'tag',
           name: 'tag',
           component: Tag
-        },
-        {
-          path: 'contentApproval/index',
-          name: 'contentApproval',
-          component: contentApproval
-        },
-        {
-          path: 'contentApproval/PublishingPool',
-          name: 'PublishingPool',
-          component: PublishingPool
-        },
-        {
-          path: 'contentApproval/PublishingPoolEdit/:id',
-          name: 'PublishingPoolEdit',
-          component: PublishingPoolEdit
-        },
-        {
-          path: 'contentApproval/HotpostList',
-          name: 'HotpostList',
-          component: HotpostList
-        },
-        {
-          path: 'TopicEdit',
-          name: 'TopicEdit',
-          component: TopicEdit
-        },
-        {
-          path: 'TopicDetail',
-          name: 'TopicDetail',
-          component: TopicDetail
-        },
-        {
-          path: 'contentApproval/HotpostListEdit/:id',
-          name: 'HotpostListEdit',
-          component: HotpostListEdit
         },
         {
           path: 'edit/:id',

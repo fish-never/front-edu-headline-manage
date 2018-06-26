@@ -33,19 +33,6 @@
              <i class="icon5 icon" :class="{curr5: path=='/index/tag'}"></i>
               <span>标签管理</span>
             </el-menu-item>
-
-             <el-submenu index="6" indexPath="/index/contentApproval/index" dataId="6" :class="{curr: curid==6}" @click="goto($event)">
-                  <template slot="title" >
-                    <i class="icon6 icon" :class="{curr6:curid==6}"></i>
-                    <span>社区管理</span>
-                  </template>
-                  <el-menu-item-group>
-                    <el-menu-item index="6-1"  @click="gotoChild('/index/contentApproval/index')">内容审核</el-menu-item>
-                    <el-menu-item index="6-2"  @click="gotoChild('/index/contentApproval/PublishingPool')">发布池内容管理</el-menu-item>
-                    <el-menu-item index="6-3"  @click="gotoChild('/index/contentApproval/HotpostList')">热帖列表</el-menu-item>
-                    <el-menu-item index="6-4" @click="gotoChild('/index/contentApproval/HotpostList')">话题管理</el-menu-item>
-                  </el-menu-item-group>
-                </el-submenu>
             <el-submenu index="7"  indexPath="/index/push/index" dataId="7" :class="{curr: curid==7}" @click="goto($event)">
               <template slot="title" >
                 <i class="icon7 icon" :class="{curr7:curid==7}"></i>

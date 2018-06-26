@@ -57,7 +57,8 @@
       <el-table-column
         label="推送方式">
         <template slot-scope="scope">
-          <span>{{ scope.row.type }}</span>
+          <span v-if="scope.row.type">自动</span>
+          <span v-else>手动</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" >
@@ -195,11 +196,21 @@ export default {
       const loadingInstance = this.$loading({ fullscreen: true });
       pushService.verbList(params).then(data=>{
         if(data.code==0){
+          const rdata = data.data
           loadingInstance.close();
-          this.page = parseInt(data.data.page);
-          this.pageNum = parseInt(data.data.pageNum);
-          this.total = parseInt(data.data.count);
-          this.itemData = data.data.result;
+          this.page = parseInt(rdata.page);
+          this.pageNum = parseInt(rdata.pageNum);
+          this.total = parseInt(rdata.count);
+          for(var i =0;i<rdata.result.length;i++){
+            if(rdata.result[i].type==1){
+              rdata.result[i].type=false
+            }else{
+              rdata.result[i].type=true
+            }
+
+          }
+          this.itemData = rdata.result;
+
           //   console.log(this.itemData)
           this.loading = false;
           this.pageShow=true;

@@ -13,8 +13,9 @@
         <el-input v-model="form.title"></el-input>
       </el-form-item>
       <el-form-item label="发布时间" required>
-        <el-form-item prop="publish_time">
-        <el-date-picker
+        <el-form-item >
+        <el-date-picker format="yyyy 年 MM 月 dd 日"
+                        value-format="yyyy-MM-dd h:m:s"
           v-model="form.publish_time"
           type="datetime"
           placeholder="选择日期时间">
@@ -42,11 +43,12 @@
       </el-form-item>
 
       <el-form-item label="" v-if="form.type==true">
-        <el-form-item prop="send_time">
-        <el-date-picker
+        <el-form-item>
+        <el-date-picker  format="yyyy 年 MM 月 dd 日"
+                         value-format="yyyy-MM-dd h:m:s"
           v-model="form.send_time"
           type="datetime"
-          placeholder="选择日期时间">
+          placeholder="选择发送时间">
         </el-date-picker>
         </el-form-item>
       </el-form-item>
@@ -127,16 +129,24 @@ export default {
       this.$refs[formName].validate((valid) => {
         var vm = this
         if (valid) {
+          if(vm.form.publish_time == ""){
+            vm.open("发布时间不能为空");
+            return false;
+          }
+          if(vm.form.type){
+            if(vm.form.send_time == ""){
+              vm.open("发送时间不能为空");
+              return false;
+            }
+          }
           var theForm = vm.form
           if(theForm.type){
             theForm.type = 2;
-            theForm.send_time=theForm.send_time.format('yyyy-MM-dd h:m:s')
           }else{
             theForm.type = 1;
             theForm.send_time=''
           }
           theForm.url_id=parseInt(theForm.url_id)
-          theForm.publish_time=theForm.publish_time.format('yyyy-MM-dd h:m:s')
           pushService.saveAdd(theForm).then(data=>{
             if(data.code==0){
               vm.$router.push({ path: "../../index/push/index?"+data.data.result })
@@ -164,6 +174,7 @@ export default {
           loadingInstance.close();
           if(rdata.type==1){
             rdata.type=false
+            rdata.send_time=''
           }else{
             rdata.type=true
           }
