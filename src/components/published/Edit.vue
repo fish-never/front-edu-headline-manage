@@ -239,6 +239,13 @@
       if(this.inputTags == val.tag_name){
         this.inputTags = ""
       }
+<<<<<<< HEAD
+=======
+      if(this.inputTags.indexOf(val.tag_name) >=0){ // 去掉勾选删去输入框相应部分
+         this.inputTags=this.inputTags.replace(val.tag_name,"");
+         this.inputTags=this.inputTags.replace(",,",",");// 去掉双逗号
+      }
+>>>>>>> feature/V2_user_send_626
     },
     filterCovers(list){
       var src = "";
@@ -361,6 +368,7 @@
     },
     inputTagsChange(){
       this.checkedTags = [];
+      this.inputTags=this.inputTags.replace(",,",","); // 去掉双逗号
       this.tags.forEach(item => {
         if (this.inputTags.indexOf(item.tag_name) != -1) {
           this.checkedTags.push(item.tag_name);

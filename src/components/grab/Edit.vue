@@ -2,7 +2,7 @@
   <div>
 
     <div class="location">
-      <router-link class="grey" to="/index">抓取池</router-link>>编辑  
+      <router-link class="grey" to="/index">抓取池</router-link>编辑
        <button class="detele-btn" @click="deleteLists" title="删除">删除</button>
        </div>
     <div class="wrap-margin wrap-padding">
@@ -127,13 +127,13 @@ export default {
       display_type_5:[],
       coverages:[]
 
-      
+
     };
   },
 
   watch: {
     display_type:function(){ //封面
-      this.imgShow.length =0 
+      this.imgShow.length =0
       if(this.display_type ==2){ // 690*388 单张大图
           this.selectedImgs(690,388);
             if(this.cover.length >0){
@@ -155,7 +155,7 @@ export default {
                     }
                   })
               }
-             
+
        }else{
           this.display_type = 1;
           this.open("不符合单张大图690*388,请选择其他模式")
@@ -171,7 +171,7 @@ export default {
                 }
                 this.imgShow.push(object)
               })
-              if(this.display_type == this.ruleForm.display_type){ 
+              if(this.display_type == this.ruleForm.display_type){
                 this.imgShow.forEach(item =>{
                     if(item.url ==  this.ruleForm.coverage){
                       item.selected = true
@@ -182,7 +182,7 @@ export default {
                     item.selected = false
                   })
               }
-        
+
        }else{
           this.display_type = 1;
           this.open("不符合单张小图220*140标准,请选择其他模式")
@@ -233,8 +233,16 @@ export default {
   methods: {
     //标签勾选
     changeTags(val){
+
+   //  console.log(this.inputTags);
+     // console.log(val.tag_name);
       if(this.inputTags == val.tag_name){
-        this.inputTags = ""
+        this.inputTags = "";
+      }
+      if(this.inputTags.indexOf(val.tag_name) >=0){ // 去掉勾选删去输入框相应部分
+         this.inputTags=this.inputTags.replace(val.tag_name,"");
+         this.inputTags=this.inputTags.replace(",,",",");// 去掉双逗号
+
       }
     },
     //判断是否已被选择
@@ -250,19 +258,19 @@ export default {
           this.ruleForm.coverage = item.url;
       }
      if(this.display_type ==5){
-       
+
        let ms = this.ruleForm.coverage ? this.ruleForm.coverage.split(',') : [];
 
        let idx = ms.indexOf(item.url);
        if(idx == -1){
-           ms.push(item.url); 
+           ms.push(item.url);
         }else{
-          ms.splice(idx,1); 
+          ms.splice(idx,1);
         }
         if(ms.length>3){
-          ms.splice(0,1);  
+          ms.splice(0,1);
         }
-        this.ruleForm.coverage = ms.join(','); 
+        this.ruleForm.coverage = ms.join(',');
       }
 
     },
@@ -290,14 +298,14 @@ export default {
      const n = this.ruleForm.article_imgs.length;
      let imgLists = [];
      if(n>10){
-       imgLists = this.ruleForm.article_imgs.slice(0,10) 
+       imgLists = this.ruleForm.article_imgs.slice(0,10)
      }else{
        imgLists = this.ruleForm.article_imgs
      }
      imgLists.forEach(item => {
         let height = item.img_w*item.img_radio;
         if(height>h && item.img_w>w){
-          this.cover.push(item.img_url)            
+          this.cover.push(item.img_url)
         }
       })
    },
@@ -323,14 +331,15 @@ export default {
         })
       },
     typeChange(val){
-      this.flag=true; 
+      this.flag=true;
       if(val!= undefined){
         this.getTags(val);//下拉框改变的val正好就是tpye_id
       }
-       
+
     },
     inputTagsChange(){
       this.checkedTags = [];
+      this.inputTags=this.inputTags.replace(",,",","); // 去掉双逗号
       this.tags.forEach(item => {
         if (this.inputTags.indexOf(item.tag_name) != -1) {
           this.checkedTags.push(item.tag_name);
@@ -356,7 +365,7 @@ export default {
            this.open("封面数小于3");
             return
          }
-        
+
       }
       if(type==3||type==2){
         if(n<1){
@@ -472,7 +481,7 @@ export default {
             if(this.type_id==item.id){
                 this.type_name = item.typeName;
             }
-            
+
           });
         }
       }).then(data=>{
@@ -489,7 +498,7 @@ export default {
            this.tags =temp;
           //  this.tags = data.data;
           this.tags =temp;
-          this.inputTags = this.ruleForm.tag; 
+          this.inputTags = this.ruleForm.tag;
           this.inputTagsChange()
           }
         });
@@ -498,7 +507,7 @@ export default {
 
     })
   })
-     
+
 
   },
   components: {
@@ -553,6 +562,6 @@ export default {
     padding-right: 30px;
 }
   .el-checkbox+.el-checkbox {
-    margin-left: 0px; 
+    margin-left: 0px;
   }
 </style>

@@ -6,8 +6,9 @@ import Router from 'vue-router'
 import GrabStorage from '@/components/grab/GrabStorage'
 import GrabStoragePreview from '@/components/grab/Preview'
 import GrabStorageEdit from '@/components/grab/Edit'
-import GrabStoragePublish from '@/components/grab/Publish'
-//已发布
+
+import GrabStoragePublish from '@/components/grab/publish'
+
 import Published from '@/components/published/Published'
 import PublishedPreview from '@/components/published/Preview'
 import PublishedEdit from '@/components/published/Edit'
@@ -25,14 +26,23 @@ import Tag from '@/components/tag/Tag'
 import Comment from '@/components/Comment'
 //登陆
 import Login from '@/pages/Login'
+
 //框架
-import Wrap from '@/components/_common/Wrap'
+
 //内容审核
 import contentApproval from '@/components/contentApproval/Index'
 import PublishingPool from '@/components/contentApproval/PublishingPool'
 import PublishingPoolEdit from '@/components/contentApproval/PublishingPoolEdit'
 import HotpostList from '@/components/contentApproval/HotpostList'
 import HotpostListEdit from '@/components/contentApproval/HotpostListEdit'
+
+import Wrap from '@/components/_common/Wrap'
+
+//版本管理
+import Versions from '@/components/versions/Index'
+import VersionsAdd from '@/components/versions/Add'
+import VersionsEdit from '@/components/versions/Edit'
+
 
 //推送管理
 import pushIndex from '@/components/push/index'
@@ -178,8 +188,22 @@ export default new Router({
           path: 'push/edit',
           name: 'pushEdit',
           component: pushEdit
-        }
-
+        },
+        {
+          path: 'versions',
+          name: 'versions',
+          component: Versions
+        },
+        {
+          path: 'versionsEdit/:id',
+          name: 'versionsEdit',
+          component: VersionsEdit
+        },
+        {
+          path: 'versionsAdd',
+          name: 'versionsAdd',
+          component: VersionsAdd
+        },
       ]
     }
 

@@ -18,7 +18,7 @@
       <el-table-column
         label="用户头像" width="200px">
         <template slot-scope="scope">
-          <img :src="scope.row.thumb_img" width="25px" />
+          <img :src="scope.row.thumb_img" width="25px" class="user-img" />
         </template>
       </el-table-column>
       <el-table-column
@@ -185,6 +185,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
+.user-img{
+  border-radius:100%;
+}
 
 </style>
