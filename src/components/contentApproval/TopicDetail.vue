@@ -3,14 +3,15 @@
     <div class="search-wrap">
       <span class="mgr20"><router-link to="/index/HotpostList" class="color999">社区管理</router-link>>话题管理</span>
       <!-- <span class="title">检索条件</span> -->
-      <div class="topicTitleContent">
+      <div class="topicTitleContent" >
         <div class="titleText">
-          <p class="topicTitle">#zikaozenmexue#</p>
-          <p class="topicDesc">#zikaozenmexue#</p>
-          <p class="topicDesc">#zikaozenmexue#</p>
+          <p class="topicTitle">{{title_data.name}}</p>
+          <p class="topicDesc">{{title_data.description}}</p>
+          <p class="topicDesc">{{title_data.created_at}}</p>
+          <button class="search-btn" @click="edit">编辑</button>
         </div>
       </div>
-      <div class="content" v-for="item in data.result" :key="item.id">
+      <div class="content" v-for="item in list_data.result" :key="item.id">
         <img src="../../assets/imgs/avatar.svg" class="avatar">
         <p class="userName">Lee</p>
         <p class="createdAt">{{item.created_at}}</p>
@@ -69,15 +70,18 @@
         // created_at: '',
         // content: '',
         // images: []
-        data:{},
+        list_data:{},
+        title_data:{},
         total: 10,
         page: 1,
         pageNum: 10,
+        topicId: 0
       }
     },
 
     created: function () {
       this.loadList();
+      this.loadTopicDesc();
     },
     // mounted() {
     //   if (localStorage.getItem("Token") == null) {
@@ -108,13 +112,28 @@
         this.page = 1;
         this.loadList()
       },
+      //加载话题描述
+      loadTopicDesc(){
+        const params = {
+          id: 12
+        };
+        topicManageService.topicTitleDesc(params).then(data=>{
+          if(data.code === 0){
+            this.title_data = data.data;
+            console.log(this.title_data)
+          } else {
+            console.log('err')
+          }
+        })
+      },
       //加载页面
       loadList(){
         const params = {
           page:this.page,
           pageNum:this.pageNum,
+          topic_id:12
         };
-        console.log('loaded!')
+        console.log('loaded!');
         const loadingInstance = this.$loading({ fullscreen: true });
         topicManageService.view(params).then(data=>{
           if(data.code === 0){
@@ -122,7 +141,7 @@
             this.page = parseInt(data.data.page);
             this.pageNum = parseInt(data.data.pageNum);
             this.total = parseInt(data.data.count);
-            this.data = data.data;
+            this.list_data = data.data;
             // this.itemData = data.data.result;
             //   console.log(this.itemData)
             // this.loading = false;
@@ -168,6 +187,10 @@
         this.page = val;
         this.loadList();
       },
+      //跳转编辑页面
+      edit(){
+        this.$router.push({ path: "/index/TopicEdit",query:{id:this.topicId}});
+      }
 
 
     },
@@ -276,5 +299,12 @@
     margin-top: 30px;
     margin-right: 30px;
     background-color: white;
+  }
+  .search-btn{
+    width: 70px;
+    height: 32px;
+    position: relative;
+    left: 750px;
+    top: -50px;
   }
 </style>

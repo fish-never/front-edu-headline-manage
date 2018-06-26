@@ -31,7 +31,8 @@
           topicDesc:''
         },
         page: 1,
-        pageNum: 10
+        pageNum: 10,
+        topicId: this.$route.query.id
       }
     },
 
@@ -61,16 +62,17 @@
         var token = localStorage.getItem('Token');
 
 
-          let id = "123";
+          let id = this.topicId;
           let name = this.topicEdit.topicName.toString();
           let  description = this.topicEdit.topicDesc.toString();
 
           const updateData = {
-            id: id,
+                id: id,
                 name :name,
                 description: description
           };
           console.log(updateData);
+          console.log(this.topicId);
 
 
         // $.ajax({
