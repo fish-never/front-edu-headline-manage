@@ -8,63 +8,84 @@
        <el-input v-model="username" placeholder="用户名" clearable  class="searchinput"></el-input>
         <button class="search-btn" @click="getSourceList">搜索</button>
       </div>
-    </div>
-    <el-table
-      :data="itemData"
-      tooltip-effect="dark"
-      stripe
-      style="width: 100%"
-      class="wrap-margin">
+    </div> 
+      <table class="tabwarp">
+        <tr>
+          <th>用户</th>
+          <th  class="comment_count">内容</th>
+          <th>评论时间</th>
+          <th>评论数</th>
+          <th>浏览量</th>
+          <th>点赞数</th>
+          <th>转发数</th>
+          <th>权重值</th>
+          <th>操作</th>
+          <th style="width:100px;"></th>
+        </tr>  
+        <draggable v-model="itemData" :move="getdata" @update="datadragEnd" element="tbody"><!--draggable会自动生成一个外层div标签导致与上面的tr不平齐，这里使用element="tbody"将其改变成tbody，也不会影响渲染的tr-->
+          <tr v-for="item in itemData" :key="item.key">
+          <td><div>用户</div></td>
+          <td><div> <router-link :to="{path:'/index/contentApproval/PublishingPoolEdit/'+ item.id}">{{item.content.content}}</router-link></div></td>
+          <td><div>{{item.created_at}}</div></td>
+          <td><div>{{item.comment_count}}</div></td>
+          <td><div><input type="text" v-model="item.read_count" @blur="updateData(item)" /></div></td>
+          <td><div><input type="text" v-model="item.like_count"  @blur="updateData(item)" /></div></td>
+          <td><div><input type="text" v-model="item.share_count"  @blur="updateData(item)" /></div></td>
+          <td><div><input type="text" v-model="item.weight"  @blur="updateData(item)" /></div></td>
+          <td>
+            <div>
+              <span class="link-a" type="button" @click="hotStatusHide(item)">下热门</span>
+              <span class="link-a" type="button" @click="Detele(item.id)">删除</span>
+          </div>
+          </td>
+          <td><div><img src="../../assets/imgs/drag.svg" alt="" /></div></td>
+          </tr>
+        </draggable>
+      </table> 
+     <!-- vuedraggable内部需要直接的v-for，而且数据源要相同，el-table的数据渲染方式导致它无法与vuedraggable搭配使用-->
+    <!-- <el-table   :data="itemData"    tooltip-effect="dark"  stripe   style="width: 100%"  header-align="center">
       <el-table-column   label="用户"  width="200">
         <template slot-scope="scope">
           <span class="lh30 username"><img :src="touxiang" alt="" class="userimg"></span>
           <span class="lh30 nametext">00000000</span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="内容">
+      <el-table-column   label="内容">
         <template slot-scope="scope">
           <router-link class="link-a texthandle" :to="{path:'/index/contentApproval/HotpostListEdit/'+ scope.row.id}">{{scope.row.content.content}}</router-link>
         </template>
       </el-table-column>
-      <el-table-column
-        label="评论时间">
+      <el-table-column  label="评论时间" align="center">
         <template slot-scope="scope">
           <span>{{scope.row.created_at}}</span>
         </template>
       </el-table-column>
-      <el-table-column
-      label="评论数"  width="60px">
+      <el-table-column  label="评论数"  width="60px" align="center">
       <template slot-scope="scope">
         <span>{{scope.row.comment_count}}</span>
       </template>
     </el-table-column>
-         <el-table-column
-      label="浏览量" width="60px">
+         <el-table-column   label="浏览量" width="60px" align="center">
       <template slot-scope="scope">
          <input v-model="scope.row.read_count" class="numinput" @blur="updateData(scope.row)" />
       </template>
     </el-table-column>
-    <el-table-column
-      label="点赞数"  width="60px">
+    <el-table-column  label="点赞数"  width="60px" align="center">
       <template slot-scope="scope">
          <input v-model="scope.row.like_count" class="numinput" @blur="updateData(scope.row)" />
       </template>
     </el-table-column>
-    
-    <el-table-column
-      label="转发数"  width="60px">
+    <el-table-column  label="转发数"  width="60px" align="center">
       <template slot-scope="scope">
          <input v-model="scope.row.share_count" class="numinput" @blur="updateData(scope.row)" />
       </template>
     </el-table-column>
-    <el-table-column
-      label="权重值"  width="60px">
+    <el-table-column  label="权重值"  width="60px" align="center">
       <template slot-scope="scope">
          <input v-model="scope.row.weight" class="numinput" @blur="updateData(scope.row)" />
       </template>
     </el-table-column>
-      <el-table-column label="操作"  width="150px">
+      <el-table-column label="操作"  width="150px" align="center">
         <template slot-scope="scope">
             <span class="link-a" type="button" @click="hotStatusHide(scope.row)">下热门</span>
           <span class="link-a" type="button" @click="Detele(scope.row.id)">删除</span>
@@ -75,7 +96,7 @@
             <span class="link-a" type="button" @click="Detele(scope.row.id)"><img src="../../assets/imgs/drag.svg" alt="" /></span>
         </template>
       </el-table-column>
-    </el-table>
+    </el-table>     -->
     <el-pagination
       class="page-wrap"
       @size-change="handleSizeChange"
@@ -86,12 +107,12 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
-
   </div>
 </template>
 
 <script>
 import postList from "../../service/postList"; //控制器
+import draggable from 'vuedraggable'; 
 export default {
   name: "grab",
   data() {
@@ -106,7 +127,10 @@ export default {
       username:"",
       touxiang:require("../../assets/imgs/userimg1.png")
     };
-  },
+  },  
+  components: {
+      draggable  
+  },  
   mounted() {
     if (localStorage.getItem("Token") == null) {
       this.$router.push({ path: "/" });
@@ -121,6 +145,24 @@ export default {
     }
   },
   methods: {
+    getdata(evt) {  
+       //evt.draggedContext.element.id
+    },  
+    rnd(n,m){
+        var random = Math.floor(Math.random()*(m-n+1)+n);
+        return random>=0?random:-random; //去掉负数
+    },
+    datadragEnd(evt,item) {  
+        console.log('拖动前的索引 :' + evt.oldIndex);
+        console.log('拖动后的索引 :' + evt.newIndex); 
+          if(evt.newIndex <= evt.oldIndex){ //虽然这里作了头尾索引越界处理，但是插件本身不支持边界索引查询
+         this.itemData[evt.newIndex].weight = parseInt(this.itemData[evt.newIndex+1].weight)+parseInt(this.rnd(this.itemData[evt.newIndex-1].weight,this.itemData[evt.newIndex+1].weight));
+         this.updateData(this.itemData[evt.newIndex]);
+          } else if(evt.newIndex > evt.oldIndex) {
+            this.itemData[evt.newIndex].weight = parseInt(this.itemData[evt.newIndex-1].weight)-parseInt(this.rnd(this.itemData[evt.newIndex-1].weight,this.itemData[evt.newIndex+1].weight));
+            this.updateData(this.itemData[evt.newIndex]);
+           }        
+    },
     //弹框
     open(text) {
       this.$alert(text, "信息", {
@@ -145,7 +187,8 @@ export default {
          page: this.page,
         pageNum: this.pageNum,
         content: this.content,
-        user_name: this.username
+        user_name: this.username,
+        topic_id:0
       }).then(data => {
         if (data.code == 0) {
          loadingInstance.close();
@@ -160,6 +203,9 @@ export default {
             }
           });
            this.itemData = temp;
+           this.itemData = this.itemData.sort((a,b)=>{ // 倒序
+                return b.weight - a.weight;
+            });
           this.pageShow = true;
         } else {
           this.pageShow = false;
@@ -234,7 +280,8 @@ export default {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
+        })
+        .then(() => {
         postList.update({
           id:rowdata.id,
           comment_count:parseInt(rowdata.comment_count),
@@ -251,9 +298,9 @@ export default {
               }
             });
         })
-        // .catch(data => { 
-        //   this.open(data);      
-        // });
+        .catch(data => { 
+          this.open(data);      
+        });
 
       }
   }
@@ -261,6 +308,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.tabwarp{width:100%;border-collapse:collapse;margin:20px 0 0 20px}
+.tabwarp tr th { background: #96ABB5;color: #fff; font-size: 12px; padding: 12px 10px;}
+.maincontent{width: 400px;}
+.tabwarp tr th.comment_count{width: 400px;}
+.tabwarp tr td{text-align: center;font-size: 12px;color: #333;border-bottom: 1px solid #ebeef5;padding: 12px 0px;}
+.tabwarp tr td div{box-sizing: border-box;    white-space: normal;    word-break: break-all;    line-height: 23px;}
+.tabwarp tr td div input{display:inline-block;width:40px;border:0;border-radius: 4px;text-align: center;height:30px;line-height: 30px;}
+.tabwarp tr td div input:focus{border:1px solid #dcdfe6;background-color: none;}
+.tabwarp tr td div a{display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;height:50px;  color: #305da1;  display: inline-block; padding: 2px 5px;}
+.tabwarp tr td div img{cursor: move;}
 .lh30{line-height: 30px;}
 .texthandle{display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;cursor: pointer;}
 .searchinput{display:inline-block;width:150px;background-color: #fff; background-image: none;    border-radius: 4px;}

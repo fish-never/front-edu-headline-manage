@@ -35,6 +35,8 @@ import PublishingPool from '@/components/contentApproval/PublishingPool'
 import PublishingPoolEdit from '@/components/contentApproval/PublishingPoolEdit'
 import HotpostList from '@/components/contentApproval/HotpostList'
 import HotpostListEdit from '@/components/contentApproval/HotpostListEdit'
+import TopicEdit from '@/components/contentApproval/TopicEdit'
+import TopicDetail from '@/components/contentApproval/TopicDetail'
 
 import Wrap from '@/components/_common/Wrap'
 
@@ -108,6 +110,16 @@ export default new Router({
           path: 'contentApproval/HotpostList',
           name: 'HotpostList',
           component: HotpostList
+        },
+        {
+          path: 'TopicEdit',
+          name: 'TopicEdit',
+          component: TopicEdit
+        },
+        {
+          path: 'TopicDetail',
+          name: 'TopicDetail',
+          component: TopicDetail
         },
         {
           path: 'contentApproval/HotpostListEdit/:id',
