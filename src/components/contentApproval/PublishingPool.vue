@@ -9,57 +9,45 @@
         <button class="search-btn" @click="getSourceList">搜索</button>
       </div>
     </div>
-    <el-table
-      :data="itemData"
-      tooltip-effect="dark"
-      stripe
-      style="width: 100%"
-      class="wrap-margin">
-      <el-table-column   label="用户"  width="200">
+    <el-table  :data="itemData"  tooltip-effect="dark" stripe class="mainTab" header-align="center">
+      <el-table-column  label="用户"  width="200" >
         <template slot-scope="scope">
           <span class="lh30 username"><img :src="touxiang" alt="" class="userimg"></span>
           <span class="lh30 nametext">00000000</span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="内容">
+      <el-table-column  label="内容" >
         <template slot-scope="scope">
           <router-link class="link-a texthandle" :to="{path:'/index/contentApproval/PublishingPoolEdit/'+ scope.row.id}">{{scope.row.content.content}}</router-link>
         </template>
       </el-table-column>
-      <el-table-column
-        label="评论时间">
+      <el-table-column  label="评论时间" align="center">
         <template slot-scope="scope">
           <span>{{scope.row.created_at}}</span>
         </template>
       </el-table-column>
-      <el-table-column
-      label="评论数"  width="60px">
+      <el-table-column  label="评论数"  width="60px" align="center">
       <template slot-scope="scope">
         <input v-model="scope.row.comment_count" class="numinput" @blur="updateData(scope.row)" />
       </template>
     </el-table-column>
-         <el-table-column
-      label="浏览量" width="60px">
+         <el-table-column  label="浏览量" width="60px" align="center">
       <template slot-scope="scope">
          <input v-model="scope.row.read_count" class="numinput" @blur="updateData(scope.row)" />
       </template>
     </el-table-column>
-    <el-table-column
-      label="点赞数"  width="60px">
+    <el-table-column  label="点赞数"  width="60px" align="center">
       <template slot-scope="scope">
          <input v-model="scope.row.like_count" class="numinput" @blur="updateData(scope.row)" />
       </template>
     </el-table-column>
     
-    <el-table-column
-      label="转发数"  width="60px">
+    <el-table-column   label="转发数"  width="60px" align="center">
       <template slot-scope="scope">
          <input v-model="scope.row.share_count" class="numinput" @blur="updateData(scope.row)" />
       </template>
     </el-table-column>
-    <el-table-column
-      label="热门"  width="140">
+    <el-table-column   label="热门"  width="140"  align="center">
       <template slot-scope="scope">
         <el-tooltip :content="'当前热门状态：'+toast(scope.row.is_hot)" placement="top">
           <el-switch
@@ -73,7 +61,7 @@
         </el-tooltip>
       </template>
       </el-table-column>
-      <el-table-column label="操作"  width="150px">
+      <el-table-column label="操作"  width="150px"  align="center">
         <template slot-scope="scope">
           <span class="link-a" type="button" @click="Detele(scope.row.id)">删除</span>
         </template>
@@ -154,7 +142,8 @@ export default {
          page: this.page,
         pageNum: this.pageNum,
         content: this.content,
-        user_name: this.username
+        user_name: this.username,
+        topic_id:0
       }).then(data => {
         if (data.code == 0) {
          
@@ -232,7 +221,8 @@ export default {
 .texthandle{display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;cursor: pointer;}
 .searchinput{display:inline-block;width:150px;background-color: #fff; background-image: none;    border-radius: 4px;}
 .username{display:inline-block;}
-.userimg{width:30px;height:30px;display:block;border-radius:50%;margin-right:20px;line-height: 40px;}
+.userimg{width:30px;height:30px;display:block;border-radius:50%;margin-right:20px;line-height: 40px;float: left;}
+.el-table_22_column_192  {text-align: left;}
 .nametext{display:block;margin-top:-35px;padding-left:40px;}
 .numinput{display:inline-block;width:40px;border:0;border-radius: 4px;text-align: center;height:30px;line-height: 30px;}
 .numinput:focus{border:1px solid #dcdfe6;background-color: none;}
