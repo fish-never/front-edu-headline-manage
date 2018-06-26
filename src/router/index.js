@@ -18,7 +18,7 @@ import OperationPreview from '@/components/opetation/Preview'
 import OperationEdit from '@/components/opetation/Edit'
 import OperationPublish from '@/components/opetation/Publish'
 import OperationTextAdd from '@/components/opetation/TextAdd'
-import OperationVideoAdd from '@/components/opetation/VideoAdd' 
+import OperationVideoAdd from '@/components/opetation/VideoAdd'
 //标签
 import Tag from '@/components/tag/Tag'
 //评论
@@ -28,11 +28,17 @@ import Login from '@/pages/Login'
 //框架
 import Wrap from '@/components/_common/Wrap'
 //内容审核
-import contentApproval from '@/components/contentApproval/Index' 
+import contentApproval from '@/components/contentApproval/Index'
 import PublishingPool from '@/components/contentApproval/PublishingPool'
 import PublishingPoolEdit from '@/components/contentApproval/PublishingPoolEdit'
 import HotpostList from '@/components/contentApproval/HotpostList'
 import HotpostListEdit from '@/components/contentApproval/HotpostListEdit'
+
+//推送管理
+import pushIndex from '@/components/push/index'
+import pushReply from '@/components/push/reply'
+import pushAdd from '@/components/push/add'
+import pushEdit from '@/components/push/edit'
 
 Vue.use(Router)
 
@@ -123,11 +129,11 @@ export default new Router({
           name: 'publishedPreview',
           component: PublishedPreview
         },
-      {
-        path: 'published/publish/:id',
-          name: 'PublishedPublish',
-        component: PublishedPublish
-      },
+        {
+          path: 'published/publish/:id',
+            name: 'PublishedPublish',
+          component: PublishedPublish
+        },
         {
           path: 'operationEdit/:id',
           name: 'OperationEdit',
@@ -152,6 +158,26 @@ export default new Router({
           path: 'video',
           name: 'video',
           component: OperationVideoAdd
+        },
+        {
+          path: 'push/index',
+          name: 'pushIndex',
+          component: pushIndex
+        },
+        {
+          path: 'push/reply',
+          name: 'pushReply',
+          component: pushReply
+        },
+        {
+          path: 'push/add',
+          name: 'pushAdd',
+          component: pushAdd
+        },
+        {
+          path: 'push/edit',
+          name: 'pushEdit',
+          component: pushEdit
         }
 
       ]
