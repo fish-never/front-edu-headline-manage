@@ -19,4 +19,10 @@ export default {
       return Promise.resolve(resp.data)
     })
   },
+  //话题描述
+  topicTitleDesc(params){
+    return api.get('topic/info/view?'+qs.stringify(params)).then((resp)=>{
+      return Promise.resolve(resp.data)
+    })
+  },
 }
