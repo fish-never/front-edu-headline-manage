@@ -2,29 +2,34 @@ import Vue from 'vue'
 import Router from 'vue-router'
 //import GrabStorage from '@/components/GrabStorage'
 //import Published from '@/components/Published'
+//抓取池
 import GrabStorage from '@/components/grab/GrabStorage'
 import GrabStoragePreview from '@/components/grab/Preview'
 import GrabStorageEdit from '@/components/grab/Edit'
-import GrabStoragePublish from '@/components/grab/publish'
-
+import GrabStoragePublish from '@/components/grab/Publish'
+//已发布
 import Published from '@/components/published/Published'
 import PublishedPreview from '@/components/published/Preview'
 import PublishedEdit from '@/components/published/Edit'
-import PublishedPublish from '@/components/published/publish'
-
+import PublishedPublish from '@/components/published/Publish'
+//运营池
 import OperationStorage from '@/components/opetation/OperationStorage'
 import OperationPreview from '@/components/opetation/Preview'
 import OperationEdit from '@/components/opetation/Edit'
-import OperationPublish from '@/components/opetation/publish'
+import OperationPublish from '@/components/opetation/Publish'
 import PreviewVideoPreview from '@/components/opetation/PreviewVideo'
-import Tag from '@/components/tag/tag'
+//标签
+import Tag from '@/components/tag/Tag'
 
 
-import OperationTextAdd from '@/components/opetation/textAdd'
-import OperationVideoAdd from '@/components/opetation/videoAdd'
+import OperationTextAdd from '@/components/opetation/TextAdd'
+import OperationVideoAdd from '@/components/opetation/VideoAdd'
 
+//评论
 import Comment from '@/components/Comment'
+//登陆
 import Login from '@/pages/Login'
+//框架
 import Wrap from '@/components/_common/Wrap'
 
 //版本管理
@@ -34,6 +39,14 @@ import VersionsEdit from '@/components/versions/Edit'
 
 //import Preview from '@/components/Preview'
 //import Edit from '@/components/Edit'
+//内容审核
+import contentApproval from '@/components/contentApproval/Index'
+import PublishingPool from '@/components/contentApproval/PublishingPool'
+import PublishingPoolEdit from '@/components/contentApproval/PublishingPoolEdit'
+import HotpostList from '@/components/contentApproval/HotpostList'
+import HotpostListEdit from '@/components/contentApproval/HotpostListEdit'
+import TopicEdit from '@/components/contentApproval/TopicEdit'
+import TopicDetail from '@/components/contentApproval/TopicDetail'
 
 Vue.use(Router)
 
@@ -73,6 +86,41 @@ export default new Router({
           path: 'tag',
           name: 'tag',
           component: Tag
+        },
+        {
+          path: 'contentApproval/index',
+          name: 'contentApproval',
+          component: contentApproval
+        },
+        {
+          path: 'contentApproval/PublishingPool',
+          name: 'PublishingPool',
+          component: PublishingPool
+        },
+        {
+          path: 'contentApproval/PublishingPoolEdit/:id',
+          name: 'PublishingPoolEdit',
+          component: PublishingPoolEdit
+        },
+        {
+          path: 'contentApproval/HotpostList',
+          name: 'HotpostList',
+          component: HotpostList
+        },
+        {
+          path: 'TopicEdit',
+          name: 'TopicEdit',
+          component: TopicEdit
+        },
+        {
+          path: 'TopicDetail',
+          name: 'TopicDetail',
+          component: TopicDetail
+        },
+        {
+          path: 'contentApproval/HotpostListEdit/:id',
+          name: 'HotpostListEdit',
+          component: HotpostListEdit
         },
         {
           path: 'edit/:id',
@@ -144,7 +192,11 @@ export default new Router({
           name: 'versionsAdd',
           component: VersionsAdd
         },
-
+        {
+          path: 'video',
+          name: 'video',
+          component: OperationVideoAdd
+        }
 
 
 

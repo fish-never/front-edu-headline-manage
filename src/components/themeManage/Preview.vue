@@ -1,13 +1,12 @@
 <template>
 <div  v-loading="loading">
-    <p class="location"><router-link to="/index/operationStorage" class="grey">运营池</router-link>>预览</p>
+    <p class="location"><router-link class="grey" to="/index">抓取池</router-link>>预览</p>
     <div class="wrap wrap-margin wrap-padding">
       <div class="item">
         <h2 class="title-p" style="font-size:24px; color:#333;line-height:25px;">{{data.title}}</h2>
-        <p class="tag"><span>{{data.tag}}</span><span>{{data.source}}</span><span>{{data.created_at}}</span></p>
+        <p class="tag"><span>{{data.tag}}</span><span>{{data.source  + "  "}}</span><span>{{data.created_at}}</span></p>
         <p class="text" v-html="data.content"></p>
-        <button class="btn">发布</button>
-        <router-link  :to="{path:'/index/edit/'+data.id}" class="btn">编辑</router-link>
+        <router-link  :to="{path:'/index/edit/'+id}" class="btn">编辑</router-link>
       </div>
     </div>
 
@@ -15,7 +14,7 @@
 </template>
 
 <script>
-  import operationService from '../../service/operation';
+  import previewService from '../../service/preview';
 export default {
   name: 'preview',
   data () {
@@ -30,17 +29,13 @@ export default {
     this.id = this.$route.params.id
   },
   mounted(){
-      if (localStorage.getItem("Token") == null) {
-          this.$router.push({ path: "/" });
-          return;
-        }
-    const params = {
-       id: this.id
-    };
-    operationService.detailData(params).then(data=>{
+     if (localStorage.getItem("account") == null) {
+      this.$router.push({ path: "/" });
+      return;
+    }
+    previewService.view(this.id).then(data=>{
       if(data.code==0){
       this.data = data.data;
-      console.log(data)
       this.loading = false;
     }
     })

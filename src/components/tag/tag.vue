@@ -188,7 +188,7 @@ export default {
     };
   },
   mounted() {
-    if (localStorage.getItem("account") == null) {
+    if (localStorage.getItem("Token") == null) {
       // 没有登录信息即要跳到登录页面
       this.$router.push({ path: "/" });
       return;
