@@ -10,7 +10,7 @@
       'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
       'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 
         'table', 'hr', 'pagebreak',
-      'anchor', 'link', 'unlink', '|', 'upimage', 'upmedia', 'clearcode']" 
+      'anchor', 'link', 'unlink', '|', 'upimage', 'upmedia', 'clearcode','clearstyle']" 
       :htmlTags="{
       font: ['color', 'size', 'face', '.background-color'],
       span: ['style'],
