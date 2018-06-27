@@ -36,9 +36,15 @@
         </el-form-item>
         </el-form-item>
         <el-form-item label="视频链接" prop="video_uri" >
-          <el-input v-model="videoData.video_uri"></el-input>
+          <el-input v-model="videoFiles[0].url"></el-input>
+        
         </el-form-item>
-
+        <el-form-item class='clearfloat'>
+          <div v-for='item in videoFiles' :key="item.id" class="cover-list">
+           <UploadVideoFile v-model="item.url" />
+          </div>
+            <p class='up-img'> 点击上传视频</p>
+        </el-form-item>
          <el-form-item label="正文编辑" prop="content">
               <XEditor :content="videoData.content_html" v-on:change="onContentChange"/>
         </el-form-item>
@@ -58,11 +64,18 @@
   import commonService from '../../service/common';
   import XEditor from "../_common/Editor";
   import UploadFile from "../_common/UploadFile";
+  import UploadVideoFile from "../_common/UploadVideoFile";
   export default {
     name: 'opedit',
     data () {
       return {
         files:[
+          {
+            id:1,
+            url:""
+          }
+        ],
+        videoFiles:[
           {
             id:1,
             url:""
@@ -100,11 +113,7 @@
         typing:[
           { required: true, message: "请选择分类", trigger: "blur" },
            { min: 1, message: "长度至少1个字符",trigger: "blur" }
-        ],
-        video_uri:[
-          { required: true, message: "请输入视频连接", trigger: "blur" },
-           { min: 1, message: "长度至少1个字符",trigger: "blur" }
-        ],
+        ]
         // taging:[
         //   { required: true, message: "请选择或输入输入标签", trigger: "blur" },
         //   { min: 1, message: "请选择或输入输入标签",trigger: "blur" }
@@ -181,7 +190,6 @@
        handleClick(tab, event) {
           console.log(event);
           if(tab.index==0){
-            console.log(7777)
            this.$router.push({ path: "../../index/add" });
           }
 
@@ -202,8 +210,14 @@
        this.videoData.coverage = this.files[0].url
        this.videoData.display_type = 4;
         this.videoData.tag = this.inputTags;
+        if(this.videoFiles[0].url ==""){
+          this.open("视频地址不能为空")
+          return
+        }else{
+          this.videoData.video_uri = this.videoFiles[0].url
+        }
          console.log(JSON.stringify(this.videoData));
-          if(this.videoData.display_type == "" || this.videoData.video_uri == ""|| this.videoData.tag == "" || this.videoData.title == "" || this.videoData.source == "" || this.videoData.coverage == "" || this.videoData.display_type == null || this.videoData.video_uri == null || this.videoData.tag == null || this.videoData.title == null || this.videoData.source == null || this.videoData.coverage == null ){
+          if(this.videoData.display_type == "" || this.videoData.tag == "" || this.videoData.title == "" || this.videoData.source == "" || this.videoData.coverage == "" || this.videoData.display_type == null || this.videoData.video_uri == null || this.videoData.tag == null || this.videoData.title == null || this.videoData.source == null || this.videoData.coverage == null ){
                this.open("必填项不能为空");
                return false;
            }
@@ -240,7 +254,8 @@
     },
   components: {
     XEditor,
-    UploadFile
+    UploadFile,
+    UploadVideoFile
   }
   }
 </script>

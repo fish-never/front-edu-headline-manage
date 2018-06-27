@@ -47,13 +47,20 @@
             <el-radio :label="5" v-if="display_type !==4">三图</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item v-if="display_type!==1">
+        <el-form-item v-if="display_type!=1&& display_type!=4">
           <div v-for="(item,index) in imgShow" :key="index" class="img-item">
             <img :src="item.src" width="90" height="57" @click="checkImg(item)" :class="{line:checkCover(item.src)}"/>
           </div>
         </el-form-item>
-
-
+          <!-- <el-form-item v-if="display_type==4">
+          <div class="img-item">
+            <img :src="item.coverage" width="90" height="57"/>
+          </div>
+        </el-form-item> -->
+  
+        <el-form-item label="视频连接" required v-show="ruleForm.display_type == 4">
+          <el-input v-model="ruleForm.video_uri" placeholder="" type="num"></el-input>
+        </el-form-item>
         <el-form-item label="浏览量" required>
           <el-input v-model="ruleForm.read_count" placeholder="" type="num"></el-input>
         </el-form-item>
@@ -436,6 +443,8 @@
         let cont_html = this.ruleForm.content_html.replace(/\<img /ig, "<img onload='globalImgOnload(this)' ");
         let html = $(cont_html);
         this.inputTagsChange();
+      }else{
+
       }
     }).then(() => {
       commonService.typeList().then(data => {

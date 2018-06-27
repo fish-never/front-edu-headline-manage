@@ -27,12 +27,12 @@ export default {
 }
 
 .ke-icon-clearcode {
-	background-position: 0px -1008px;
+	background-position: 0px -976px;
 	width: 16px;
 	height: 16px;
 }
-.ke-icon-clearimg {
-	background-position: 0px -976px;
+.ke-icon-clearstyle {
+	background-position: 0px -1008px;
 	width: 16px;
 	height: 16px;
 }

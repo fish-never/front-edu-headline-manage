@@ -172,6 +172,11 @@ export default new Router({
           name: 'versionsAdd',
           component: VersionsAdd
         },
+        {
+          path: 'video',
+          name: 'video',
+          component: OperationVideoAdd
+        }
       ]
     }
 

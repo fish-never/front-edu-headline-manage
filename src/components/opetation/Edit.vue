@@ -65,7 +65,9 @@
             </div>
             <p class='up-img'>图片建议尺寸220*140</p>
           </el-form-item>
-
+        <el-form-item label="视频链接" prop="video_uri" v-show="display_type == 4">
+          <el-input v-model="ruleForm.video_uri"></el-input>
+        </el-form-item>
 
         <el-form-item>
           <button @click="saveData" class="btn" type="button">保存并预览</button>
@@ -248,6 +250,7 @@
                return false;
            }
       operationService.editData(this.ruleForm).then(data => {
+        console.log(data)
         if (data.code == 0) {
             const params = {
                 id: this.id
@@ -264,6 +267,9 @@
            this.btnShow = false;
           this.open(data.msg)
         }
+      }).catch(res =>{
+         this.btnShow = false;
+         this.open("操作失败,请稍后重试!")
       });
 
 

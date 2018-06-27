@@ -36,8 +36,7 @@ function _videoImg(blankPath, attrs) {
 	} else if (height > 0) {
 		style += 'height:' + height + 'px;';
 	}
-	// var html = '<img  class="ke-video" src="' + blankPath + '" ';
-	var html = '<video  class="ke-video" src="' + blankPath + '" ';
+	var html = '<img class="ke-up-video" src="./static/images/blank.gif" ';
 	if (style !== '') {
 		html += 'style="' + style + '" ';
 	}
@@ -60,7 +59,7 @@ KindEditor.plugin('upmedia', function(K) {
 		lang.width= '宽度';
 		lang.height  = '高度';
 		lang.autostart = '自动播放';
-		lang.upload = '选择';
+		lang.upload = '上传';
 		lang.viewServer = '文件空间';
 
 	self.plugin.upmedia = {
@@ -103,12 +102,13 @@ KindEditor.plugin('upmedia', function(K) {
 
 					name : self.lang('yes'),
 					click : function(e) {
-					
+						
 						var url = K.trim(urlBox.val()),
 							width = widthBox.val(),
 							height = heightBox.val();
+							alert(url)
 						if (url == 'http://' || K.invalidUrl(url)) {
-							console.log(self.lang('invalidUrl'));
+							alert(self.lang('invalidUrl'));
 							urlBox[0].focus();
 							return;
 						}
@@ -122,16 +122,19 @@ KindEditor.plugin('upmedia', function(K) {
 							heightBox[0].focus();
 							return;
 						}
-						console.log(url)
-						var html = _videoImg(self.themesPath + 'common/blank.gif', {
-								src : url,
-								type : K.mediaType(url),
-								width : width,
-								height : height,
-								autostart : autostartBox[0].checked ? 'true' : 'false',
-								loop : 'true'
-							});
-						
+						var ats = {
+							src : url,
+							type : K.mediaType(url),
+							width : width,
+							height : height,
+							controls: 'controls',
+							loop : 'true'
+						};
+						if(autostartBox[0].checked){
+							ats.autoplay = 'autoplay';
+						}
+						var html = _videoImg('./static/images/blank.gif', ats);
+							alert(html)
 						self.insertHtml(html).hideDialog().focus();
 					}
 				}
@@ -150,13 +153,10 @@ KindEditor.plugin('upmedia', function(K) {
 					fieldName : filePostName,
 					extraParams : extraParams,
 					url : K.addParam(uploadJson, 'dir=media'),
-					
 					afterUpload : function(data) {
 						dialog.hideLoading();
-						
 						if (data.error === 0) {
 							var url = data.url;
-							console.log(url)
 							if (formatUploadUrl) {
 								url = K.formatUrl(url, 'absolute');
 							}
@@ -215,7 +215,7 @@ KindEditor.plugin('upmedia', function(K) {
 				urlBox.val(attrs.src);
 				widthBox.val(K.removeUnit(img.css('width')) || attrs.width || 0);
 				heightBox.val(K.removeUnit(img.css('height')) || attrs.height || 0);
-				autostartBox[0].checked = (attrs.autostart === 'true');
+				autostartBox[0].checked = (attrs.autoplay === 'autoplay');
 			}
 			urlBox[0].focus();
 			urlBox[0].select();

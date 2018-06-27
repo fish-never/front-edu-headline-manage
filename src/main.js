@@ -15,10 +15,12 @@ import 'kindeditor/themes/default/default.css'
 import '../static/kindeditor/plugins/upimage/upimage.js'
 import '../static/kindeditor/plugins/upmedia/upmedia.js'
 import '../static/kindeditor/plugins/clearcode/clearcode.js'
+import '../static/kindeditor/plugins/clearstyle/clearstyle.js'
 KindEditor.lang({
   upimage : '上传图片',
   upmedia : '上传视频',
-  clearcode : '格式化',
+  clearcode : '图片格式化',
+  clearstyle:'样式格式化'
   },'zh-CN');
 // KindEditor.lang.upimage='upimage'
 // KindEditor.lang.upmedia='upmedia'
