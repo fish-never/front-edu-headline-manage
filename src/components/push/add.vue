@@ -1,5 +1,5 @@
 <template>
-<div  v-loading="loading">
+<div  v-loading="loading" class="pushadd">
   <div class="search-wrap  mgr20">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item>推送管理</el-breadcrumb-item>
@@ -7,23 +7,35 @@
       <el-breadcrumb-item>新增推送</el-breadcrumb-item>
     </el-breadcrumb>
   </div>
-  <div class="search-wrap" style="width:500px;">
+  <div class="search-wrap" style="width:600px;">
     <el-form ref="form" :model="form" label-width="100px" :rules="rules">
       <el-form-item label="文章标题"  prop="title">
-        <el-input v-model="form.title"></el-input>
+        <el-input v-model="form.title" maxlength="35"></el-input>
       </el-form-item>
-      <el-form-item label="发布时间" required>
-        <el-form-item prop="publish_time">
+      <el-form-item label="发布时间" required  class="datetime">
+        <el-form-item prop="data1">
         <el-date-picker format="yyyy 年 MM 月 dd 日"
-                        value-format="yyyy-MM-dd h:m:s"
-          v-model="form.publish_time"
-          type="datetime"
-          placeholder="选择日期时间">
+                        value-format="yyyy-MM-dd"
+                        v-model="form.data1"
+                        type="date"
+                        placeholder="选择日期">
         </el-date-picker>
         </el-form-item>
+          <el-form-item prop="time1">
+        <el-time-select
+          v-model="form.time1" format="h时m分s秒"
+          value-format="yyyy-MM-dd h:m:s"
+          :picker-options="{
+    start: '00:00',
+    step: '00:05',
+    end: '23:55'
+  }"
+          placeholder="选择时间">
+        </el-time-select>
+          </el-form-item>
       </el-form-item>
       <el-form-item label="文章摘要" prop="description">
-        <el-input type="textarea" v-model="form.description"></el-input>
+        <el-input type="textarea" v-model="form.description" maxlength="75"></el-input>
       </el-form-item>
       <el-form-item label="open ID" prop="openids">
         <el-input v-model="form.openids"></el-input>
@@ -31,25 +43,37 @@
 
       <el-form-item label="进入小程序查看的位置" class="lineheight20" prop="url">
         <el-select v-model="form.url" placeholder="请选择进入小程序查看的位置">
-          <el-option label="小程序首页" value="pages/index1/index1">小程序首页</el-option>
-          <el-option label="文章详情页" value="pages/index1/index1">文章详情页</el-option>
+          <el-option label="小程序首页" value="1">小程序首页</el-option>
+          <el-option label="文章详情页" value="2">文章详情页</el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="文章ID" v-if="form.url=='pages/article/article'" prop="url_id">
+      <el-form-item label="文章ID" v-if="form.url=='2'" prop="url_id">
         <el-input v-model="form.url_id"></el-input>
       </el-form-item>
       <el-form-item label="定时发送" >
-        <el-switch v-model="form.type"></el-switch>
+        <el-switch v-model="type"></el-switch>
       </el-form-item>
 
-      <el-form-item label="" v-if="form.type==true">
-        <el-form-item prop="send_time">
-        <el-date-picker format="yyyy 年 MM 月 dd 日"
-                        value-format="yyyy-MM-dd h:m:s"
-          v-model="form.send_time"
-          type="datetime"
-          placeholder="选择日期时间">
-        </el-date-picker>
+      <el-form-item label="" v-if="type==true" class="datetime">
+        <el-form-item prop="data2">
+          <el-date-picker format="yyyy 年 MM 月 dd 日"
+                          value-format="yyyy-MM-dd"
+                          v-model="form.data2"
+                          type="date"
+                          placeholder="选择日期">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item prop="time2">
+          <el-time-select
+            v-model="form.time2" format="h时m分s秒"
+            value-format="yyyy-MM-dd h:m:s"
+            :picker-options="{
+    start: '00:00',
+    step: '00:05',
+    end: '23:55'
+  }"
+            placeholder="选择时间">
+          </el-time-select>
         </el-form-item>
       </el-form-item>
       <el-form-item>
@@ -73,12 +97,17 @@ export default {
       data:[],
       id:"",
       btnShow:false,
+      type:false,
       form: {
         title: '',
+        time1:'',
+        data1:'',
+        time2:'',
+        data2:'',
         url: 'pages/index1/index1',
         publish_time: '',
         send_time: '',
-        type: false,
+        type: 1,
         url_id: '0',
         openids:'',
         description:''
@@ -91,6 +120,18 @@ export default {
           { required: true, message: '请选择进入小程序查看的位置',trigger: 'change'}
         ],
         publish_time: [
+          {  required: true, message: '请选择时间',trigger: 'change'}
+        ],
+        data2: [
+          {  required: true, message: '请选择日期',trigger: 'change'}
+        ],
+        time2: [
+          {  required: true, message: '请选择时间',trigger: 'change'}
+        ],
+        data1: [
+          {  required: true, message: '请选择日期',trigger: 'change'}
+        ],
+        time1: [
           {  required: true, message: '请选择时间',trigger: 'change'}
         ],
         send_time: [
@@ -133,17 +174,20 @@ export default {
       this.$refs[formName].validate((valid) => {
         var vm = this
         if (valid) {
-          var theForm = vm.form
-          if(theForm.type){
-            theForm.type = 2;
+          vm.form.url="pages/index1/index1"
+          vm.form.publish_time=vm.form.data1+' '+vm.form.time1
+          vm.form.send_time=vm.form.data2+' '+vm.form.time2
+
+          if(vm.type){
+            vm.form.type = 2;
             //theForm.send_time=theForm.send_time.format('yyyy-MM-dd h:m:s')
           }else{
-            theForm.type = 1;
-            theForm.send_time=''
+            vm.form.type = 1;
+            vm.form.send_time=''
           }
-          theForm.url_id=parseInt(theForm.url_id)
+          vm.form.url_id=parseInt(vm.form.url_id)
           //theForm.publish_time=theForm.publish_time.format('yyyy-MM-dd h:m:s')
-          pushService.saveAdd(theForm).then(data=>{
+          pushService.saveAdd(vm.form).then(data=>{
             if(data.code==0){
               vm.$router.push({ path: "../../index/push/index?"+data.data.result })
             }else{
@@ -183,8 +227,11 @@ export default {
     return format;
   }
 </script>
+
 <style>
+  .pushadd .datetime .el-form-item{float:left;margin-right:20px;}
   .lineheight20 .el-form-item__label{line-height: 20px;}
+  .inline .el-breadcrumb{float:left;height:32px;line-height: 32px;margin-right:20px;}
 </style>
 <style lang="scss" scoped>
   .title-p{

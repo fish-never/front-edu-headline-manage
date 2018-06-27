@@ -1,8 +1,10 @@
 <template>
   <div  v-loading="loading" id="pushReply">
-    <div class="search-wrap">
-      <span class="mgr20"><router-link to="/index/publishingPool">推送管理</router-link>>回复推送管理</span>
-
+    <div class="search-wrap inline">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item>推送管理</el-breadcrumb-item>
+        <el-breadcrumb-item>回复推送管理</el-breadcrumb-item>
+      </el-breadcrumb>
       <el-input v-model="content" size="small" placeholder="请输入文章标题" clearable class="searchinput mgr20" style="width:150px;"></el-input>
       <button class="search-btn" @click="getSourceList">搜索</button>
     </div>
@@ -158,7 +160,9 @@
     }
   }
 </script>
-
+<style>
+  .inline .el-breadcrumb{float:left;height:32px;line-height: 32px;margin-right:20px;}
+</style>
 <style scoped lang="scss">
 
   .link-a:visited{

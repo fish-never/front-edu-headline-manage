@@ -1,16 +1,16 @@
 <template>
   <div class="push" v-loading="loading" id="pushIndex">
-    <div class="search-wrap mgr20">
+    <div class="search-wrap inline">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item>推送管理</el-breadcrumb-item>
         <el-breadcrumb-item>运营推送管理</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
-    <div class="search-wrap">
       <el-input v-model="content" size="small" placeholder="请输入文章标题" clearable class="searchinput mgr20" style="width:150px;"></el-input>
       <div class="block" size="small" style="width:220px;display:inline-block;height:32px;line-height: 32px;">
-        <el-date-picker v-model="value1" type="date" placeholder="创建时间">
+        <el-date-picker v-model="value1" type="date" placeholder="创建时间"  format="yyyy 年 MM 月 dd 日"
+                        value-format="yyyy-MM-dd">
         </el-date-picker>
+
       </div>
       <button class="search-btn" @click="getSourceList">搜索</button>
       <button class="detele-btn" @click="addlist" title="删除">新增</button>
@@ -42,7 +42,7 @@
       <el-table-column
         label="创建时间" class="table-th">
         <template slot-scope="scope">
-          <span>{{ scope.row.publish_time }}</span>
+          <span>{{ scope.row.created_at }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -186,9 +186,6 @@ export default {
       })
     },
     verbList:function(){
-      if(this.value1&&this.value1!=''){
-        this.value1=this.value1.format('yyyy-MM-dd h:m:s')
-      }
 
       const params = {
         title:this.content,
@@ -259,6 +256,9 @@ export default {
     return format;
   }
 </script>
+<style>
+  .inline .el-breadcrumb{float:left;height:32px;line-height: 32px;margin-right:20px;}
+</style>
 <style>
 
 .push .el-input__inner {

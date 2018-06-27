@@ -1,5 +1,5 @@
 <template>
-<div  v-loading="loading">
+<div  v-loading="loading" class="pushedit">
   <div class="search-wrap">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item>推送管理</el-breadcrumb-item>
@@ -7,23 +7,35 @@
       <el-breadcrumb-item>编辑推送</el-breadcrumb-item>
     </el-breadcrumb>
   </div>
-  <div class="search-wrap" style="width:500px;">
+  <div class="search-wrap" style="width:600px;">
     <el-form ref="form" :model="form" label-width="100px" :rules="rules">
       <el-form-item label="文章标题"  prop="title">
-        <el-input v-model="form.title"></el-input>
+        <el-input v-model="form.title" maxlength="35"></el-input>
       </el-form-item>
-      <el-form-item label="发布时间" required>
-        <el-form-item >
-        <el-date-picker format="yyyy 年 MM 月 dd 日"
-                        value-format="yyyy-MM-dd h:m:s"
-          v-model="form.publish_time"
-          type="datetime"
-          placeholder="选择日期时间">
-        </el-date-picker>
+      <el-form-item label="发布时间" required  class="datetime">
+        <el-form-item prop="data1">
+          <el-date-picker format="yyyy 年 MM 月 dd 日"
+                          value-format="yyyy-MM-dd"
+                          v-model="form.data1"
+                          type="date"
+                          placeholder="选择日期">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item prop="time1">
+          <el-time-select
+            v-model="form.time1" format="h时m分s秒"
+            value-format="yyyy-MM-dd h:m:s"
+            :picker-options="{
+    start: '00:00',
+    step: '00:05',
+    end: '23:55'
+  }"
+            placeholder="选择时间">
+          </el-time-select>
         </el-form-item>
       </el-form-item>
       <el-form-item label="文章摘要" prop="description">
-        <el-input type="textarea" v-model="form.description"></el-input>
+        <el-input type="textarea" v-model="form.description" maxlength="75"></el-input>
       </el-form-item>
       <el-form-item label="open ID" prop="openids">
         <el-input v-model="form.openids"></el-input>
@@ -39,17 +51,29 @@
         <el-input v-model="form.url_id"></el-input>
       </el-form-item>
       <el-form-item label="定时发送" >
-        <el-switch v-model="form.type"></el-switch>
+        <el-switch v-model="type"></el-switch>
       </el-form-item>
 
-      <el-form-item label="" v-if="form.type==true">
-        <el-form-item>
-        <el-date-picker  format="yyyy 年 MM 月 dd 日"
-                         value-format="yyyy-MM-dd h:m:s"
-          v-model="form.send_time"
-          type="datetime"
-          placeholder="选择发送时间">
-        </el-date-picker>
+      <el-form-item label="" v-if="type==true" class="datetime">
+        <el-form-item prop="data2">
+          <el-date-picker format="yyyy 年 MM 月 dd 日"
+                          value-format="yyyy-MM-dd"
+                          v-model="form.data2"
+                          type="date"
+                          placeholder="选择日期">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item prop="time2">
+          <el-time-select
+            v-model="form.time2" format="h时m分s秒"
+            value-format="yyyy-MM-dd h:m:s"
+            :picker-options="{
+    start: '00:00',
+    step: '00:05',
+    end: '23:55'
+  }"
+            placeholder="选择时间">
+          </el-time-select>
         </el-form-item>
       </el-form-item>
       <el-form-item>
@@ -73,15 +97,20 @@ export default {
       data:[],
       id:"",
       btnShow:false,
+      type:false,
       form: {
         title: '',
         url: 'pages/index1/index1',
         publish_time: '',
         send_time: '',
-        type: false,
+        type: 1,
         url_id: '0',
         openids:'',
-        description:''
+        description:'',
+        time1:'',
+        data1:'',
+        time2:'',
+        data2:'',
       },
       rules: {
         title: [
@@ -98,6 +127,18 @@ export default {
         ],
         url_id:[
           {  required: true, message: '请输入文章ID', trigger: 'blur' }
+        ],
+        data2: [
+          {  required: true, message: '请选择日期',trigger: 'change'}
+        ],
+        time2: [
+          {  required: true, message: '请选择时间',trigger: 'change'}
+        ],
+        data1: [
+          {  required: true, message: '请选择日期',trigger: 'change'}
+        ],
+        time1: [
+          {  required: true, message: '请选择时间',trigger: 'change'}
         ],
         type: [
           { required: true, message: '请选择活动资源', trigger: 'blur' }
@@ -129,25 +170,16 @@ export default {
       this.$refs[formName].validate((valid) => {
         var vm = this
         if (valid) {
-          if(vm.form.publish_time == ""){
-            vm.open("发布时间不能为空");
-            return false;
-          }
-          if(vm.form.type){
-            if(vm.form.send_time == ""){
-              vm.open("发送时间不能为空");
-              return false;
-            }
-          }
-          var theForm = vm.form
-          if(theForm.type){
-            theForm.type = 2;
+
+          //var theForm = vm.form
+          if(vm.type){
+            vm.form.type = 2;
           }else{
-            theForm.type = 1;
-            theForm.send_time=''
+            vm.form.type = 1;
+            vm.form.send_time=''
           }
-          theForm.url_id=parseInt(theForm.url_id)
-          pushService.sendNow(theForm).then(data=>{
+          vm.form.url_id=parseInt(vm.form.url_id)
+          pushService.sendNow(vm.form).then(data=>{
             if(data.code==0){
               vm.$router.push({ path: "../../index/push/index?"+data.data.result })
             }else{
@@ -172,6 +204,9 @@ export default {
         if(data.code==0){
           const rdata=data.data
           loadingInstance.close();
+          const datetime1=rdata.publish_time.split(" ")
+          rdata.data1=datetime1[0]
+          rdata.time1=datetime1[1]
           if(rdata.type==1){
             rdata.type=false
             rdata.send_time=''
@@ -214,6 +249,7 @@ export default {
   }
 </script>
 <style>
+  .pushedit .datetime .el-form-item{float:left;margin-right:20px;}
   .lineheight20 .el-form-item__label{line-height: 20px;}
 </style>
 <style lang="scss" scoped>
