@@ -22,16 +22,10 @@
         </el-date-picker>
         </el-form-item>
           <el-form-item prop="time1">
-        <el-time-select
-          v-model="form.time1" format="h时m分s秒"
-          value-format="yyyy-MM-dd h:m:s"
-          :picker-options="{
-    start: '00:00',
-    step: '00:01',
-    end: '23:55'
-  }"
-          placeholder="选择时间">
-        </el-time-select>
+            <el-time-picker v-model="form.time1" :editable="true" placeholder="选择时间" format="h时m分s秒"
+                            value-format="h:m:s">
+            </el-time-picker>
+
           </el-form-item>
       </el-form-item>
       <el-form-item label="文章摘要" prop="description">
@@ -64,16 +58,10 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item prop="time2">
-          <el-time-select
-            v-model="form.time2" format="h时m分s秒"
-            value-format="yyyy-MM-dd h:m:s"
-            :picker-options="{
-    start: '00:00',
-    step: '00:05',
-    end: '23:55'
-  }"
-            placeholder="选择时间">
-          </el-time-select>
+
+          <el-time-picker v-model="form.time2" :editable="true" placeholder="选择时间" format="h时m分s秒"
+                          value-format="h:m:s">
+          </el-time-picker>
         </el-form-item>
       </el-form-item>
       <el-form-item>
