@@ -27,7 +27,7 @@
             value-format="yyyy-MM-dd h:m:s"
             :picker-options="{
     start: '00:00',
-    step: '00:05',
+    step: '00:01',
     end: '23:55'
   }"
             placeholder="选择时间">
@@ -42,12 +42,12 @@
       </el-form-item>
 
       <el-form-item label="进入小程序查看的位置" class="lineheight20" prop="url">
-        <el-select v-model="form.url" placeholder="请选择进入小程序查看的位置">
-          <el-option label="小程序首页" value="pages/index1/index1">小程序首页</el-option>
-          <el-option label="文章详情页" value="pages/article/article">文章详情页</el-option>
+        <el-select v-model="url" placeholder="请选择进入小程序查看的位置">
+          <el-option label="小程序首页" value="小程序首页">小程序首页</el-option>
+          <el-option label="文章详情页" value="文章详情页">文章详情页</el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="文章ID" v-if="form.url=='pages/article/article'" prop="url_id">
+      <el-form-item label="文章ID" v-if="url=='文章详情页'" prop="url_id">
         <el-input v-model="form.url_id"></el-input>
       </el-form-item>
       <el-form-item label="定时发送" >
@@ -98,6 +98,7 @@ export default {
       id:"",
       btnShow:false,
       type:false,
+      url:'小程序首页',
       form: {
         title: '',
         url: 'pages/index1/index1',
@@ -170,7 +171,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         var vm = this
         if (valid) {
-
+          vm.form.url="pages/index1/index1"
           //var theForm = vm.form
           if(vm.type){
             vm.form.type = 2;
@@ -179,7 +180,7 @@ export default {
             vm.form.send_time=''
           }
           vm.form.url_id=parseInt(vm.form.url_id)
-          pushService.sendNow(vm.form).then(data=>{
+          pushService.update(vm.form).then(data=>{
             if(data.code==0){
               vm.$router.push({ path: "../../index/push/index?"+data.data.result })
             }else{
@@ -208,10 +209,18 @@ export default {
           rdata.data1=datetime1[0]
           rdata.time1=datetime1[1]
           if(rdata.type==1){
-            rdata.type=false
+            vm.type=false
             rdata.send_time=''
           }else{
-            rdata.type=true
+            vm.type=true
+            const datetime2=rdata.send_time.split(" ")
+            rdata.data2=datetime2[0]
+            rdata.time2=datetime2[1]
+          }
+          if(rdata.url_id&& rdata.url_id!=''&&rdata.url_id!=0){
+            vm.url="文章详情页"
+          }else{
+            vm.url="小程序首页"
           }
           vm.form=rdata
         }else{

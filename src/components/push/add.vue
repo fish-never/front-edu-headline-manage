@@ -27,7 +27,7 @@
           value-format="yyyy-MM-dd h:m:s"
           :picker-options="{
     start: '00:00',
-    step: '00:05',
+    step: '00:01',
     end: '23:55'
   }"
           placeholder="选择时间">
@@ -42,12 +42,12 @@
       </el-form-item>
 
       <el-form-item label="进入小程序查看的位置" class="lineheight20" prop="url">
-        <el-select v-model="form.url" placeholder="请选择进入小程序查看的位置">
+        <el-select v-model="url" placeholder="请选择进入小程序查看的位置">
           <el-option label="小程序首页" value="1">小程序首页</el-option>
           <el-option label="文章详情页" value="2">文章详情页</el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="文章ID" v-if="form.url=='2'" prop="url_id">
+      <el-form-item label="文章ID" v-if="url=='2'" prop="url_id">
         <el-input v-model="form.url_id"></el-input>
       </el-form-item>
       <el-form-item label="定时发送" >
@@ -98,6 +98,7 @@ export default {
       id:"",
       btnShow:false,
       type:false,
+      url:'小程序首页',
       form: {
         title: '',
         time1:'',
@@ -187,14 +188,25 @@ export default {
           }
           vm.form.url_id=parseInt(vm.form.url_id)
           //theForm.publish_time=theForm.publish_time.format('yyyy-MM-dd h:m:s')
-          pushService.saveAdd(vm.form).then(data=>{
-            if(data.code==0){
-              vm.$router.push({ path: "../../index/push/index?"+data.data.result })
-            }else{
-              vm.btnShow = false;
-              vm.open(data.msg)
-            }
-          })
+
+          this.$confirm('确定保存吗?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            pushService.saveAdd(vm.form).then(data=>{
+              if(data.code==0){
+                vm.$router.push({ path: "../../index/push/index?"+data.data.result })
+              }else{
+                vm.btnShow = false;
+                vm.open(data.msg)
+              }
+            })
+          }).catch(() => {
+          });
+
+
+
         } else {
           console.log('error submit!!');
           return false;

@@ -22,6 +22,11 @@ export default {
       return Promise.resolve(resp.data)
     })
   },
+  update(data){
+    return api.post('send/index/update',data,true).then((resp)=>{
+      return Promise.resolve(resp.data)
+    })
+  },
   getDetail(data){
     return api.post('send/index/detail',data,true).then((resp)=>{
       return Promise.resolve(resp.data)
