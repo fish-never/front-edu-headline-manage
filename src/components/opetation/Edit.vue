@@ -248,6 +248,7 @@
                return false;
            }
       operationService.editData(this.ruleForm).then(data => {
+        console.log(data)
         if (data.code == 0) {
             const params = {
                 id: this.id
@@ -264,6 +265,9 @@
            this.btnShow = false;
           this.open(data.msg)
         }
+      }).catch(res =>{
+         this.btnShow = false;
+         this.open("操作失败,请稍后重试!")
       });
 
 

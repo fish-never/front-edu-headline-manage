@@ -9,10 +9,20 @@
           </el-form-item>
           <el-form-item label="来源：" prop="source">
             <p v-text="data.source"></p>
+          </el-form-item>       
+          <!-- <el-form-item label="原始链接：" prop="origin_link">
+            <p v-text="data.origin_link"></p>
           </el-form-item>
+          <el-form-item label="视频链接：" prop="video_uri">
+            <p v-text="data.video_uri"></p>
+          </el-form-item> -->
           <el-form-item label="分类：" prop="type_name">
             <p v-text="data.type_name"></p>
           </el-form-item>
+          <!-- <el-form-item label="标签：" prop="tag">
+            <p v-text="data.tag"></p>
+          
+          </el-form-item> -->
           <el-form-item label="封面：" prop="coverage" >
             <p v-if="display_type == 1" >无图模式</p>
            <img :src="data.coverage" v-if="display_type != 5 && display_type != 1 "  class="img-wrap"/>
@@ -29,7 +39,7 @@
             <div v-html="data.content_html" ></div>
           </el-form-item>
         </el-form>
-        <button class="btn" @click="publishData">发布</button>
+        <button class="btn btn-left" @click="publishData">发布</button>
         <router-link  :to="{path:'/index/operationEdit/'+data.id}" class="btn">编辑</router-link>
       </div>
 
@@ -44,6 +54,7 @@
     name: 'preview',
     data () {
       return {
+        videoUrl:'../../assets/vide.mp4',
         display_type:"",
         data:{},
         id:"",
@@ -109,6 +120,9 @@
 </script>
 
 <style scoped>
+.btn-left{
+  margin-left:90px;
+}
 .wrap-html{
   border-radius:1px;
   border:1px solid rgba(150,171,181,0.2);

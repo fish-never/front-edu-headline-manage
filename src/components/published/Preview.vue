@@ -5,6 +5,11 @@
       <div class="item">
         <h2 class="title">{{data.title}}</h2>
         <p class="tag"><span>{{data.info_name}}</span><span>{{data.source}}</span><span>{{data.created_at}}</span></p>
+        <div class="video-wrap"  v-show="data.display_type == 4">
+          <video :src="data.video_uri" controls="controls">
+                您的浏览器不支持 video 标签。
+              </video>
+        </div>
         <div class="text"  style="font-size:16px;" v-html="data.content_html"></div>
         <router-link  :to="{path:'/index/published/edit/'+data.id}" class="btn">编辑</router-link>
       </div>
@@ -48,7 +53,9 @@
 
 <style scoped>
 
-
+.video-wrap{
+  margin-bottom:20px;
+}
   .wrap{
     /*display: table-cell;*/
     /*overflow-y: scroll;*/
@@ -77,7 +84,7 @@
     color:rgba(102,102,102,1);
     line-height:20px;
   }
-  .btn,.publish-btn{
+  .btn{
     width:100px;
     height:36px;
     background:linear-gradient(90deg,rgba(252,148,116,1),rgba(251,116,95,1));
@@ -87,12 +94,8 @@
     display: block;
     text-align: center;
     line-height: 36px;
+    float:none;
+    margin:30px 0 0 0;
   }
-  .publish-btn{
-    background:none;
-    color:#FD782D;
-    margin-left:30px;
-    border:1px solid #FB745F;
 
-  }
 </style>
