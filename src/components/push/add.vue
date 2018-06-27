@@ -1,9 +1,9 @@
 <template>
 <div  v-loading="loading">
-  <div class="search-wrap">
+  <div class="search-wrap  mgr20">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item>推送管理</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/' }">运营推送管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/index/push/index' }">运营推送管理</el-breadcrumb-item>
       <el-breadcrumb-item>新增推送</el-breadcrumb-item>
     </el-breadcrumb>
   </div>
@@ -14,7 +14,8 @@
       </el-form-item>
       <el-form-item label="发布时间" required>
         <el-form-item prop="publish_time">
-        <el-date-picker
+        <el-date-picker format="yyyy 年 MM 月 dd 日"
+                        value-format="yyyy-MM-dd h:m:s"
           v-model="form.publish_time"
           type="datetime"
           placeholder="选择日期时间">
@@ -31,7 +32,7 @@
       <el-form-item label="进入小程序查看的位置" class="lineheight20" prop="url">
         <el-select v-model="form.url" placeholder="请选择进入小程序查看的位置">
           <el-option label="小程序首页" value="pages/index1/index1">小程序首页</el-option>
-          <el-option label="文章详情页" value="pages/article/article">文章详情页</el-option>
+          <el-option label="文章详情页" value="pages/index1/index1">文章详情页</el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="文章ID" v-if="form.url=='pages/article/article'" prop="url_id">
@@ -43,7 +44,8 @@
 
       <el-form-item label="" v-if="form.type==true">
         <el-form-item prop="send_time">
-        <el-date-picker
+        <el-date-picker format="yyyy 年 MM 月 dd 日"
+                        value-format="yyyy-MM-dd h:m:s"
           v-model="form.send_time"
           type="datetime"
           placeholder="选择日期时间">
@@ -89,10 +91,10 @@ export default {
           { required: true, message: '请选择进入小程序查看的位置',trigger: 'change'}
         ],
         publish_time: [
-          { type: 'date', required: true, message: '请选择时间',trigger: 'change'}
+          {  required: true, message: '请选择时间',trigger: 'change'}
         ],
         send_time: [
-          { type: 'date', required: true, message: '请选择时间',trigger: 'change'}
+          {  required: true, message: '请选择时间',trigger: 'change'}
         ],
         url_id:[
           {  required: true, message: '请输入文章ID', trigger: 'blur' }
@@ -101,7 +103,7 @@ export default {
           { required: true, message: '请选择活动资源', trigger: 'blur' }
         ],
         openids:[
-          {required: true, message: 'OPENID', trigger: 'blur'}
+          { message: 'OPENID', trigger: 'blur'}
         ],
         description: [
           { required: true, message: '文章摘要', trigger: 'blur' }
@@ -134,13 +136,13 @@ export default {
           var theForm = vm.form
           if(theForm.type){
             theForm.type = 2;
-            theForm.send_time=theForm.send_time.format('yyyy-MM-dd h:m:s')
+            //theForm.send_time=theForm.send_time.format('yyyy-MM-dd h:m:s')
           }else{
             theForm.type = 1;
             theForm.send_time=''
           }
           theForm.url_id=parseInt(theForm.url_id)
-          theForm.publish_time=theForm.publish_time.format('yyyy-MM-dd h:m:s')
+          //theForm.publish_time=theForm.publish_time.format('yyyy-MM-dd h:m:s')
           pushService.saveAdd(theForm).then(data=>{
             if(data.code==0){
               vm.$router.push({ path: "../../index/push/index?"+data.data.result })

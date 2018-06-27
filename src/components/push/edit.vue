@@ -103,7 +103,7 @@ export default {
           { required: true, message: '请选择活动资源', trigger: 'blur' }
         ],
         openids:[
-          {required: true, message: 'OPENID', trigger: 'blur'}
+          { message: 'OPENID', trigger: 'blur'}
         ],
         description: [
           { required: true, message: '文章摘要', trigger: 'blur' }
@@ -147,7 +147,7 @@ export default {
             theForm.send_time=''
           }
           theForm.url_id=parseInt(theForm.url_id)
-          pushService.saveAdd(theForm).then(data=>{
+          pushService.sendNow(theForm).then(data=>{
             if(data.code==0){
               vm.$router.push({ path: "../../index/push/index?"+data.data.result })
             }else{

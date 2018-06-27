@@ -1,12 +1,15 @@
 <template>
   <div class="push" v-loading="loading" id="pushIndex">
-
+    <div class="search-wrap mgr20">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item>推送管理</el-breadcrumb-item>
+        <el-breadcrumb-item>运营推送管理</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
     <div class="search-wrap">
-      <span class="mgr20"><router-link to="/index/publishingPool">推送管理</router-link>>运营推送管理</span>
-
       <el-input v-model="content" size="small" placeholder="请输入文章标题" clearable class="searchinput mgr20" style="width:150px;"></el-input>
       <div class="block" size="small" style="width:220px;display:inline-block;height:32px;line-height: 32px;">
-        <el-date-picker v-model="value1" type="date" placeholder="选择日期">
+        <el-date-picker v-model="value1" type="date" placeholder="创建时间">
         </el-date-picker>
       </div>
       <button class="search-btn" @click="getSourceList">搜索</button>

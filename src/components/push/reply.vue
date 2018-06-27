@@ -3,7 +3,7 @@
     <div class="search-wrap">
       <span class="mgr20"><router-link to="/index/publishingPool">推送管理</router-link>>回复推送管理</span>
 
-      <el-input v-model="content" size="small" placeholder="话题关键字" clearable class="searchinput mgr20" style="width:150px;"></el-input>
+      <el-input v-model="content" size="small" placeholder="请输入文章标题" clearable class="searchinput mgr20" style="width:150px;"></el-input>
       <button class="search-btn" @click="getSourceList">搜索</button>
     </div>
     <el-table
