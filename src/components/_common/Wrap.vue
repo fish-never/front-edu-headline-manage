@@ -106,9 +106,9 @@ export default {
     },
     goto:function(e){
       this.flag = false;
-      this.curid=e.$attrs.dataId
+      //this.curid=e.$attrs.dataId
       //this.path = path;
-      this.$router.push(e.$attrs.dataPath);
+      this.$router.push(e);
     },
     gotoChild:function(path){
       this.flag = true;
