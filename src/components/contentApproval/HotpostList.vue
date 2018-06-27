@@ -4,8 +4,8 @@
       <div class="search-wrap">
          <span class="mgr20"><router-link to="/index/HotpostList">社区管理</router-link>>热帖列表</span>
         <!-- <span class="title">检索条件</span> -->
-        <el-input v-model="content" placeholder="话题关键字" clearable class="searchinput mgr20"></el-input>
-       <el-input v-model="username" placeholder="用户名" clearable  class="searchinput"></el-input>
+        <el-input v-model="content" placeholder="请输入关键字" clearable class="searchinput mgr20"></el-input>
+       <el-input v-model="username" placeholder="请输入用户名" clearable  class="searchinput"></el-input>
         <button class="search-btn" @click="getSourceList">搜索</button>
       </div>
     </div> 
@@ -25,7 +25,7 @@
         <draggable v-model="itemData" :move="getdata" @update="datadragEnd" element="tbody"><!--draggable会自动生成一个外层div标签导致与上面的tr不平齐，这里使用element="tbody"将其改变成tbody，也不会影响渲染的tr-->
           <tr v-for="item in itemData" :key="item.key">
           <td><div>用户</div></td>
-          <td><router-link class="tetxleft" :to="{path:'/index/contentApproval/HotpostListEdit/'+ item.id}">{{item.content.content}}</router-link></td>
+          <td><router-link class="link-a tetxleft" :to="{path:'/index/contentApproval/HotpostListEdit/'+ item.id}">{{item.content.content}}</router-link></td>
           <td><div>{{item.created_at}}</div></td>
           <td><div>{{item.comment_count}}</div></td>
           <td><div><input type="text" v-model="item.read_count" @blur="updateData(item)" /></div></td>

@@ -4,8 +4,8 @@
       <div class="search-wrap">
          <span class="mgr20"><router-link to="/index/publishingPool">社区管理</router-link>>热帖列表</span>
         <!-- <span class="title">检索条件</span> -->
-        <el-input v-model="content" placeholder="话题关键字" clearable class="searchinput mgr20"></el-input>
-       <el-input v-model="username" placeholder="用户名" clearable  class="searchinput"></el-input>
+        <el-input v-model="content" placeholder="请输入内容" clearable class="searchinput mgr20"></el-input>
+       <el-input v-model="username" placeholder="请输入用户名" clearable  class="searchinput"></el-input>
         <button class="search-btn" @click="getSourceList">搜索</button>
       </div>
     </div>
@@ -16,9 +16,9 @@
           <span class="lh30 nametext">00000000</span>
         </template>
       </el-table-column>
-      <el-table-column  label="内容" >
+      <el-table-column  label="内容"  align="center">
         <template slot-scope="scope">
-          <router-link class="link-a texthandle" :to="{path:'/index/contentApproval/PublishingPoolEdit/'+ scope.row.id}">{{scope.row.content.content}}</router-link>
+          <router-link class="link-a tetxleft texthandle" :to="{path:'/index/contentApproval/PublishingPoolEdit/'+ scope.row.id}">{{scope.row.content.content}}</router-link>
         </template>
       </el-table-column>
       <el-table-column  label="评论时间" align="center">
@@ -28,7 +28,7 @@
       </el-table-column>
       <el-table-column  label="评论数"  width="60px" align="center">
       <template slot-scope="scope">
-        <input v-model="scope.row.comment_count" class="numinput" @blur="updateData(scope.row)" />
+        <span>{{scope.row.comment_count}}</span>
       </template>
     </el-table-column>
          <el-table-column  label="浏览量" width="60px" align="center">
@@ -217,6 +217,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.tetxleft{text-align: left;}
 .lh30{line-height: 30px;}
 .texthandle{position: relative;overflow: hidden;display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 25px;}
 .texthandle::after{content: "......查看全部"; position: absolute; bottom: 2px; right: 0; padding-left: 60px;
@@ -230,7 +231,7 @@ background: linear-gradient(to right, transparent, #fff 55%);}
 .nametext{display:block;margin-top:-35px;padding-left:40px;}
 .numinput{display:inline-block;width:40px;border:0;border-radius: 4px;text-align: center;height:30px;line-height: 30px;}
 .numinput:focus{border:1px solid #dcdfe6;background-color: none;}
-
+.mainTab{margin:20px 0 0 20px;}
 .item-wrap {
   width: 290px;
   height: 258px;
