@@ -12,7 +12,7 @@
 <script>
 import Vue from 'vue'
 import router from '../../router'
-import uploader from '../../utils/upload'
+import uploader from '../../utils/uploadVideo'
 
 export default {
   name: "UploadFile",
