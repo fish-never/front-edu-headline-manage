@@ -153,7 +153,7 @@ export default {
       const params = {
         id:parseInt(tid),
       };
-      const loadingInstance = this.$loading({ fullscreen: true });
+      //const loadingInstance = this.$loading({ fullscreen: true });
 
       this.$confirm('确定发送吗?', '提示', {
         confirmButtonText: '确定',
@@ -163,14 +163,14 @@ export default {
         pushService.sendNow(params).then(data=>{
           if(data.code==0 && data.data.result){
             vm.open("推送成功！")
-            loadingInstance.close();
+            //loadingInstance.close();
             vm.verbList()
           }else{
             vm.open("推送失败，请重试！")
             this.pageShow=false;
             this.loading = false;
           }
-
+          loadingInstance.close();
         })
       }).catch(() => {
       });
