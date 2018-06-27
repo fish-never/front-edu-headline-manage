@@ -172,12 +172,17 @@ export default {
         var vm = this
         if (valid) {
           vm.form.url="pages/index1/index1"
+          vm.form.publish_time=vm.form.data1+' '+vm.form.time1
+          vm.form.send_time=vm.form.data2+' '+vm.form.time2
           //var theForm = vm.form
           if(vm.type){
             vm.form.type = 2;
           }else{
             vm.form.type = 1;
             vm.form.send_time=''
+          }
+          if(vm.url="小程序首页"){
+            vm.form.url_id=0
           }
           vm.form.url_id=parseInt(vm.form.url_id)
           pushService.update(vm.form).then(data=>{
