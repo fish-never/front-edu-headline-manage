@@ -172,8 +172,10 @@ export default {
         var vm = this
         if (valid) {
           if(vm.url=="文章详情页"){
+            if(vm.form.url_id==0){
             this.open("文章ID不能为0");
             return false;
+            }
           }
 
           vm.form.url="pages/index1/index1"
