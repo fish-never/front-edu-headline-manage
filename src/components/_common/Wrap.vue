@@ -35,20 +35,20 @@
              <i class="icon5 icon" :class="{curr5: path=='/index/tag'}"></i>
               <span>标签管理</span>
             </el-menu-item>
-             <el-menu-item index="5" :class="{curr: path=='/index/versions'}" @click="goto('/index/versions')">
+             <el-menu-item index="6" :class="{curr: path=='/index/versions'}" @click="goto('/index/versions')">
              <i class="icon6 icon" :class="{curr6: path=='/index/versions'}"></i>
               <span>版本管理</span>
             </el-menu-item>
-              <el-submenu index="6" :class="{curr: flag}">
+              <el-submenu index="7" :class="{curr: flag}">
                   <template slot="title" >
-                    <i class="icon6 icon" :class="{curr6:flag}"></i>
+                    <i class="icon7 icon" :class="{curr7:flag}"></i>
                     <span>社区管理</span>
                   </template>
                   <el-menu-item-group>
-                    <el-menu-item index="6-1"  @click="gotoChild('/index/contentApproval/index')">内容审核</el-menu-item>
-                    <el-menu-item index="6-2"  @click="gotoChild('/index/contentApproval/PublishingPool')">发布池内容管理</el-menu-item>
-                    <el-menu-item index="6-3"  @click="gotoChild('/index/contentApproval/HotpostList')">热帖列表</el-menu-item>
-                    <el-menu-item index="6-4" @click="gotoChild('/index/contentApproval/HotpostList')">话题管理</el-menu-item>
+                    <el-menu-item index="7-1"  @click="gotoChild('/index/contentApproval/index')">内容审核</el-menu-item>
+                    <el-menu-item index="7-2"  @click="gotoChild('/index/contentApproval/PublishingPool')">发布池内容管理</el-menu-item>
+                    <el-menu-item index="7-3"  @click="gotoChild('/index/contentApproval/HotpostList')">热帖列表</el-menu-item>
+                    <el-menu-item index="7-4" @click="gotoChild('/index/contentApproval/HotpostList')">话题管理</el-menu-item>
                   </el-menu-item-group>
                 </el-submenu>
           </el-menu>
@@ -165,6 +165,9 @@ export default {
 .icon6{
      background:url("../../assets/imgs/icon6.svg") center center no-repeat;
 }
+.icon7{
+     background:url("../../assets/imgs/icon7.svg") center center no-repeat;
+}
 .curr1{
      background:url("../../assets/imgs/icon11.svg") center center no-repeat;
 }
@@ -185,6 +188,9 @@ export default {
 }
 .curr6{
      background:url("../../assets/imgs/icon66.svg") center center no-repeat;
+}
+.curr7{
+     background:url("../../assets/imgs/icon77.svg") center center no-repeat;
 }
   .el-main{
     padding:0;
