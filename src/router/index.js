@@ -12,16 +12,16 @@ import GrabStoragePublish from '@/components/grab/publish'
 import Published from '@/components/published/Published'
 import PublishedPreview from '@/components/published/Preview'
 import PublishedEdit from '@/components/published/Edit'
-import PublishedPublish from '@/components/published/Publish'
+import PublishedPublish from '@/components/published/publish'
 //运营池
 import OperationStorage from '@/components/opetation/OperationStorage'
 import OperationPreview from '@/components/opetation/Preview'
 import OperationEdit from '@/components/opetation/Edit'
-import OperationPublish from '@/components/opetation/Publish'
-import OperationTextAdd from '@/components/opetation/TextAdd'
-import OperationVideoAdd from '@/components/opetation/VideoAdd'
+import OperationPublish from '@/components/opetation/publish'
+import OperationTextAdd from '@/components/opetation/textAdd'
+import OperationVideoAdd from '@/components/opetation/videoAdd'
 //标签
-import Tag from '@/components/tag/Tag'
+import Tag from '@/components/tag/tag'
 //评论
 import Comment from '@/components/Comment'
 //登陆
