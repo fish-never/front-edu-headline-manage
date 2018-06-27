@@ -154,18 +154,30 @@ export default {
         id:parseInt(tid),
       };
       const loadingInstance = this.$loading({ fullscreen: true });
-      pushService.sendNow(params).then(data=>{
-        if(data.code==0 && data.data.result){
-          vm.open("推送成功！")
-          loadingInstance.close();
-          vm.verbList()
-        }else{
-          vm.open("推送失败，请重试！")
-          this.pageShow=false;
-          this.loading = false;
-        }
 
-      })
+      this.$confirm('确定发送吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        pushService.sendNow(params).then(data=>{
+          if(data.code==0 && data.data.result){
+            vm.open("推送成功！")
+            loadingInstance.close();
+            vm.verbList()
+          }else{
+            vm.open("推送失败，请重试！")
+            this.pageShow=false;
+            this.loading = false;
+          }
+
+        })
+      }).catch(() => {
+      });
+
+
+
+
     },
     Delete:function(tid){
       const params = {

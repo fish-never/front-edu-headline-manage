@@ -189,23 +189,14 @@ export default {
           vm.form.url_id=parseInt(vm.form.url_id)
           //theForm.publish_time=theForm.publish_time.format('yyyy-MM-dd h:m:s')
 
-          this.$confirm('确定保存吗?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            pushService.saveAdd(vm.form).then(data=>{
-              if(data.code==0){
-                vm.$router.push({ path: "../../index/push/index?"+data.data.result })
-              }else{
-                vm.btnShow = false;
-                vm.open(data.msg)
-              }
-            })
-          }).catch(() => {
-          });
-
-
+          pushService.saveAdd(vm.form).then(data=>{
+            if(data.code==0){
+              vm.$router.push({ path: "../../index/push/index?"+data.data.result })
+            }else{
+              vm.btnShow = false;
+              vm.open(data.msg)
+            }
+          })
 
         } else {
           console.log('error submit!!');
