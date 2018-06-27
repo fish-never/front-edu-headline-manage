@@ -22,8 +22,8 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item prop="time1">
-          <el-time-picker v-model="form.time1" :editable="true" placeholder="选择时间" format=" hh 时 mm 分 ss 秒"
-                          value-format="hh:mm:ss">
+          <el-time-picker v-model="form.time1" :editable="true" placeholder="选择时间" format=" HH 时 mm 分 ss 秒"
+                          value-format="HH:mm:ss">
           </el-time-picker>
         </el-form-item>
       </el-form-item>
@@ -57,8 +57,8 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item prop="time2">
-          <el-time-picker v-model="form.time2" :editable="true" placeholder="选择时间" format=" hh 时 mm 分 ss 秒"
-                          value-format="hh:mm:ss">
+          <el-time-picker v-model="form.time2" :editable="true" placeholder="选择时间" format=" HH 时 mm 分 ss 秒"
+                          value-format="HH:mm:ss">
           </el-time-picker>
         </el-form-item>
       </el-form-item>
