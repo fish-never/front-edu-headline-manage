@@ -1,21 +1,21 @@
 <template xmlns="http://www.w3.org/1999/html">
   <div>
     <div class="search-wrap">
-        <span class="mgr20"><router-link to="/index/HotpostList" class="color999">社区管理</router-link>>热帖列表</span>
-        <!-- <span class="title">检索条件</span> -->
-        <div class="content">
-          <div class="topic  positionR">话题:</div>
-          <input type="text" placeholder=" #自考怎么学" class="topicinput mgr20" v-model="topicEdit.topicName">
-          <!--<el-input v-model="content" placeholder="话题关键字" clearable class="topicinput mgr20"></el-input>-->
-          <div class="topicdesc">话题描述:</div>
-          <!--<input type="text"  class="topicdecinput mgr20" v-model="topicEdit.topicDesc">-->
-          <textarea type="text"  class="topicdecinput mgr20" v-model="topicEdit.topicDesc"></textarea>
-          <!--<el-input v-model="username" placeholder="用户名" clearable  class="topicdecinput"></el-input>-->
-          <button @click="saveData" class="savebutton">保存</button>
-          <button class="canclebutton">取消</button>
-        </div>
+      <span class="mgr20"><router-link to="/index/HotpostList" class="color999">社区管理</router-link>>热帖列表</span>
+      <!-- <span class="title">检索条件</span> -->
+      <div class="content">
+        <div class="topic  positionR">话题:</div>
+        <input type="text" placeholder=" #自考怎么学" class="topicinput mgr20" v-model="topicEdit.topicName">
+        <!--<el-input v-model="content" placeholder="话题关键字" clearable class="topicinput mgr20"></el-input>-->
+        <div class="topicdesc">话题描述:</div>
+        <!--<input type="text"  class="topicdecinput mgr20" v-model="topicEdit.topicDesc">-->
+        <textarea type="text"  class="topicdecinput mgr20" v-model="topicEdit.topicDesc"></textarea>
+        <!--<el-input v-model="username" placeholder="用户名" clearable  class="topicdecinput"></el-input>-->
+        <button @click="saveData" class="savebutton">保存</button>
+        <button class="canclebutton">取消</button>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -62,17 +62,17 @@
         var token = localStorage.getItem('Token');
 
 
-          let id = this.topicId;
-          let name = this.topicEdit.topicName.toString();
-          let  description = this.topicEdit.topicDesc.toString();
+        let id = this.topicId;
+        let name = this.topicEdit.topicName.toString();
+        let  description = this.topicEdit.topicDesc.toString();
 
-          const updateData = {
-                id: id,
-                name :name,
-                description: description
-          };
-          console.log(updateData);
-          console.log(this.topicId);
+        const updateData = {
+          id: id,
+          name :name,
+          description: description
+        };
+        console.log(updateData);
+        console.log(this.topicId);
 
 
         // $.ajax({
