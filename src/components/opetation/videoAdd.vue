@@ -29,7 +29,7 @@
         </el-form-item>
         <el-form-item label="封面" prop="region">
          <el-form-item>
-          <div  class="cover-list">
+          <div  class="cover-list cover-list-big">
              <UploadFile v-model="files[0].url" />
           </div>
            <p class='up-img'>图片建议尺寸690*388</p>
@@ -315,6 +315,10 @@
     color:rgba(102,102,102,1);
     line-height:20px;
   }
+.cover-list-big{
+  width:300px;
+  height:150px;
+}
 .cover-list{
   float:left;
   margin-right:20px; 

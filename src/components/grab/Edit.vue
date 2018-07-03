@@ -57,12 +57,20 @@
         </el-form-item>
         <el-form-item v-if="imgShow.length>=1">
           <div v-for="(item ,index) in imgShow" :key="index">
-            <div class="img-item">
-              <img :src="item.url" width="90" height="57"  @click="checkImg(item)" :class="{line: checkCover(item.url)}" />
+            <div class="img-item" v-if="display_type==2">
+              <!-- 图片高度大于宽度110px 70px 一张大图：345px 190px 一张小图：110px 70px -->
+              <div class="cover-height cover-img-big"  v-if="item.flag>=1"  :style="{backgroundImage:'url('+ item.url +')',backgroudSize:'auto 100%'}"  @click="checkImg(item)" :class="{line: checkCover(item.url)}"></div>
+              <!-- 图片宽度大于高度 -->
+              <div class="cover-width cover-img-big" v-if="item.flag<1"  :style="{backgroundImage:'url('+ item.url +')',backgroudSize:'100%'}"  @click="checkImg(item)" :class="{line: checkCover(item.url)}"></div>
+              <!-- <img :src="item.url" width="90" height="57"  @click="checkImg(item)" :class="{line: checkCover(item.url)}" /> -->
             </div>
-           <!-- <div v-if="display_type ==5" class="img-item">
-              <img :src="item.url" width="90" height="57"  @click="checkImg(item)" :class="{line: checkCover(item.url)}"/>
-            </div> -->
+            <div class="img-item" v-if="display_type!=2">
+              <!-- 图片高度大于宽度110px 70px 一张大图：345px 190px 一张小图：110px 70px -->
+              <div class="cover-height cover-img-small"  v-if="item.flag>1" :style="{backgroundImage:'url('+ item.url +')',backgroudnSize:'auto 100%'}"  @click="checkImg(item)" :class="{line: checkCover(item.url),coverwidth:item.flag>1,coverHeight:item.flag<=1}"></div>
+              <!-- 图片宽度大于高度 -->
+              <div class="cover-width cover-img-small" v-if="item.flag<=1" :style="{backgroundImage:'url('+ item.url +')',backgroudnSize:'100%'}"  @click="checkImg(item)" :class="{line: checkCover(item.url)}"></div>
+              <!-- <img :src="item.url" width="90" height="57"  @click="checkImg(item)" :class="{line: checkCover(item.url)}" /> -->
+            </div>
           </div>
         </el-form-item>
 
@@ -136,13 +144,16 @@ export default {
       this.imgShow.length =0
       if(this.display_type ==2){ // 690*388 单张大图
           this.selectedImgs(690,388);
+          console.log(this.cover)
             if(this.cover.length >0){
               this.cover.forEach(item=>{
                 let object = {
-                  url:item,
-                  selected: false
+                  url:item.url,
+                  selected: false,
+                  flag:item.img_radio
                 }
                 this.imgShow.push(object)
+                console.log(this.imgShow)
               })
               if(this.display_type == this.ruleForm.display_type){ //默认模式如果是当前模式，封面回显
                 this.imgShow.forEach(item =>{
@@ -166,8 +177,9 @@ export default {
         if(this.cover.length >0){
              this.cover.forEach(item=>{
                 let object = {
-                  url:item,
-                  selected: false
+                  url:item.url,
+                  selected: false,
+                  flag:item.img_radio
                 }
                 this.imgShow.push(object)
               })
@@ -193,8 +205,9 @@ export default {
         if(this.cover.length >2){
              this.cover.forEach(item=>{
                 let object = {
-                  url:item,
-                  selected: false
+                  url:item.url,
+                  selected: false,
+                  flag:item.img_radio
                 }
                 this.imgShow.push(object)
               })
@@ -233,9 +246,6 @@ export default {
   methods: {
     //标签勾选
     changeTags(val){
-
-   //  console.log(this.inputTags);
-     // console.log(val.tag_name);
       if(this.inputTags == val.tag_name){
         this.inputTags = "";
       }
@@ -284,7 +294,6 @@ export default {
                  temp.push(item);
               }
             });
-            console.log("here")
            this.tags =temp;
            this.inputTags = "";
            this.inputTagsChange()
@@ -305,7 +314,11 @@ export default {
      imgLists.forEach(item => {
         let height = item.img_w*item.img_radio;
         if(height>h && item.img_w>w){
-          this.cover.push(item.img_url)
+          let data = {
+            img_radio:item.img_radio,
+            url:item.img_url
+          }
+          this.cover.push(data)
         }
       })
    },
@@ -455,7 +468,7 @@ export default {
     this.id = this.$route.params.id;
   },
   mounted() {
-     if (localStorage.getItem("Token") == null) {
+     if (localStorage.getItem("Token") == "") {
       this.$router.push({ path: "/" });
       return;
     }
@@ -522,6 +535,30 @@ export default {
 }
 </style>
 <style scoped>
+.cover-height,.cover-width{
+  background-position:center;
+  background-repeat: no-repeat;
+}
+.cover-height{
+  background-size:auto 100%;
+}
+.cover-width{
+  background-size:100% auto;
+}
+.cover-img-big{
+    width:300px;
+    height:150px;
+    border-radius:4px;
+  }
+.cover-img-small{
+  width:150px;
+  height:80px;
+  border-radius:4px;
+
+}
+.img-item{
+  margin-bottom:20px;
+}
 .line{
     border: 3px solid #409EFF;
 }
@@ -564,4 +601,6 @@ export default {
   .el-checkbox+.el-checkbox {
     margin-left: 0px;
   }
+
+
 </style>

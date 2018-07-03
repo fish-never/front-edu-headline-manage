@@ -11,7 +11,7 @@
     <el-container>
       <el-aside width="200px" class="side-bar">
         <el-col :span="24">
-          <el-menu default-active="2" class="el-menu-vertical-demo" unique-opened="true" @open="handleOpen" @close="handleClose">
+          <el-menu default-active="2" class="el-menu-vertical-demo" :unique-opened= true  @open="handleOpen" @close="handleClose">
               <el-menu-item index="/index" dataId="1" :class="{curr: curid==1}" @click="goto($event,'/index')" dataPath="/index">
                 <!-- <i class="el-icon-setting"></i> -->
               <i class="icon1 icon" :class="{curr1: path=='/index/index'}"></i>
@@ -75,6 +75,7 @@ export default {
     }
   },
   mounted(){
+    console.log(localStorage.getItem("Token"))
     this.avatar = localStorage.getItem("avatar");
     this.account = localStorage.getItem("account");
   },

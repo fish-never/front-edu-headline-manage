@@ -9,6 +9,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './element-variables.scss'
 import axios from 'axios'
 import api from './utils/axios'
+import HttpExceptionHandler from './utils/HttpExceptionHandler'
 import VueKindEditor from 'vue-kindeditor'
 import '../static/kindeditor/kindeditor.js'
 import 'kindeditor/themes/default/default.css'
@@ -22,35 +23,29 @@ KindEditor.lang({
   clearcode : '图片格式化',
   clearstyle:'样式格式化'
   },'zh-CN');
-// KindEditor.lang.upimage='upimage'
-// KindEditor.lang.upmedia='upmedia'
-// KindEditor.lang.clearcode='clearcode'
-// KindEditor.lang.clearcode='clearimg'
 Vue.use(VueKindEditor)
 import $ from 'jquery';   
 window.$ = $;
 
-
-//axios.defaults.baseURL = 'http://toutiaomanage.ministudy.com';
-////axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-//axios.defaults.headers.post['Content-Type']='application/application/json';
 let token = localStorage.getItem('Token')
 if(token){
   api.setToken(token)
+}else{
+  console.log("token")
+
 }
+
 
 Vue.prototype.$http = axios
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
-new Vue({
+let app = new Vue({
   el: '#app',
   router,
   components: { App },
   template: '<App/>'
 })
 
-
-console.log('API_URL')
-console.log(process.env.API_URL)
+HttpExceptionHandler.init(app)

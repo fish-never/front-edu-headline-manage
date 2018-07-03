@@ -170,8 +170,6 @@
       // markEdited
       mark(mark){
         mark =2;
-      // console.log(mark)
-        // return mark;
       
       },
      handleSelectionChange(val) {

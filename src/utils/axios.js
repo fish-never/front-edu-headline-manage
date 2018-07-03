@@ -28,11 +28,32 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) {
     let data = response.data;
     let status = response.status;
+    console.log(data)
+    console.log(status)
+    console.log(exceptionHandler)
+    if(data.code == 10030003){
+      
+    }
+    // if (status === 200) {
+    //     return Promise.resolve(response);
+    // } else {
+    //     if(exceptionHandler){
+    //         return exceptionHandler(response);
+    //     }else{
+    //         return Promise.reject(response);
+    //     }
+    // }
+
     if (status === 200) {
+        if(response.data.code == 10030001){
+            response.status = 403;
+            return exceptionHandler(response);
+        }
         return Promise.resolve(response);
     } else {
         if(exceptionHandler){
-            return exceptionHandler(response);
+            exceptionHandler(response);
+            return Promise.reject(response);
         }else{
             return Promise.reject(response);
         }

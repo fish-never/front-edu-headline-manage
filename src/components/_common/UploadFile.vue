@@ -1,12 +1,7 @@
 <template>
-    <div class="upload-btn"  :value="value" :style="{backgroundImage:'url('+ file +')'}">
+    <div class="upload-btn"  :value="value" :style="{backgroundImage:'url('+ file +')'}"  :class="{uploadW:flag,uploadH:flag}">
       <input type="file" class="file-input" :name="feildName" @change="fileChange"/>
-    </div>
-    <!-- <div>
-    <img class="upload-btn"  :src="file" />
-      <input type="file" class="file-input" name="imgFile" @change="fileChange"/>
-    </div> -->
-    
+    </div>  
 </template>
 
 <script>
@@ -21,6 +16,7 @@ export default {
     return {
       feildName: Date.now() + '' + parseInt(Math.random() * 100000),
       file:require("../../assets/imgs/add.png"),
+      flag:false
     };
   },
   watch:{
@@ -29,14 +25,32 @@ export default {
     },
     file(val){
       this.$emit('input', val);
+      var that = this;
+      $.ajax({
+        url:val+"?x-oss-process=image/info",
+        success:function(data){
+           console.log(data)
+           var w = parseFloat(data.ImageWidth.value)
+           var h = parseFloat(data.ImageHeight.value)
+          if(h>=w){
+              that.flag=true;
+          }else{
+              that.flag=false;
+          }
+        }
+      })
     }
+
   },
+  
   mounted() {
     if (this.value) {
       this.file = this.value;
     }
   },
+  
   methods: {
+
    fileChange: function(val){
      uploader.uploadToOss((val)=>{
        this.file = val.data.url;
@@ -52,25 +66,32 @@ export default {
 .upload-btn{
   display: inline-block;
   margin-right:16px;
-  width: 94px;
-  height: 60px;
+  width: 100%;
+  height: 100%;
   padding: 0;
   margin: 0;
   overflow:hidden;
+  background-size:100% auto;
   /* background:url('../../assets/imgs/add.png'); */
-  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
   cursor: pointer;
 }
-
+.uploadW{
+  background-size:100% auto;
+}
+.uploadH{
+    background-size: auto 100%;
+}
 .file-input{
   top:0;
   margin: 0;
   padding: 0;
-  width: 94px;
-  height: 60px;
+  width: 150px;
+  height: 80px;
   background: #fff;
   opacity: 0;
-  border:1px solid red;
+  cursor: pointer;
 }
 
 
