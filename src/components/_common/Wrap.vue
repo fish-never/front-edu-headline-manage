@@ -33,7 +33,7 @@
              <i class="icon5 icon" :class="{curr5: path=='/index/tag'}"></i>
               <span>标签管理</span>
             </el-menu-item>
-             <el-menu-item index="6" :class="{curr: path=='/index/versions'}"  dataId="6" @click="goto($event)" dataPath="/index/versions">
+            <el-menu-item index="6" dataId="6" :class="{curr: curid==6}" @click="goto($event)" dataPath="/index/versions">
              <i class="icon6 icon" :class="{curr6: path=='/index/versions'}"></i>
               <span>版本管理</span>
             </el-menu-item>

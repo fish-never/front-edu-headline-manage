@@ -2,15 +2,19 @@
   <div>
     <p class="location"><router-link to="/index/versions" class="grey">版本管理</router-link>>编辑</p>
     <div class="wrap-margin wrap-padding">
-      <el-form :model="data" label-width="120px" class="demo-ruleForm" :rules="rules" >
+      <el-form :model="data" label-width="180px" class="demo-ruleForm" :rules="rules" >
         <el-form-item label="版本号" prop="version">
           <el-col :span="11">
             <el-input v-model="data.version"  placeholder="例如版本号2.0.1,此处填写为20001"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="是否处于审核" prop="status">
-           <el-radio v-model="data.status" label="1">是</el-radio>
-           <el-radio v-model="data.status" label="0">否</el-radio>
+        <el-form-item label="是否处于审核" prop="isCheck">
+          <el-radio v-model="data.status.isCheck" label="1">是</el-radio>
+          <el-radio v-model="data.status.isCheck" label="0">否</el-radio>
+        </el-form-item>
+         <el-form-item label="是否关闭分享活动入口" prop="openShare" v-if="data.flag==2">
+          <el-radio v-model="data.status.openShare" label="1">是</el-radio>
+          <el-radio v-model="data.status.openShare" label="0">否</el-radio>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-col :span="11">
@@ -47,7 +51,8 @@
         data:{
           remark:'',
           version:'',
-          status:0
+          status:0,
+          flag:1
         },
         rules: {
           version: [
@@ -75,7 +80,12 @@
       // 保存
       textSaveData(){
         this.btnShow = true;
-        console.log(this.data)
+        let params = {
+          remark:this.data.remark,
+          version:this.data.version,
+          status:JSON.stringify(this.data.status),
+          id:this.data.id
+        };
         if(this.data.version==""){
           this.open("请输入版本号");
           this.btnShow = false;
@@ -86,7 +96,7 @@
           this.open("请选择是否处于审核")
           return
         }
-        versionsService.update(this.data).then(data=>{
+        versionsService.update(params).then(data=>{
           console.log(data)
          if(data.code==0){
             this.$router.push({ path: "../../index/versions"})
@@ -104,8 +114,15 @@
         id: this.id
       }
       versionsService.getInfo(params).then(data => {
-        console.log(data)
         this.data = data.data;
+        status = this.data.status;
+        if( status.indexOf('isCheck')>= 0){
+            this.data.status = JSON.parse(this.data.status)
+             this.data.flag = 2;
+        }else{
+             this.data.status = {"isCheck":this.data.status,"openShare":'0'}
+             this.data.flag = 1;
+        }
 
       })
 

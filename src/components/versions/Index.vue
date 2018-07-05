@@ -22,11 +22,21 @@
           <span>{{ scope.row.version }}</span>
         </template>
       </el-table-column>
-      <el-table-column
+         <el-table-column
         label="是否处于审核">
         <template slot-scope="scope">
-          <span v-if="scope.row.status == 0">否</span>
-          <span v-if="scope.row.status == 1">是</span>
+          <span v-if="scope.row.status == 0&& scope.row.flag==1">否</span>
+          <span v-if="scope.row.status == 1 && scope.row.flag==1">是</span>
+          <span v-if="scope.row.status.isCheck == 0 && scope.row.flag==2">否</span>
+          <span v-if="scope.row.status.isCheck == 1 && scope.row.flag==2">是</span>
+        </template>
+
+      </el-table-column>   
+      <el-table-column
+        label="是否打开分享入口" >
+        <template slot-scope="scope"  v-if='scope.row.flag==2'>
+          <span v-if="scope.row.status.openShare == 0">否</span>
+          <span v-if="scope.row.status.openShare == 1">是</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -67,7 +77,6 @@
         page:1,
         total: 10,
         pageSize: 10,
-        data:[],
 
       }
     },
@@ -114,7 +123,18 @@
           this.pageNum = parseInt(data.data.pageSize);
           this.total = parseInt(data.data.count);
           this.data = data.data.list;
+          this.data.forEach(item => {
+            if(item.status=='0'||item.status=='1'){
+                item.flag = 1;
+            }else{
+              item.status = JSON.parse(item.status)
+               item.flag = 2;
+            }
+
+            console.log(item)
+          });
           this.loading = false;
+          
         }else{
           this.open(data.msg)
         }

@@ -2,15 +2,19 @@
   <div>
     <p class="location"><router-link to="/index/versions" class="grey">版本管理</router-link>>新增</p>
     <div class="wrap-margin wrap-padding">
-      <el-form :model="data" label-width="120px" class="demo-ruleForm" :rules="rules" >
+      <el-form :model="data" label-width="180px" class="demo-ruleForm" :rules="rules" >
         <el-form-item label="版本号" prop="version">
           <el-col :span="11">
             <el-input v-model="data.version" placeholder="例如版本号2.0.1,此处填写为20001"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="是否处于审核" prop="status">
-          <el-radio v-model="data.status" label="1">是</el-radio>
-          <el-radio v-model="data.status" label="0">否</el-radio>
+        <el-form-item label="是否处于审核" prop="isCheck">
+          <el-radio v-model="data.isCheck" label="1">是</el-radio>
+          <el-radio v-model="data.isCheck" label="0">否</el-radio>
+        </el-form-item>
+         <el-form-item label="是否关闭分享活动入口" prop="openShare">
+          <el-radio v-model="data.openShare" label="1">是</el-radio>
+          <el-radio v-model="data.openShare" label="0">否</el-radio>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-col :span="11">
@@ -45,8 +49,12 @@
         data:{
           remark:'',
           version:'',
-          status:"0"
+          isCheck:"0",
+           openShare:"0",
+          // status:{"isCheck":'0',"openShare":"0"}
         },
+        isCheck:"0",
+        openShare:"0",
         rules: {
           version: [
             { required: true, message: '请输入版本号', trigger: 'blur' },
@@ -82,8 +90,15 @@
           this.open("请选择是否处于审核")
           return
         }
-        versionsService.add(this.data).then(data=>{
-          console.log(data)
+        let  status=JSON.stringify({"isCheck":this.data.isCheck,"openShare":this.data.openShare});
+        let params = {
+          remark:this.data.remark,
+          version:this.data.version,
+          status:status,
+        };
+        console.log(params)
+
+        versionsService.add(params).then(data=>{
          if(data.code==0){
             this.$router.push({ path: "../../index/versions"})
           }else{
