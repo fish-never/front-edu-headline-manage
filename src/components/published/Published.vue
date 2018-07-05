@@ -40,6 +40,14 @@
       width="60">
     </el-table-column>
     <el-table-column
+      type="index"
+      label="ID"
+      width="60">
+      <template slot-scope="scope">
+        <span>{{ scope.row.id }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column
       label="所属分类" width="80px">
       <template slot-scope="scope">
         <span>{{ scope.row.type_name }}</span>

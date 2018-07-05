@@ -6,16 +6,27 @@ import Router from 'vue-router'
 import GrabStorage from '@/components/grab/GrabStorage'
 import GrabStoragePreview from '@/components/grab/Preview'
 import GrabStorageEdit from '@/components/grab/Edit'
+<<<<<<< HEAD
 import GrabStoragePublish from '@/components/grab/Publish'
 //已发布
 import Published from '@/components/published/Published'
 import PublishedPreview from '@/components/published/Preview'
 import PublishedEdit from '@/components/published/Edit'
 import PublishedPublish from '@/components/published/Publish'
+=======
+
+import GrabStoragePublish from '@/components/grab/publish'
+
+import Published from '@/components/published/Published'
+import PublishedPreview from '@/components/published/Preview'
+import PublishedEdit from '@/components/published/Edit'
+import PublishedPublish from '@/components/published/publish'
+>>>>>>> master
 //运营池
 import OperationStorage from '@/components/opetation/OperationStorage'
 import OperationPreview from '@/components/opetation/Preview'
 import OperationEdit from '@/components/opetation/Edit'
+<<<<<<< HEAD
 import OperationPublish from '@/components/opetation/Publish'
 import PreviewVideoPreview from '@/components/opetation/PreviewVideo'
 //标签
@@ -25,11 +36,24 @@ import Tag from '@/components/tag/Tag'
 import OperationTextAdd from '@/components/opetation/TextAdd'
 import OperationVideoAdd from '@/components/opetation/VideoAdd'
 
+=======
+import OperationPublish from '@/components/opetation/publish'
+import OperationTextAdd from '@/components/opetation/textAdd'
+import OperationVideoAdd from '@/components/opetation/videoAdd'
+//标签
+import Tag from '@/components/tag/tag'
+>>>>>>> master
 //评论
 import Comment from '@/components/Comment'
 //登陆
 import Login from '@/pages/Login'
+<<<<<<< HEAD
 //框架
+=======
+
+//框架
+
+>>>>>>> master
 import Wrap from '@/components/_common/Wrap'
 
 //版本管理
@@ -37,6 +61,7 @@ import Versions from '@/components/versions/Index'
 import VersionsAdd from '@/components/versions/Add'
 import VersionsEdit from '@/components/versions/Edit'
 
+<<<<<<< HEAD
 //import Preview from '@/components/Preview'
 //import Edit from '@/components/Edit'
 //内容审核
@@ -47,6 +72,14 @@ import HotpostList from '@/components/contentApproval/HotpostList'
 import HotpostListEdit from '@/components/contentApproval/HotpostListEdit'
 import TopicEdit from '@/components/contentApproval/TopicEdit'
 import TopicDetail from '@/components/contentApproval/TopicDetail'
+=======
+
+//推送管理
+import pushIndex from '@/components/push/index'
+import pushReply from '@/components/push/reply'
+import pushAdd from '@/components/push/add'
+import pushEdit from '@/components/push/edit'
+>>>>>>> master
 
 Vue.use(Router)
 
@@ -147,11 +180,11 @@ export default new Router({
           name: 'publishedPreview',
           component: PublishedPreview
         },
-      {
-        path: 'published/publish/:id',
-          name: 'PublishedPublish',
-        component: PublishedPublish
-      },
+        {
+          path: 'published/publish/:id',
+            name: 'PublishedPublish',
+          component: PublishedPublish
+        },
         {
           path: 'operationEdit/:id',
           name: 'OperationEdit',
@@ -163,11 +196,6 @@ export default new Router({
           component:OperationPreview
         },
         {
-          path: 'previewVideoPreview',
-          name: 'previewVideoPreview',
-          component:PreviewVideoPreview
-        },
-        {
           path: 'operationPublish/:id',
           name: 'OperationPublish',
           component: OperationPublish
@@ -176,6 +204,31 @@ export default new Router({
           path: 'add',
           name: 'add',
           component: OperationTextAdd
+        },
+        {
+          path: 'video',
+          name: 'video',
+          component: OperationVideoAdd
+        },
+        {
+          path: 'push/index',
+          name: 'pushIndex',
+          component: pushIndex
+        },
+        {
+          path: 'push/reply',
+          name: 'pushReply',
+          component: pushReply
+        },
+        {
+          path: 'push/add',
+          name: 'pushAdd',
+          component: pushAdd
+        },
+        {
+          path: 'push/edit',
+          name: 'pushEdit',
+          component: pushEdit
         },
         {
           path: 'versions',
@@ -197,11 +250,14 @@ export default new Router({
           name: 'video',
           component: OperationVideoAdd
         }
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> master
       ]
     }
 

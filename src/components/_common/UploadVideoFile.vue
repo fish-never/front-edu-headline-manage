@@ -1,13 +1,18 @@
 <template>
-    <div class="upload-btn"  :value="value" :style="{backgroundImage:'url('+ file +')'}"  :class="{uploadW:flag,uploadH:flag}">
+    <div class="upload-btn"  :value="value" :title="file" :style="{backgroundImage:'url('+ fileBg +')'}">
       <input type="file" class="file-input" :name="feildName" @change="fileChange"/>
-    </div>  
+    </div>
+    <!-- <div>
+    <img class="upload-btn"  :src="file" />
+      <input type="file" class="file-input" name="imgFile" @change="fileChange"/>
+    </div> -->
+    
 </template>
 
 <script>
 import Vue from 'vue'
 import router from '../../router'
-import uploader from '../../utils/upload'
+import uploader from '../../utils/uploadVideo'
 
 export default {
   name: "UploadFile",
@@ -15,45 +20,35 @@ export default {
   data() {
     return {
       feildName: Date.now() + '' + parseInt(Math.random() * 100000),
-      file:require("../../assets/imgs/add.png"),
-      flag:false
+      file:null,
+      fileBg:require("../../assets/imgs/add.png")
     };
   },
   watch:{
     value(val){
+      if(val){
+        // this.fileBg = require("../../assets/imgs/video.png")
+      }
       this.file = val;
     },
     file(val){
+      console.log(val)
       this.$emit('input', val);
-      var that = this;
-      $.ajax({
-        url:val+"?x-oss-process=image/info",
-        success:function(data){
-           console.log(data)
-           var w = parseFloat(data.ImageWidth.value)
-           var h = parseFloat(data.ImageHeight.value)
-          if(h>=w){
-              that.flag=true;
-          }else{
-              that.flag=false;
-          }
-        }
-      })
     }
-
   },
-  
   mounted() {
     if (this.value) {
       this.file = this.value;
     }
   },
-  
   methods: {
-
    fileChange: function(val){
+     console.log(999)
+     console.log(val)
      uploader.uploadToOss((val)=>{
+      //  this.fileBg = require("../../assets/imgs/video.png")
        this.file = val.data.url;
+       console.log(this.file)
      }, this.feildName)
    }
   },
@@ -66,32 +61,25 @@ export default {
 .upload-btn{
   display: inline-block;
   margin-right:16px;
-  width: 100%;
-  height: 100%;
+  width: 94px;
+  height: 60px;
   padding: 0;
   margin: 0;
   overflow:hidden;
-  background-size:100% auto;
   /* background:url('../../assets/imgs/add.png'); */
-  background-position: center;
-  background-repeat: no-repeat;
+  background-size: 100% 100%;
   cursor: pointer;
 }
-.uploadW{
-  background-size:100% auto;
-}
-.uploadH{
-    background-size: auto 100%;
-}
+
 .file-input{
   top:0;
   margin: 0;
   padding: 0;
-  width: 150px;
-  height: 80px;
+  width: 94px;
+  height: 60px;
   background: #fff;
   opacity: 0;
-  cursor: pointer;
+  border:1px solid red;
 }
 
 

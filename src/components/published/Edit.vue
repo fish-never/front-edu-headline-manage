@@ -31,7 +31,7 @@
            </el-col>
         </el-form-item>
         <el-form-item label="新增标签" required>
-        
+
           <el-input v-model="inputTags" placeholder="请输入内容"></el-input>
           <el-checkbox-group
             v-model="checkedTags">
@@ -47,13 +47,32 @@
             <el-radio :label="5" v-if="display_type !==4">三图</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item v-if="display_type!==1">
+        <el-form-item v-if="display_type!=1&& display_type!=4">
           <div v-for="(item,index) in imgShow" :key="index" class="img-item">
-            <img :src="item.src" width="90" height="57" @click="checkImg(item)" :class="{line:checkCover(item.src)}"/>
+            <!-- <img :src="item.src" width="90" height="57" @click="checkImg(item)" :class="{line:checkCover(item.src)}"/> -->
+            <div class="img-item" v-if="display_type==2">
+              <div class="cover-height cover-img-big" :class="{line: checkCover(item.src)}"  v-if="item.h>=item.w"  :style="{backgroundImage:'url('+ item.src +')',backgroudSize:'auto 100%'}"  @click="checkImg(item)" ></div>
+              <!-- 图片宽度大于高度 -->
+              <div class="cover-width cover-img-big" v-if="item.h<item.w"  :style="{backgroundImage:'url('+ item.src +')',backgroudSize:'100%'}"  @click="checkImg(item)" :class="{line: checkCover(item.src)}"></div>
+            </div>
+            <div class="img-item" v-if="display_type!=2">
+              <!-- 图片高度大于宽度150px 80px 一张大图：300px 150px -->
+              <div class="cover-height cover-img-small"  v-if="item.h>=item.w"  :style="{backgroundImage:'url('+ item.src +')',backgroudnSize:'auto 100%'}"  @click="checkImg(item)" :class="{line: checkCover(item.src),coverwidth:item.flag>1,coverHeight:item.flag<=1}"></div>
+              <!-- 图片宽度大于高度 -->
+              <div class="cover-width cover-img-small" v-if="item.h<item.w" :style="{backgroundImage:'url('+ item.src +')',backgroudnSize:'100%'}"  @click="checkImg(item)" :class="{line: checkCover(item.src)}"></div>
+
+            </div>
           </div>
         </el-form-item>
-
-
+          <!-- <el-form-item v-if="display_type==4">
+          <div class="img-item">
+            <img :src="item.coverage" width="90" height="57"/>
+          </div>
+        </el-form-item> -->
+  
+        <el-form-item label="视频连接" required v-show="ruleForm.display_type == 4">
+          <el-input v-model="ruleForm.video_uri" placeholder="" type="num"></el-input>
+        </el-form-item>
         <el-form-item label="浏览量" required>
           <el-input v-model="ruleForm.read_count" placeholder="" type="num"></el-input>
         </el-form-item>
@@ -128,7 +147,7 @@
     },
     created(){
       this.id = this.$route.params.id;
-      
+
     },
     computed:{
       coverList:function(){
@@ -150,7 +169,7 @@
              this.open("不符合单张大图690*388,请选择其他模式")
            }
       }
-     if(this.display_type ==3){//220*140 单张小图    
+     if(this.display_type ==3){//220*140 单张小图
         let data = this.article_imgs.slice(0,10)
         if(data.length >0){
                 this.imgShow = data;
@@ -176,12 +195,13 @@
 
     display_type:function(){ //封面
     this.showImgs = false;
-      this.imgShow.length =0 
+      this.imgShow.length =0
       if(this.showOpen){
       if(this.display_type ==1){
         this.ruleForm.coverage = ""
       }
       if(this.display_type ==2  || this.display_type ==4){ // 690*388 单张大图
+      console.log(this.imgShow)
           this.imgShow.length = 0;
           let data = this.article_imgs.slice(0,10)
             data.forEach(item => {
@@ -194,7 +214,7 @@
              this.open("不符合单张大图690*388,请选择其他模式")
            }
       }
-     if(this.display_type ==3){//220*140 单张小图    
+     if(this.display_type ==3){//220*140 单张小图
         let data = this.article_imgs.slice(0,10);
         console.log(this.imgShow)
         if(data.length >0){
@@ -239,10 +259,12 @@
       if(this.inputTags == val.tag_name){
         this.inputTags = ""
       }
+
       if(this.inputTags.indexOf(val.tag_name) >=0){ // 去掉勾选删去输入框相应部分
          this.inputTags=this.inputTags.replace(val.tag_name,"");
          this.inputTags=this.inputTags.replace(",,",",");// 去掉双逗号
       }
+
     },
     filterCovers(list){
       var src = "";
@@ -306,7 +328,7 @@
            this.open("封面数小于3");
             return
          }
-        
+
       }
       if(type==3||type==2){
         if(n<1){
@@ -336,7 +358,7 @@
             this.open(data.msg)
           }
         })
-        }).catch(() => {       
+        }).catch(() => {
         });
 
       },
@@ -411,7 +433,7 @@
     afterChange () {
     }
     },
- 
+
     mounted(){
        window.globalImgOnload = this.globalImgOnload;
        if (localStorage.getItem("Token") == null) {
@@ -425,15 +447,17 @@
       }
     }).then(data=>{
 
-      publishedService.view(this.id).then(data=>{ 
+      publishedService.view(this.id).then(data=>{
         if(data.code==0){
         this.ruleForm = data.data;
         this.type_id = this.ruleForm.type_id;
         this.display_type = parseInt(this.ruleForm.display_type);
         this.inputTags = this.ruleForm.tag;
         let cont_html = this.ruleForm.content_html.replace(/\<img /ig, "<img onload='globalImgOnload(this)' ");
-        let html = $(cont_html); 
+        let html = $(cont_html);
         this.inputTagsChange();
+      }else{
+
       }
     }).then(() => {
       commonService.typeList().then(data => {
@@ -463,7 +487,7 @@
         }
       })
     })
-  })    
+  })
     },
     components:{
       XEditor
@@ -478,6 +502,30 @@
 }
 </style>
 <style scoped>
+.cover-height,.cover-width{
+  background-position:center;
+  background-repeat: no-repeat;
+}
+.cover-height{
+  background-size:auto 100%;
+}
+.cover-width{
+  background-size:100% auto;
+}
+.cover-img-big{
+    width:300px;
+    height:150px;
+    border-radius:4px;
+  }
+.cover-img-small{
+  width:150px;
+  height:80px;
+  border-radius:4px;
+
+}
+.img-item{
+  margin-bottom:20px;
+}
 .line{
     border: 3px solid #409EFF;
 }

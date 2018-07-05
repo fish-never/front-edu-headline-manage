@@ -5,6 +5,11 @@
       <div class="item">
         <h2 class="title-p" style="font-size:24px; color:#333;line-height:25px;">{{data.title}}</h2>
         <p class="tag"><span>{{data.tag}}</span><span>{{data.source}}</span><span>{{data.created_at}}</span></p>
+        <div class="video-wrap"  v-show="data.display_type == 4">
+          <video :src="data.video_uri" controls="controls">
+                您的浏览器不支持 video 标签。
+              </video>
+        </div>
         <p class="text" v-html="data.content_html"  style="font-size:16px;"></p>
         <div style="margin-top:30px;">
          <button class="btn" @click="publishData">发布</button>

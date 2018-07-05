@@ -41,13 +41,13 @@
 
         </el-form-item>
         <el-form-item class='clearfloat' v-show='display_type==2'>
-          <div  class="cover-list">
+          <div class="cover-list-big">
              <UploadFile v-model="files[0].url" />
           </div>
           <p class='up-img'>图片建议尺寸690*388</p>
         </el-form-item>
        <el-form-item class='clearfloat' v-show='display_type==3'>
-          <div  class="cover-list">
+          <div  class="cover-list" data-id="idList">
             <UploadFile v-model="files[0].url" />
           </div>
           <p class='up-img'>图片建议尺寸220*140</p>
@@ -135,6 +135,9 @@
       }
     },
     watch:{
+      idList:function(){
+        console.log(this.files)
+      },
       //监控封面
       display_type: function(val){
         this.textData.display_type = val;
@@ -161,10 +164,12 @@
       if(this.inputTags == val.tag_name){
         this.inputTags = ""
       }
+
       if(this.inputTags.indexOf(val.tag_name) >=0){ // 去掉勾选删去输入框相应部分
          this.inputTags=this.inputTags.replace(val.tag_name,"");
          this.inputTags=this.inputTags.replace(",,",",");// 去掉双逗号
       }
+
     },
     //根据分类查询标签
      getTags(type_id){
@@ -188,7 +193,7 @@
       this.flag=true;
       if(val!=undefined){//下拉框改变的val正好就是tpye_id,但是初始化下拉列表时val为undefined
       this.getTags(val);
-      }  
+      }
     },
      open(text) {
         this.$alert(text, '信息', {
@@ -222,7 +227,7 @@
     },
       // 保存
       textSaveData(){
-        
+
         this.btnShow = true;
         console.log(77777)
         if(this.textData.display_type ==1 ){
@@ -340,6 +345,14 @@
   }
 .cover-list{
   float:left;
-  margin-right:20px; 
+  margin-right:20px;
+  width:150px;
+  height:80px;
+}
+.cover-list-big{
+  float:left;
+  margin-right:20px;
+  width:300px;
+  height:150px;
 }
 </style>

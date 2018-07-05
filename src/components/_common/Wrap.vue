@@ -4,37 +4,43 @@
         <el-col :span="14"><img src="../../assets/imgs/logo.svg" align="center"/></el-col>
         <el-col :span="10" class="header-right">
           <img :src="avatar" width=30 align="center" />
-          {{account}}<span style="background: #E3E3E3;height:8px ;width:1px;display:inline-block;margin:0 10px;"></span> 
+          {{account}}<span style="background: #E3E3E3;height:8px ;width:1px;display:inline-block;margin:0 10px;"></span>
           <p class='logout' @click="logout">退出登录</p>
           </el-col>
       </el-header>
     <el-container>
       <el-aside width="200px" class="side-bar">
         <el-col :span="24">
+<<<<<<< HEAD
           <el-menu
             default-active="2"
             class="el-menu-vertical-demo"  @open="handleOpen" @close="handleClose">
             <el-menu-item index="1" :class="{curr: path=='/index'}" @click="goto('/index')">
+=======
+          <el-menu default-active="2" class="el-menu-vertical-demo" :unique-opened= true  @open="handleOpen" @close="handleClose">
+              <el-menu-item index="/index" dataId="1" :class="{curr: curid==1}" @click="goto($event,'/index')" dataPath="/index">
+>>>>>>> master
                 <!-- <i class="el-icon-setting"></i> -->
               <i class="icon1 icon" :class="{curr1: path=='/index/index'}"></i>
                 <span>抓取池</span>
             </el-menu-item>
-            <el-menu-item index="2" :class="{curr: path=='/index/operationStorage'}" @click="goto('/index/operationStorage')">
+            <el-menu-item index="2"  dataId="2" :class="{curr: curid==2}" @click="goto($event,'/index/operationStorage')" dataPath="/index/operationStorage">
               <i class="icon2 icon" :class="{curr2: path=='/index/operationStorage'}"></i>
                 <span>运营池</span>
             </el-menu-item>
-            <el-menu-item index="3" :class="{curr: path=='/index/published'}" @click="goto('/index/published')">
+            <el-menu-item index="3" dataId="3" :class="{curr: curid==3}" @click="goto($event)" dataPath="/index/published">
               <i class="icon3 icon" :class="{curr3: path=='/index/published'}"></i>
                 <span>已发布</span>
             </el-menu-item>
-            <el-menu-item index="4" :class="{curr: path=='/index/comment'}" @click="goto('/index/comment')">
+            <el-menu-item index="4" dataId="4" :class="{curr: curid==4}" @click="goto($event)" dataPath="/index/comment">
              <i class="icon4 icon" :class="{curr4: path=='/index/comment'}"></i>
               <span>评论管理</span>
             </el-menu-item>
-            <el-menu-item index="5" :class="{curr: path=='/index/tag'}" @click="goto('/index/tag')">
+            <el-menu-item index="5" dataId="5" :class="{curr: curid==5}" @click="goto($event)" dataPath="/index/tag">
              <i class="icon5 icon" :class="{curr5: path=='/index/tag'}"></i>
               <span>标签管理</span>
             </el-menu-item>
+<<<<<<< HEAD
              <el-menu-item index="6" :class="{curr: path=='/index/versions'}" @click="goto('/index/versions')">
              <i class="icon6 icon" :class="{curr6: path=='/index/versions'}"></i>
               <span>版本管理</span>
@@ -51,6 +57,22 @@
                     <el-menu-item index="7-4" @click="gotoChild('/index/contentApproval/HotpostList')">话题管理</el-menu-item>
                   </el-menu-item-group>
                 </el-submenu>
+=======
+             <el-menu-item index="6" :class="{curr: path=='/index/versions'}"  dataId="6" @click="goto($event)" dataPath="/index/versions">
+             <i class="icon6 icon" :class="{curr6: path=='/index/versions'}"></i>
+              <span>版本管理</span>
+            </el-menu-item>
+            <el-submenu index="7"  indexPath="/index/push/index" dataId="7" :class="{curr: curid==7}" @click="goto($event)">
+              <template slot="title" >
+                <i class="icon7 icon" :class="{curr7:curid==7}"></i>
+                <span>推送管理</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item index="7-1"  @click="gotoChild('/index/push/index')">运营推送管理</el-menu-item>
+                <el-menu-item index="7-2"  @click="gotoChild('/index/push/reply')">回复推送管理</el-menu-item>
+              </el-menu-item-group>
+            </el-submenu>
+>>>>>>> master
           </el-menu>
         </el-col>
       </el-aside>
@@ -70,19 +92,30 @@ export default {
   data () {
     return {
       path: '/index',
+      curid:0,
       msg: '',
       account:'',
       avatar:"",
+<<<<<<< HEAD
       flag:false
     }
   },
   mounted(){
+=======
+      flag:false,
+      flag01:false
+    }
+  },
+  mounted(){
+    console.log(localStorage.getItem("Token"))
+>>>>>>> master
     this.avatar = localStorage.getItem("avatar");
     this.account = localStorage.getItem("account");
   },
   methods:{
        handleOpen(key, keyPath) {
         this.flag = true;
+<<<<<<< HEAD
         this.path = '/index/contentApproval/index';
         this.$router.push(this.path);
       },
@@ -90,6 +123,19 @@ export default {
         this.flag = true;
         this.path = '/index/contentApproval/index';
         this.$router.push(this.path);
+=======
+        this.flag01=true;
+        this.curid=key
+        //this.path = '/index/contentApproval/index';
+        this.$router.push(keyPath);
+      },
+      handleClose(key, keyPath) {
+        this.flag = true;
+        this.flag01=true;
+        this.curid=key
+        //this.path = '/index/contentApproval/index';
+        this.$router.push(keyPath);
+>>>>>>> master
       },
     // logout
     logout(){
@@ -100,6 +146,7 @@ export default {
           }
         });
     },
+<<<<<<< HEAD
     goto:function(path){
       this.flag = false;
       this.path = path;
@@ -108,13 +155,26 @@ export default {
     gotoChild:function(path){
       this.flag = true;
       this.path = path;
+=======
+    goto:function(e){
+      this.flag = false;
+      this.curid=e.$attrs.dataId
+      //this.path = path;
+      this.$router.push(e.$attrs.dataPath);
+    },
+    gotoChild:function(path){
+      this.flag = true;
+      this.flag01=true;
+      //this.path = path;
+>>>>>>> master
       this.$router.push(path);
     }
   }
+
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<!-- Add "scoped" attribute to limit CSS to this compone<nt only -->
 <style>
   html{
     background:#F3F5F7;
@@ -163,12 +223,14 @@ export default {
      background:url("../../assets/imgs/icon5.svg") center center no-repeat;
 }
 .icon6{
+
      background:url("../../assets/imgs/icon6.svg") center center no-repeat;
 }
 .icon7{
      background:url("../../assets/imgs/icon7.svg") center center no-repeat;
 }
 .curr1{
+
      background:url("../../assets/imgs/icon11.svg") center center no-repeat;
 }
   .curr2{

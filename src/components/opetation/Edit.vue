@@ -4,7 +4,7 @@
   <p class="location">
     <router-link to="/index/operationStorage" class="grey">运营池</router-link>>编辑
     <button class="detele-btn" @click="deleteLists" title="删除">删除</button>
-    
+
   </p>
     <div class="wrap-margin wrap-padding">
         <XEditor :content="ruleForm.content_html" v-on:change="onContentChange"/>
@@ -54,7 +54,7 @@
 
           </el-form-item>
           <el-form-item class='clearfloat' v-show='display_type==2 || display_type==4'>
-            <div  class="cover-list">
+            <div  class="cover-list cover-list-big">
               <UploadFile v-model="files[0].url" />
             </div>
             <p class='up-img'>图片建议尺寸690*388</p>
@@ -65,7 +65,9 @@
             </div>
             <p class='up-img'>图片建议尺寸220*140</p>
           </el-form-item>
-
+        <el-form-item label="视频链接" prop="video_uri" v-show="display_type == 4">
+          <el-input v-model="ruleForm.video_uri"></el-input>
+        </el-form-item>
 
         <el-form-item>
           <button @click="saveData" class="btn" type="button">保存并预览</button>
@@ -139,13 +141,13 @@
         ],
       },
 
-      
+
     };
   },
 
   watch: {
-    display_type:function(){ //封面 
-      this.imgShow = []     
+    display_type:function(){ //封面
+      this.imgShow = []
       if(this.showOpen){
 
       if(this.display_type ==1){  //无封面
@@ -156,7 +158,7 @@
 
       }
       if(this.display_type ==5){ //220*140 三张图
-      }  
+      }
       }
 
     },
@@ -192,10 +194,12 @@
       if(this.inputTags == val.tag_name){
         this.inputTags = ""
       }
+
        if(this.inputTags.indexOf(val.tag_name) >=0){ // 去掉勾选删去输入框相应部分
          this.inputTags=this.inputTags.replace(val.tag_name,"");
          this.inputTags=this.inputTags.replace(",,",",");// 去掉双逗号
       }
+
     },
      //根据分类查询标签
      getTags(type_id){
@@ -218,7 +222,7 @@
     filechange(resp){
       this.file = resp.data.host
       },
-      // 封面 
+      // 封面
       selectedCover(){
         if(this.ruleForm.display_type ==1 ){
           this.ruleForm.coverage = "";
@@ -246,6 +250,7 @@
                return false;
            }
       operationService.editData(this.ruleForm).then(data => {
+        console.log(data)
         if (data.code == 0) {
             const params = {
                 id: this.id
@@ -262,6 +267,9 @@
            this.btnShow = false;
           this.open(data.msg)
         }
+      }).catch(res =>{
+         this.btnShow = false;
+         this.open("操作失败,请稍后重试!")
       });
 
 
@@ -276,7 +284,7 @@
               ids:this.id
             };
             operationService.deleteData(params).then(data=>{
-        
+
               if(data.code==0){
                 this.$router.push({ path: "../../index/operationStorage/"});
             }else{
@@ -372,7 +380,7 @@
           this.types.forEach(item => {
             if(this.type_id==item.id){
                 this.type_name = item.typeName;
-                }     
+                }
           })
         }
         }).then(()=>{
@@ -451,5 +459,16 @@
     color:rgba(102,102,102,1);
     line-height:20px;
   }
-
+.cover-list{
+  float:left;
+  margin-right:20px;
+  width:150px;
+  height:80px;
+}
+.cover-list-big{
+  float:left;
+  margin-right:20px;
+  width:300px;
+  height:150px;
+}
 </style>
