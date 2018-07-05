@@ -468,14 +468,7 @@ export default {
     this.id = this.$route.params.id;
   },
   mounted() {
-<<<<<<< HEAD
-     if (localStorage.getItem("Token") == null) {
-=======
-     if (localStorage.getItem("Token") == "") {
->>>>>>> master
-      this.$router.push({ path: "/" });
-      return;
-    }
+
     grabService.sourceList().then(data=>{
       if(data.code==0){
         this.options = data.data;

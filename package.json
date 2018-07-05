@@ -10,18 +10,12 @@
     "dev-zhouqing": "cross-env API_URL=http://zhouqing.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "dev-haozi": "cross-env API_URL=http://haozi.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "dev-laosun": "cross-env API_URL=http://laosun.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-<<<<<<< HEAD
-    "dev-zhangyu": "cross-env API_URL=http://zhangyu.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "dev-tangxin": "cross-env API_URL=http://tangxin.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "dev-test": "cross-env API_URL=http://www.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-=======
     "dev-lijia": "cross-env API_URL=http://lijia.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "dev-alin": "cross-env API_URL=http://alin.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "dev-zhongxiang": "cross-env API_URL=http://zhongxiang.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "dev-test": "cross-env API_URL=http://www.toutiao-manage-api.com/  webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "dev-zhangyu": "cross-env API_URL=http://zhangyu.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "dev-tangxin": "cross-env API_URL=http://tangxin.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
->>>>>>> master
     "start": "npm run dev",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
@@ -34,7 +28,6 @@
     "duanwei": "cross-env API_URL=http://duanwei.toutiao-manage-api.com/ node build/build.js",
     "tangxin": "cross-env API_URL=http://tangxin.toutiao-manage-api.com/ node build/build.js",
     "build-test": "cross-env API_URL=http://www.toutiao-manage-api.com/ node build/build.js"
-
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -100,7 +93,7 @@
     "postcss-loader": "^2.0.8",
     "postcss-url": "^7.2.1",
     "rimraf": "^2.6.0",
-    "sass-loader": "^7.0.1",
+    "sass-loader": "^7.0.3",
     "selenium-server": "^3.0.1",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",
@@ -111,11 +104,11 @@
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
+    "vuedraggable": "^2.16.0",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
-    "webpack-merge": "^4.1.0",
-    "vuedraggable": "^2.16.0"
+    "webpack-merge": "^4.1.0"
   },
   "engines": {
     "node": ">= 6.0.0",
