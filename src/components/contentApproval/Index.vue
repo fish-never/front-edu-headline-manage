@@ -16,8 +16,10 @@
     </div>
     <div class="item-wrap" v-for="item in data.my_jobs" :key="item.post_master_id" @click="checked(item)"  :class="{selected: item.selected}">
      <div class="item">
-        <h2 class="title-p" style="font-size:24px; color:#333;line-height:25px;">{{item.post_subject}}{{item.selected}}</h2>
-        <p class="tag"><span>{{item.content}}</span><span>{{item.create_time}}</span></p>
+        <h2 class="title-p" style="font-size:24px; color:#333;line-height:25px;">{{item.post_subject}}</h2>
+        <p class="tag">
+          <span>{{item.create_time}}</span>
+        </p>
         <div class="text" v-html="item.content"></div>
         <button class="pass" @click="Pass(item.post_master_id)">通过</button>
         <button class="delete" @click="Detele(item.post_master_id)">删除</button>
@@ -117,32 +119,35 @@ watch:{
           if(data.code==0){
           console.log(data.data);
           this.loading = false;
+          this.total = data.data.total;
+          this.pageNum = data.data.pageNum;
+          this.page = data.data.page;
           data.data.my_jobs.forEach(item =>{
             item.selected = false;
-            console.log(data.data.my_jobs);
           });
           this.data = data.data;
         }
         })
       },
       //单个通过
-      Pass(ids){
-        console.log(ids)
+      Pass(post_master_id){
+        console.log(post_master_id)
        const params = {
             ids_delete: "",
-            ids_pass:ids
+            ids_pass:post_master_id
         }
-         this.$confirm('确定通过?', '提示', {
+        console.log(params)
+        this.$confirm('确定通过?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then((data) => {
-          contentApprovalService.check(params).then(data=>{
-            if(data.code==0){
-               this.loadList()
-            }else{
-               this.open(data.msg)
-            }
+            contentApprovalService.check(params).then(data=>{
+              if(data.code==0){
+                this.loadList()
+              }else{
+                this.open(data.msg)
+              }
 
           })
         }
@@ -156,7 +161,8 @@ watch:{
             ids_delete: ids,
             ids_pass:""
         }
-         this.$confirm('确定删除?', '提示', {
+       console.log(params)
+       this.$confirm('确定删除?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -177,7 +183,7 @@ watch:{
       deleteLists(){
        let ids_delete = "";
        let ids_pass ="";
-       this.data.list.forEach(item => {
+       this.data.my_jobs.forEach(item => {
          if( item.selected){
            ids_delete += item.post_master_id +","
          }else{
@@ -191,7 +197,6 @@ watch:{
             ids_delete: ids_delete,
             ids_pass:ids_pass
         }
-        console.log(params)
         this.$confirm('确定删除已选中，通过未勾选?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -214,6 +219,7 @@ watch:{
       },
       handleCurrentChange(val){
         this.page = val;
+        console.log(val);
         this.loadList();
       }
     }

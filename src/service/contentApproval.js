@@ -8,8 +8,8 @@ export default {
     })
   },
   //批量通过或删除
-  check(){
-    return api.post('post/fetch/check',data,true).then((resp)=>{
+  check(data){
+    return api.post('post/operation/check',data,true).then((resp)=>{
         return Promise.resolve(resp.data)
       })
   }
