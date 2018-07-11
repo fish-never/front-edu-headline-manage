@@ -14,13 +14,15 @@
           </el-select>
         </div>
     </div>
-    <div class="item-wrap" v-for="item in data.list" :key="item.id" @click="checked(item)"  :class="{selected: item.selected}">
+    <div class="item-wrap" v-for="item in data.my_jobs" :key="item.post_master_id" @click="checked(item)"  :class="{selected: item.selected}">
      <div class="item">
-        <h2 class="title-p" style="font-size:24px; color:#333;line-height:25px;">{{item.topic}}{{item.selected}}</h2>
-        <p class="tag"><span>{{item.author}}</span><span>{{item.created_at}}</span></p>
+        <h2 class="title-p" style="font-size:24px; color:#333;line-height:25px;">{{item.post_subject}}</h2>
+        <p class="tag">
+          <span>{{item.create_time}}</span>
+        </p>
         <div class="text" v-html="item.content"></div>
-        <button class="pass" @click="Pass(item.id)">通过</button>
-        <button class="delete" @click="Detele(item.id)">删除</button>
+        <button class="pass" @click="Pass(item.post_master_id)">通过</button>
+        <button class="delete" @click="Detele(item.post_master_id)">删除</button>
       </div>
       <img class="checked" :src="selectedUrl" v-if="item.selected"/>
     </div>
@@ -32,7 +34,7 @@
       @current-change="handleCurrentChange"
       :current-page="page"
       :page-sizes="[10,50,100,200,500,1000,2000,3000]"
-      :page-size="pageSize"
+      :page-size="pageNum"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
@@ -55,7 +57,7 @@ export default {
       ids:"",
       types:"",
       total: 10,
-      pageSize: 10,
+      pageNum: 10,
       options:[20,50,100,200,500,1000,2000,3000],
       value:"",
       selectedUrl:require("../../assets/imgs/selested.svg")
@@ -63,7 +65,7 @@ export default {
     }
   },
   created(){
-   
+
   },
   mounted(){
      if (localStorage.getItem("Token") == null) {
@@ -81,7 +83,7 @@ watch:{
    //上面分页
    search(value){
      console.log(value)
-     this.pageSize = value;
+     this.pageNum = value;
      this.loadList()
    },
       //获取内容列表
@@ -110,38 +112,42 @@ watch:{
       //获取内容列表
       loadList(){
         let params = {
+          pageNum:this.pageNum,
           page:this.page,
-          pageSize:this.pageSize
-        }
+        };
         contentApprovalService.getList(params).then(data=>{
           if(data.code==0){
-          console.log(data.data)
+          console.log(data.data);
           this.loading = false;
-          data.data.list.forEach(item =>{
+          this.total = data.data.total;
+          this.pageNum = data.data.pageNum;
+          this.page = data.data.page;
+          data.data.my_jobs.forEach(item =>{
             item.selected = false;
-          })
+          });
           this.data = data.data;
         }
         })
       },
       //单个通过
-      Pass(ids){
-        console.log(ids)
+      Pass(post_master_id){
+        console.log(post_master_id)
        const params = {
             ids_delete: "",
-            ids_pass:ids
+            ids_pass:post_master_id
         }
-         this.$confirm('确定通过?', '提示', {
+        console.log(params)
+        this.$confirm('确定通过?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then((data) => {
-          contentApprovalService.check(params).then(data=>{
-            if(data.code==0){
-               this.loadList()
-            }else{
-               this.open(data.msg)
-            }
+            contentApprovalService.check(params).then(data=>{
+              if(data.code==0){
+                this.loadList()
+              }else{
+                this.open(data.msg)
+              }
 
           })
         }
@@ -155,7 +161,8 @@ watch:{
             ids_delete: ids,
             ids_pass:""
         }
-         this.$confirm('确定删除?', '提示', {
+       console.log(params)
+       this.$confirm('确定删除?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -176,13 +183,13 @@ watch:{
       deleteLists(){
        let ids_delete = "";
        let ids_pass ="";
-       this.data.list.forEach(item => {
+       this.data.my_jobs.forEach(item => {
          if( item.selected){
-           ids_delete += item.id +","
+           ids_delete += item.post_master_id +","
          }else{
-           ids_pass += item.id +","
+           ids_pass += item.post_master_id +","
          }
-        
+
        });
        ids_delete =  ids_delete.replace(/,$/,'');
        ids_pass =  ids_pass.replace(/,$/,'');
@@ -190,7 +197,6 @@ watch:{
             ids_delete: ids_delete,
             ids_pass:ids_pass
         }
-        console.log(params)
         this.$confirm('确定删除已选中，通过未勾选?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -208,11 +214,12 @@ watch:{
 
       },
       handleSizeChange(val){
-        this.pageSize = val;
+        this.pageNum = val;
         this.loadList();
       },
       handleCurrentChange(val){
         this.page = val;
+        console.log(val);
         this.loadList();
       }
     }
