@@ -18,8 +18,7 @@
         <button class="close" @click="deleteDetail(item.id)"></button>
         <p class="contentTitle">#zikaozenmexue#</p>
         <p class="paragraph">{{item.content.content}}</p>
-        <img :src='item.content.images[0]' class="img">
-        <img :src='item.content.images[1]' class="img">
+        <img v-for="image in item.content.images" :src='image' class="img">
         <br/>
         <div class="functionContent">
           <div class="function">

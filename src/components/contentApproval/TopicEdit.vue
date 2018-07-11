@@ -1,101 +1,142 @@
 <template xmlns="http://www.w3.org/1999/html">
   <div>
-    <div class="search-wrap">
-      <span class="mgr20"><router-link to="/index/HotpostList" class="color999">社区管理</router-link>>热帖列表</span>
-      <!-- <span class="title">检索条件</span> -->
+    <div class="search-wrap inline">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: '/index/contentApproval/HotpostList' }">社区管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/index/contentApproval/TopicManage' }">话题管理</el-breadcrumb-item>
+        <el-breadcrumb-item>{{title}}话题</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
       <div class="content">
         <div class="topic  positionR">话题:</div>
-        <input type="text" placeholder=" #自考怎么学" class="topicinput mgr20" v-model="topicEdit.topicName">
-        <!--<el-input v-model="content" placeholder="话题关键字" clearable class="topicinput mgr20"></el-input>-->
+        <el-input class="topicinput mgr20"
+          placeholder="#自考怎么学"
+          v-model="topicEdit.name"
+          :disabled="canEdit">
+        </el-input>
+               <!--<el-input v-model="content" placeholder="话题关键字" clearable class="topicinput mgr20"></el-input>-->
         <div class="topicdesc">话题描述:</div>
         <!--<input type="text"  class="topicdecinput mgr20" v-model="topicEdit.topicDesc">-->
-        <textarea type="text"  class="topicdecinput mgr20" v-model="topicEdit.topicDesc"></textarea>
+        <el-input  class="topicdecinput mgr20"
+          type="textarea"
+          :rows="5"
+          placeholder="请输入内容"
+          v-model="topicEdit.description">
+        </el-input>
+
         <!--<el-input v-model="username" placeholder="用户名" clearable  class="topicdecinput"></el-input>-->
         <button @click="saveData" class="savebutton">保存</button>
-        <button class="canclebutton">取消</button>
+        <button class="canclebutton" @click="gotoManage()">取消</button>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
   import topicManageService from '../../service/topicManage';
+  import postList from "../../service/postList"; //控制器
   import commonService from '../../service/common';
 
   export default {
     name: 'published',
     data() {
       return {
+        canEdit:true,
+        loading: true,
         topicEdit:{
-          topicName:'',
-          topicDesc:''
+          name:'',
+          description:''
         },
-        page: 1,
-        pageNum: 10,
+       title:'',
+
         topicId: this.$route.query.id
       }
     },
+    mounted(){
+      if(this.topicId&&this.topicId!=''){
+        this.title='编辑'
+        this.canEdit=true
+        this.viewTopic()
+      }else{
+        this.title='新增'
+        this.canEdit=false
+      }
 
-    // mounted(){
-    //   if (localStorage.getItem("Token") == null) {
-    //     this.$router.push({ path: "/" });
-    //     return;
-    //   }
-    //   this.loadList();
-    //   publishedService.sourceData().then(data=>{
-    //     if(data.code==0){
-    //       this.options = data.data;
-    //       this.pageShow=true;
-    //     }else{
-    //       this.pageShow=false;
-    //     }
-    //   }),
-    //     commonService.typeList().then(data => {
-    //       if(data.code == 0){
-    //         this.types = data.data;
-    //       }
-    //     })
-    // },
+    },
     methods: {
-
-      saveData(){
-        var token = localStorage.getItem('Token');
-
-
-        let id = this.topicId;
-        let name = this.topicEdit.topicName.toString();
-        let  description = this.topicEdit.topicDesc.toString();
-
-        const updateData = {
-          id: id,
-          name :name,
-          description: description
+      //弹框
+      open(text) {
+        this.$alert(text, "信息", {
+          confirmButtonText: "确定"
+        });
+      },
+      //跳转
+      gotoManage(){
+        this.$router.push({path: '/index/contentApproval/TopicManage'});
+      },
+      //根据id获取详情
+      viewTopic(){
+        const params = {
+          id:this.topicId,
         };
-        console.log(updateData);
-        console.log(this.topicId);
-
-
-        // $.ajax({
-        //   method: 'post',
-        //   url: 'http://zhangyu.toutiao-manage-api.com/topic/operate/update-info',
-        //   headers:{
-        //     'Authorization': token
-        //   },
-        //   data:{
-        //     id: id,
-        //     name :name,
-        //     description: description
-        //   }
-        //
-        // })
-
-        topicManageService.updateInfo(updateData).then(data=>{
-          if(data.code===0){
-            console.log(data)
+        const loadingInstance = this.$loading({ fullscreen: true });
+        const vm = this
+        postList.viewTopic(params).then(data=>{
+          if(data.code==0){
+            const rdata = data.data
+            loadingInstance.close();
+            vm.topicEdit = rdata
+            vm.loading = false;
+            vm.pageShow=true;
           }else{
-            console.log('err')
+            vm.open("加载失败，请重试！")
+            vm.pageShow=false;
+            vm.loading = false;
           }
         })
+      },
+      //编辑新增话题
+      saveData(){
+        const loadingInstance = this.$loading({ fullscreen: true });
+        const vm = this
+        if(this.topicId&&this.topicId!=''){
+          const params = {
+            id:this.topicId,
+            description:this.topicEdit.description
+          };
+          postList.editTopic(params).then(data=>{
+            if(data.code==0){
+              const rdata = data.data
+              loadingInstance.close();
+              vm.loading = false;
+              vm.pageShow=true;
+              this.$router.push({path: '/index/contentApproval/TopicManage'});
+            }else{
+              vm.open("修改失败，请重试！")
+              loadingInstance.close();
+              vm.pageShow=false;
+              vm.loading = false;
+            }
+          })
+        }else{
+          const params = {
+            name:this.topicEdit.name,
+            description:this.topicEdit.description
+          };
+          postList.addTopic(params).then(data=>{
+            if(data.code==0){
+              const rdata = data.data
+              loadingInstance.close();
+              vm.loading = false;
+              vm.pageShow=true;
+              this.$router.push({path: '/index/contentApproval/TopicManage'});
+            }else{
+              vm.open("新增失败，请重试！")
+              loadingInstance.close();
+              vm.pageShow=false;
+              vm.loading = false;
+            }
+          })
+        }
       }
     },
   };
@@ -116,8 +157,6 @@
   }
   .topicinput{
     width: 450px;
-    height: 30px;
-    border: 1px solid #E5E5E5;
     position: relative;
     left: 114px;
     top: -13px;
@@ -127,8 +166,6 @@
   }
   .topicdecinput{
     width: 450px;
-    height: 114px;
-    border: 1px solid #E5E5E5;
     position: relative;
     left: 114px;
     top: -50px;

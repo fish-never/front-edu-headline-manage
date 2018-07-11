@@ -41,7 +41,7 @@
          <input v-model="scope.row.like_count" class="numinput" @blur="updateData(scope.row)" />
       </template>
     </el-table-column>
-    
+
     <el-table-column   label="转发数"  width="60px" align="center">
       <template slot-scope="scope">
          <input v-model="scope.row.share_count" class="numinput" @blur="updateData(scope.row)" />
@@ -104,9 +104,9 @@ export default {
       return;
     }
     this.loadList();
-  }, 
+  },
    computed: {
-      
+
     },
   filters: {
     money: function(val) {
@@ -143,7 +143,6 @@ export default {
         pageNum: this.pageNum,
         content: this.content,
         user_name: this.username,
-        is_hot:0,
         topic_id:0
       }).then(data => {
         if (data.code == 0) {
@@ -175,7 +174,7 @@ export default {
           });
         })
     },
-   
+
     handleSizeChange(val) {
       this.pageNum = val; // 改变每页显示条数
       this.loadList(); // 重新请求

@@ -52,9 +52,25 @@ topicList(data){
     return api.post('topic/operate/publish', params).then(resp => {
       return Promise.resolve(resp.data);
     })
+  },
+//查看话题详情
+  viewTopic(params){
+    return api.get('topic/info/view?'+qs.stringify(params)).then(resp => {
+      return Promise.resolve(resp.data);
+    })
+  },
+//编辑话题
+  editTopic(params){
+    return api.post('topic/operate/update-info',params).then(resp => {
+      return Promise.resolve(resp.data);
+    })
+  },
+  //新增话题
+  addTopic(params){
+    return api.post('topic/operate/add',params).then(resp => {
+      return Promise.resolve(resp.data);
+    })
   }
-
-
 
 
 

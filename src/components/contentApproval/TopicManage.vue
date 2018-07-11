@@ -3,7 +3,7 @@
 
     <div class="search-wrap inline">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/index/HotpostList' }">社区管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/index/contentApproval/HotpostList' }">社区管理</el-breadcrumb-item>
         <el-breadcrumb-item>话题管理</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="overflow-h margin-t10">
@@ -14,12 +14,12 @@
       <button class="search-btn" @click="getSourceList">搜索</button>
       </div>
       <div class="float-r">
-      <button class="new-btn" @click="" title="新增话题">新增话题</button>
+      <button class="new-btn" @click="gotoEdit('')" title="新增话题">新增话题</button>
       <button class="new-btn new-btn1" @click="unPulish()" title="批量失效">批量失效</button>
       </div>
       </div>
     </div>
-
+<div class="search-wrap">
       <table class="tabwarp">
         <tr>
           <th><input type="checkbox" :value="allpublish" v-model="allpublish" @change="changeChoose()"/></th>
@@ -39,8 +39,8 @@
 
               <td><input type="checkbox" :value="item.id" v-model="item.choose" /></td>
               <td><div>{{index+1}}</div></td>
-              <td><router-link class="link-a tetxleft" :to="{path:'/index/contentApproval/HotpostListEdit/'+ item.id}">{{item.name}}</router-link></td>
-              <td><div>{{item.creator}}{{item.status}}</div></td>
+              <td><router-link class="link-a tetxleft" :to="{path:'/index/TopicDetail?id='+ item.id}">{{item.name}}</router-link></td>
+              <td><div>{{item.creator}}</div></td>
               <td><div>{{item.created_at}}</div></td>
               <td><div><input type="text" v-model="item.join_count" @blur="updateJoin(item)" /></div></td>
               <td><div><input type="text" v-model="item.weight"  @blur="updateweight(item)" /></div></td>
@@ -51,8 +51,8 @@
               </el-switch></div></td>
               <td>
                 <div>
-                  <span type="button" class="link-a" @click="hotStatusHide(item.id)">编辑</span>
-                  <span  type="button" class="link-a" @click="Detele(item.id)">删除</span>
+                  <span type="button" class="link-a" @click="gotoEdit(item.id)">编辑</span>
+
                 </div>
               </td>
               <td><div class="dargDiv"><img src="../../assets/imgs/drag.svg" alt="" /></div></td>
@@ -62,7 +62,7 @@
 
       </table>
      <!-- vuedraggable内部需要直接的v-for，而且数据源要相同，el-table的数据渲染方式导致它无法与vuedraggable搭配使用-->
-
+</div>
     <el-pagination
       class="page-wrap"
       @size-change="handleSizeChange"
@@ -130,7 +130,12 @@ export default {
      }else{
        var theRow=this.itemData[evt.newIndex]
        var theBeforeRow=this.itemData[evt.newIndex-1]
-       this.itemData[evt.newIndex].weight=parseInt(this.itemData[evt.newIndex-1].weight)-1
+       if(parseInt(this.itemData[evt.newIndex-1].weight)<=0){
+         this.itemData[evt.newIndex].weight=0
+       }else{
+         this.itemData[evt.newIndex].weight=parseInt(this.itemData[evt.newIndex-1].weight)-1
+       }
+
      }
       this.updateweight(this.itemData[evt.newIndex])
     },
@@ -156,7 +161,7 @@ export default {
     },
     getSourceList() {
       this.page = 1; // 防止翻页后搜索功能失效
-      this.loadList();
+      this.verbList();
     },
     verbList:function(){
       const params = {
@@ -174,14 +179,14 @@ export default {
           vm.pageNum = parseInt(data.data.pageSize);
           vm.total = parseInt(data.data.count);
           vm.itemData = data.data.list;
-for(var i=0;i<vm.itemData.length;i++){
-  vm.itemData[i].choose=false
-  if(vm.itemData[i].status==1){
-    vm.itemData[i].status=true
-  }else{
-    vm.itemData[i].status=false
-  }
-}
+          for(var i=0;i<vm.itemData.length;i++){
+            vm.itemData[i].choose=false
+            if(vm.itemData[i].status==1){
+              vm.itemData[i].status=true
+            }else{
+              vm.itemData[i].status=false
+            }
+          }
           //   console.log(this.itemData)
           vm.loading = false;
           vm.pageShow=true;
@@ -194,32 +199,19 @@ for(var i=0;i<vm.itemData.length;i++){
       })
     },
 
-    Detele(ids) {
-      const params = {
-        ids: ids
-      };
-      this.$confirm("确定删除?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-          postList.detele(params).then(data => {
-            if (data.code == 0) {
-              this.loadList();
-            } else {
-              this.open(data.msg);
-            }
-          });
-        })
-    },
-
     handleSizeChange(val) {
       this.pageNum = val; // 改变每页显示条数
-      this.loadList(); // 重新请求
+      this.allpublish=false;
+      this.verbList(); // 重新请求
     },
     handleCurrentChange(val) {
       this.page = val; // 改变页码
-      this.loadList(); // 重新请求
+      this.allpublish=false;
+      this.verbList(); // 重新请求
+    },
+    //跳转编辑页
+    gotoEdit(tid){
+      this.$router.push({path: '/index/TopicEdit',query:{ id:tid}});
     },
     unPulish(){
       const vm =this
@@ -228,12 +220,40 @@ for(var i=0;i<vm.itemData.length;i++){
         if(vm.itemData[i].choose === true){
           theItem.push(vm.itemData[i].id)
         }
-        if(theItem.length>0){
-
-        }else{
-          vm.open("请先勾选需要操作的选项！")
-        }
       }
+      if(theItem.length>0){
+        vm.PublallUpish(theItem)
+      }else{
+        vm.open("请先勾选需要操作的选项！")
+      }
+    },
+    //批量失效
+    PublallUpish(ids){
+      const params = {
+        id:ids,
+        status:0
+      };
+      const loadingInstance = this.$loading({ fullscreen: true });
+      const vm = this
+      postList.updatePublish(params).then(data=>{
+        if(data.code==0){
+          const rdata = data.data
+          loadingInstance.close();
+          if(rdata.result==true){
+            //刷新页面
+            vm.verbList()
+            this.allpublish=false;
+          }
+
+          vm.loading = false;
+          vm.pageShow=true;
+        }else{
+          vm.open("修改失败，请重试！")
+          vm.pageShow=false;
+          vm.loading = false;
+        }
+
+      })
     },
     changeChoose(){
       const vm = this
@@ -247,10 +267,11 @@ for(var i=0;i<vm.itemData.length;i++){
         }
       }
     },
+
     updateweight(rowdata){
       const params = {
-        id:rowdata.id,
-        weight:rowdata.weight
+        id:parseInt(rowdata.id),
+        weight:parseInt(rowdata.weight)
       };
       const loadingInstance = this.$loading({ fullscreen: true });
       const vm = this
@@ -262,15 +283,15 @@ for(var i=0;i<vm.itemData.length;i++){
             //vm.open("修改成功")
 
           }
-
           vm.loading = false;
           vm.pageShow=true;
         }else{
           vm.open("修改失败，请重试！")
+          loadingInstance.close();
           vm.pageShow=false;
           vm.loading = false;
         }
-
+          vm.verbList()
       })
     },
     updateJoin(rowdata){
@@ -293,10 +314,11 @@ for(var i=0;i<vm.itemData.length;i++){
           vm.pageShow=true;
         }else{
           vm.open("修改失败，请重试！")
+          loadingInstance.close();
           vm.pageShow=false;
           vm.loading = false;
         }
-
+        vm.verbList()
       })
     },
     updatePublish(rowdata){
@@ -372,7 +394,7 @@ for(var i=0;i<vm.itemData.length;i++){
   .float-l{float:left;}
   .float-r{float:right;}
 .tetxleft{text-align: left;}
-.tabwarp{width:100%;border-collapse:collapse;margin:20px 0 0 20px;background-color: #fff;}
+.tabwarp{width:100%;border-collapse:collapse;background-color: #fff;}
 .tabwarp tr th{ background: #96ABB5;color: #fff; font-size: 12px; padding: 12px 10px;border-collapse:collapse;}
 .maincontent{width: 400px;}
 .tabwarp tr th.comment_count{}
@@ -380,7 +402,7 @@ for(var i=0;i<vm.itemData.length;i++){
 .tabwarp tr td{text-align: center;font-size: 12px;color: #333;border-bottom: 1px solid #ebeef5;padding: 12px 0px;}
 .tabwarp tr td div{box-sizing: border-box;    white-space: normal;    word-break: break-all;    line-height: 23px;}
 .tabwarp tr td div input{display:inline-block;width:40px;border:0;border-radius: 4px;text-align: center;height:30px;line-height: 30px;}
-.tabwarp tr td div input:focus{border:1px solid #dcdfe6;background-color: none;}
+.tabwarp tr td div input:focus{border:1px solid #dcdfe6;background-color: transparent;}
 /*.tabwarp tr td a{display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;color: #305da1;  padding: 2px 5px;}*/
 .tabwarp tr td a{position: relative;overflow: hidden;display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical;line-height: 25px; }
 
