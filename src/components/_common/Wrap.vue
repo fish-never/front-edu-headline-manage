@@ -60,7 +60,7 @@
                 <el-menu-item index="8-1"  @click="gotoChild('/index/contentApproval/index')">内容审核</el-menu-item>
                 <el-menu-item index="8-2"  @click="gotoChild('/index/contentApproval/PublishingPool')">发布池内容管理</el-menu-item>
                 <el-menu-item index="8-3"  @click="gotoChild('/index/contentApproval/HotpostList')">热帖列表</el-menu-item>
-                <el-menu-item index="8-4" @click="gotoChild('/index/contentApproval/HotpostList')">话题管理</el-menu-item>
+                <el-menu-item index="8-4" @click="gotoChild('/index/contentApproval/TopicManage')">话题管理</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
           </el-menu>

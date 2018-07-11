@@ -53,7 +53,7 @@ import HotpostList from '@/components/contentApproval/HotpostList'
 import HotpostListEdit from '@/components/contentApproval/HotpostListEdit'
 import TopicEdit from '@/components/contentApproval/TopicEdit'
 import TopicDetail from '@/components/contentApproval/TopicDetail'
-
+import TopicManage from '@/components/contentApproval/TopicManage'
 
 //推送管理
 import pushIndex from '@/components/push/index'
@@ -120,6 +120,11 @@ export default new Router({
           path: 'contentApproval/HotpostList',
           name: 'HotpostList',
           component: HotpostList
+        },
+        {
+          path: 'contentApproval/TopicManage',
+          name: 'TopicManage',
+          component: TopicManage
         },
         {
           path: 'TopicEdit',
