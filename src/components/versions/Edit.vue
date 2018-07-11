@@ -8,13 +8,13 @@
             <el-input v-model="data.version"  placeholder="例如版本号2.0.1,此处填写为20001"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="是否处于审核" prop="isCheck">
-          <el-radio v-model="data.status.isCheck" label="1">是</el-radio>
-          <el-radio v-model="data.status.isCheck" label="0">否</el-radio>
+        <el-form-item label="朋友圈分享" prop="isCheck">
+          <el-radio v-model="data.status.isCheck" label="1">开启</el-radio>
+          <el-radio v-model="data.status.isCheck" label="0">关闭</el-radio>
         </el-form-item>
-         <el-form-item label="是否关闭分享活动入口" prop="openShare" v-if="data.flag==2">
-          <el-radio v-model="data.status.openShare" label="1">是</el-radio>
-          <el-radio v-model="data.status.openShare" label="0">否</el-radio>
+         <el-form-item label="分享活动入口" prop="openShare" v-if="data.flag==2">
+          <el-radio v-model="data.status.openShare" label="1">开启</el-radio>
+          <el-radio v-model="data.status.openShare" label="0">关闭</el-radio>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-col :span="11">

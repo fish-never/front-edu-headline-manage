@@ -23,20 +23,20 @@
         </template>
       </el-table-column>
          <el-table-column
-        label="是否处于审核">
+        label="朋友圈分享">
         <template slot-scope="scope">
-          <span v-if="scope.row.status == 0&& scope.row.flag==1">否</span>
-          <span v-if="scope.row.status == 1 && scope.row.flag==1">是</span>
-          <span v-if="scope.row.status.isCheck == 0 && scope.row.flag==2">否</span>
-          <span v-if="scope.row.status.isCheck == 1 && scope.row.flag==2">是</span>
+          <span v-if="scope.row.status == 0&& scope.row.flag==1">关闭</span>
+          <span v-if="scope.row.status == 1 && scope.row.flag==1">开启</span>
+          <span v-if="scope.row.status.isCheck == 0 && scope.row.flag==2">关闭</span>
+          <span v-if="scope.row.status.isCheck == 1 && scope.row.flag==2">开启</span>
         </template>
 
       </el-table-column>   
       <el-table-column
-        label="是否打开分享入口" >
+        label="分享活动入口" >
         <template slot-scope="scope"  v-if='scope.row.flag==2'>
-          <span v-if="scope.row.status.openShare == 0">否</span>
-          <span v-if="scope.row.status.openShare == 1">是</span>
+          <span v-if="scope.row.status.openShare == 0">关闭</span>
+          <span v-if="scope.row.status.openShare == 1">开启</span>
         </template>
       </el-table-column>
       <el-table-column
