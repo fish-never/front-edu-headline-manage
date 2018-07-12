@@ -227,7 +227,7 @@ export default {
     width:200px;
     height:100%;
     position: fixed;
-    z-index:888;
+    z-index:98;
     left:0;
     background:rgba(255,255,255,1);
     box-shadow: 0px 2px 11px 6px rgba(0,0,0,0.04);
@@ -241,7 +241,7 @@ export default {
   .herder-wrap{
     position: fixed;
     top:0;
-    z-index:9999;
+    z-index:99;
     height:60px;
     background:#fff;
     width:100%;

@@ -25,4 +25,10 @@ export default {
       return Promise.resolve(resp.data)
     })
   },
+  //编辑话题的转发和点赞数
+  updateNum(data){
+    return api.post('post/published/update',data,true).then((resp)=>{
+      return Promise.resolve(resp.data)
+    })
+  }
 }

@@ -1,18 +1,25 @@
 <template>
   <div>
-    <div class="clearfloat wrap-main">
-      <div class="search-wrap">
-         <span class="mgr20"><router-link to="/index/HotpostList">社区管理</router-link>>热帖列表</span>
-        <!-- <span class="title">检索条件</span> -->
-        <el-input v-model="content" placeholder="请输入关键字" clearable class="searchinput mgr20"></el-input>
-       <el-input v-model="username" placeholder="请输入用户名" clearable  class="searchinput"></el-input>
-        <button class="search-btn" @click="getSourceList">搜索</button>
+      <div class="search-wrap inline">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item :to="{ path: '/index/contentApproval/HotpostList' }">社区管理</el-breadcrumb-item>
+          <el-breadcrumb-item>热帖列表</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div class="overflow-h margin-t10">
+          <div class="float-l">
+            <el-input v-model="content" size="small" placeholder="请输入话题关键字" clearable class="searchinput mgr20" style="width:150px;"></el-input>
+            <el-input v-model="username" size="small" placeholder="请输入用户名" clearable class="searchinput mgr20" style="width:150px;"></el-input>
+
+            <button class="search-btn" @click="getSourceList">搜索</button>
+          </div>
+
+        </div>
       </div>
-    </div> 
+
       <table class="tabwarp">
         <tr>
-          <th>用户</th>
-          <th  class="comment_count">内容</th>
+          <th class="user-div">用户</th>
+          <th class="comment_count">内容</th>
           <th>评论时间</th>
           <th>评论数</th>
           <th>浏览量</th>
@@ -20,11 +27,16 @@
           <th>转发数</th>
           <th>权重值</th>
           <th>操作</th>
-          <th style="width:100px;"></th>
-        </tr>  
+          <th style="width:80px;"></th>
+        </tr>
         <draggable v-model="itemData" :move="getdata" @update="datadragEnd" element="tbody"><!--draggable会自动生成一个外层div标签导致与上面的tr不平齐，这里使用element="tbody"将其改变成tbody，也不会影响渲染的tr-->
           <tr v-for="item in itemData" :key="item.key">
-          <td><div>用户</div></td>
+            <td>
+              <div>
+                <div class="float-l img-div"><img :src="item.thumb_img" alt="" /></div>
+                <div class="float-l nick-div">{{item.nickname}}</div>
+              </div>
+            </td>
           <td><router-link class="link-a tetxleft" :to="{path:'/index/contentApproval/HotpostListEdit/'+ item.id}">{{item.content.content}}</router-link></td>
           <td><div>{{item.created_at}}</div></td>
           <td><div>{{item.comment_count}}</div></td>
@@ -41,62 +53,8 @@
           <td><div><img src="../../assets/imgs/drag.svg" alt="" /></div></td>
           </tr>
         </draggable>
-      </table> 
-     <!-- vuedraggable内部需要直接的v-for，而且数据源要相同，el-table的数据渲染方式导致它无法与vuedraggable搭配使用-->
-    <!-- <el-table   :data="itemData"    tooltip-effect="dark"  stripe   style="width: 100%"  header-align="center">
-      <el-table-column   label="用户"  width="200">
-        <template slot-scope="scope">
-          <span class="lh30 username"><img :src="touxiang" alt="" class="userimg"></span>
-          <span class="lh30 nametext">00000000</span>
-        </template>
-      </el-table-column>
-      <el-table-column   label="内容">
-        <template slot-scope="scope">
-          <router-link class="link-a texthandle" :to="{path:'/index/contentApproval/HotpostListEdit/'+ scope.row.id}">{{scope.row.content.content}}</router-link>
-        </template>
-      </el-table-column>
-      <el-table-column  label="评论时间" align="center">
-        <template slot-scope="scope">
-          <span>{{scope.row.created_at}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column  label="评论数"  width="60px" align="center">
-      <template slot-scope="scope">
-        <span>{{scope.row.comment_count}}</span>
-      </template>
-    </el-table-column>
-         <el-table-column   label="浏览量" width="60px" align="center">
-      <template slot-scope="scope">
-         <input v-model="scope.row.read_count" class="numinput" @blur="updateData(scope.row)" />
-      </template>
-    </el-table-column>
-    <el-table-column  label="点赞数"  width="60px" align="center">
-      <template slot-scope="scope">
-         <input v-model="scope.row.like_count" class="numinput" @blur="updateData(scope.row)" />
-      </template>
-    </el-table-column>
-    <el-table-column  label="转发数"  width="60px" align="center">
-      <template slot-scope="scope">
-         <input v-model="scope.row.share_count" class="numinput" @blur="updateData(scope.row)" />
-      </template>
-    </el-table-column>
-    <el-table-column  label="权重值"  width="60px" align="center">
-      <template slot-scope="scope">
-         <input v-model="scope.row.weight" class="numinput" @blur="updateData(scope.row)" />
-      </template>
-    </el-table-column>
-      <el-table-column label="操作"  width="150px" align="center">
-        <template slot-scope="scope">
-            <span type="button"  class="link-a" @click="hotStatusHide(scope.row)">下热门</span>
-          <span  type="button"  class="link-a" @click="Detele(scope.row.id)">删除</span>
-        </template>
-      </el-table-column>
-      <el-table-column label=""  width="150px">
-        <template slot-scope="scope">
-            <span type="button" @click="Detele(scope.row.id)"><img src="../../assets/imgs/drag.svg" alt="" /></span>
-        </template>
-      </el-table-column>
-    </el-table> -->
+      </table>
+
     <el-pagination
       class="page-wrap"
       @size-change="handleSizeChange"
@@ -112,7 +70,7 @@
 
 <script>
 import postList from "../../service/postList"; //控制器
-import draggable from 'vuedraggable'; 
+import draggable from 'vuedraggable';
 export default {
   name: "grab",
   data() {
@@ -127,10 +85,10 @@ export default {
       username:"",
       touxiang:require("../../assets/imgs/userimg1.png")
     };
-  },  
+  },
   components: {
-      draggable  
-  },  
+      draggable
+  },
   mounted() {
     if (localStorage.getItem("Token") == null) {
       this.$router.push({ path: "/" });
@@ -145,24 +103,33 @@ export default {
     }
   },
   methods: {
-    getdata(evt) {  
-       //evt.draggedContext.element.id
-    },  
     rnd(n,m){
         var random = Math.floor(Math.random()*(m-n+1)+n);
         return random>=0?random:-random; //去掉负数
     },
-    datadragEnd(evt,item) {  
-        console.log('拖动前的索引 :' + evt.oldIndex);
-        console.log('拖动后的索引 :' + evt.newIndex); 
-          if(evt.newIndex <= evt.oldIndex){ //虽然这里作了头尾索引越界处理，但是这是分页的数据，插件本身不能支持边界索引查询
-         this.itemData[evt.newIndex].weight = parseInt(this.itemData[evt.newIndex+1].weight)+parseInt(this.rnd(this.itemData[evt.newIndex-1].weight,this.itemData[evt.newIndex+1].weight));
-         this.updateData(this.itemData[evt.newIndex]);
-          } else if(evt.newIndex > evt.oldIndex) {
-            this.itemData[evt.newIndex].weight = parseInt(this.itemData[evt.newIndex-1].weight)-parseInt(this.rnd(this.itemData[evt.newIndex-1].weight,this.itemData[evt.newIndex+1].weight));
-            this.updateData(this.itemData[evt.newIndex]);
-           }        
+    getdata: function(evt){
+      console.log(evt.draggedContext.element.id);
     },
+    datadragEnd:function(evt){
+      console.log('拖动前的索引：'+evt.oldIndex);
+      console.log('拖动后的索引：'+evt.newIndex);
+      if(evt.oldIndex>evt.newIndex){
+        var theRow=this.itemData[evt.newIndex]
+        var theBeforeRow=this.itemData[evt.newIndex+1]
+        this.itemData[evt.newIndex].weight=parseInt(this.itemData[evt.newIndex+1].weight)+1
+      }else{
+        var theRow=this.itemData[evt.newIndex]
+        var theBeforeRow=this.itemData[evt.newIndex-1]
+        if(parseInt(this.itemData[evt.newIndex-1].weight)<=0){
+          this.itemData[evt.newIndex].weight=0
+        }else{
+          this.itemData[evt.newIndex].weight=parseInt(this.itemData[evt.newIndex-1].weight)-1
+        }
+
+      }
+      this.updateData(this.itemData[evt.newIndex])
+    },
+
     //弹框
     open(text) {
       this.$alert(text, "信息", {
@@ -225,14 +192,24 @@ export default {
       }).then(() => {
           postList.detele(params).then(data => {
             if (data.code == 0) {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
               this.loadList();
             } else {
               this.open(data.msg);
             }
           });
         })
+        .catch(data => {
+          this.$message({
+            type: 'info',
+            message: '已取消操作'
+          });
+        });
     },
-   
+
     handleSizeChange(val) {
       this.pageNum = val; // 改变每页显示条数
       this.loadList(); // 重新请求
@@ -242,48 +219,49 @@ export default {
       this.loadList(); // 重新请求
     },
     queryAsync(){
-  
+
     },
     updateData(rowdata){
-      if(rowdata.read_count == "" || rowdata.like_count == ""|| rowdata.like_count =="" || rowdata.share_count =="" || rowdata.weight =="" || rowdata.read_count == null || rowdata.like_count == null|| rowdata.like_count == null || rowdata.share_count == null || rowdata.weight == null){
-               this.open("必填项不能为空");
-               return false;
-           }
-    if(isNaN(rowdata.read_count) || isNaN(rowdata.like_count) || isNaN(rowdata.like_count) || isNaN(rowdata.share_count) || isNaN(rowdata.weight)){
-        this.open("修改项必须为数字");
+      if(rowdata.read_count === ""||rowdata.like_count === ""||rowdata.share_count === ""||rowdata.weight === "" || rowdata.read_count == null||rowdata.like_count == null||rowdata.share_count == null||rowdata.weight == null){
+        this.open("修改项不能为空");
+        this.loadList();
         return false;
-    }
-      postList.update({
-          id:rowdata.id,
-          comment_count:parseInt(rowdata.comment_count),
-          read_count:parseInt(rowdata.read_count),
-          like_count:parseInt(rowdata.like_count),
-          share_count:parseInt(rowdata.share_count),
-          is_hot:rowdata.is_hot,
-          weight:parseInt(rowdata.weight)
+      }else{
+        if(isNaN(rowdata.read_count)||isNaN(rowdata.like_count)||isNaN(rowdata.share_count)||isNaN(rowdata.weight)){
+          this.open("权重必须为数字");
+          this.loadList();
+          return false;
+        }else{
+          postList.update({
+            id:rowdata.id,
+            comment_count:parseInt(rowdata.comment_count),
+            read_count:parseInt(rowdata.read_count),
+            like_count:parseInt(rowdata.like_count),
+            share_count:parseInt(rowdata.share_count),
+            is_hot:rowdata.is_hot,
+            weight:parseInt(rowdata.weight)
           }).then(data => {
-              if (data.code == 0) {
-                this.loadList();
-              } else {
-                this.open(data.msg);
-              }
-            });
+            if (data.code == 0) {
+              this.$message({
+                type: 'success',
+                message: '修改成功!'
+              });
+              this.loadList();
+            } else {
+              this.open(data.msg);
+              this.loadList();
+            }
+          });
+        }
+      }
+
     },
       hotStatusHide(rowdata){
-          if(rowdata.read_count == "" || rowdata.like_count == ""|| rowdata.like_count =="" || rowdata.share_count =="" || rowdata.weight =="" || rowdata.read_count == null || rowdata.like_count == null|| rowdata.like_count == null || rowdata.share_count == null || rowdata.weight == null){
-               this.open("必填项不能为空");
-               return false;
-           }
-    if(isNaN(rowdata.read_count) || isNaN(rowdata.like_count) || isNaN(rowdata.like_count) || isNaN(rowdata.share_count) || isNaN(rowdata.weight)){
-        this.open("修改项必须为数字");
-        return false;
-    }
         this.$confirm('确定下热门?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        })
-        .then(() => {
+        }).then(() => {
         postList.update({
           id:rowdata.id,
           comment_count:parseInt(rowdata.comment_count),
@@ -294,14 +272,21 @@ export default {
           weight:parseInt(rowdata.weight)
          }).then(data => {
               if (data.code == 0) {
+                this.$message({
+                  type: 'success',
+                  message: '设置下热门成功!'
+                });
                 this.loadList();
               } else {
                 this.open(data.msg);
               }
             });
         })
-        .catch(data => { 
-          this.open(data);      
+        .catch(data => {
+          this.$message({
+            type: 'info',
+            message: '已取消操作'
+          });
         });
 
       }
@@ -310,11 +295,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  .float-l{float:left;}
+  .user-div{width:100px;}
+  .tabwarp tr td div.nick-div{height:25px;line-height:25px;width:60px;overflow: hidden;text-overflow:ellipsis;white-space:nowrap;margin-left:4px;}
+  .img-div{width:25px;height:25px;margin-left:10px;}
+  .img-div img{width:100%;border-radius:50%;}
 .tetxleft{text-align: left;}
 .tabwarp{width:100%;border-collapse:collapse;margin:20px 0 0 20px;background-color: #fff;}
 .tabwarp tr th{ background: #96ABB5;color: #fff; font-size: 12px; padding: 12px 10px;border-collapse:collapse;}
 .maincontent{width: 400px;}
-.tabwarp tr th.comment_count{width: 400px;}
+.tabwarp tr th.comment_count{width: 350px;}
 .tabwarp tr:hover{background-color: #FAFAFA;}
 .tabwarp tr td{text-align: center;font-size: 12px;color: #333;border-bottom: 1px solid #ebeef5;padding: 12px 0px;}
 .tabwarp tr td div{box-sizing: border-box;    white-space: normal;    word-break: break-all;    line-height: 23px;}
@@ -322,7 +312,7 @@ export default {
 .tabwarp tr td div input:focus{border:1px solid #dcdfe6;background-color: none;}
 /*.tabwarp tr td a{display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;color: #305da1;  padding: 2px 5px;}*/
 .tabwarp tr td a{position: relative;overflow: hidden;display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical;line-height: 25px; }
-.tabwarp tr td a::after{content: "......查看全部"; position: absolute; bottom: -5px; right: 0; padding-left: 60px;
+.tabwarp tr td a::after{content: "......查看全部"; position: absolute; bottom: 0; right: 0; padding-left: 60px;
 background: -webkit-linear-gradient(left, transparent, #fff 55%);
 background: -o-linear-gradient(right, transparent, #fff 55%);
 background: -moz-linear-gradient(right, transparent, #fff 55%);
@@ -410,4 +400,10 @@ background: linear-gradient(to right, transparent, #fff 55%);}
   line-height: 20px;
   margin: 14px 0 21px 0;
 }
+  .overflow-h {
+    overflow: hidden;
+  }
+  .el-breadcrumb{float:left;height: 32px;
+    line-height: 32px;
+    margin-right: 20px;}
 </style>

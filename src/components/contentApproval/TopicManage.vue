@@ -275,24 +275,40 @@ export default {
       };
       const loadingInstance = this.$loading({ fullscreen: true });
       const vm = this
-      postList.updateWeight(params).then(data=>{
-        if(data.code==0){
-          const rdata = data.data
-          loadingInstance.close();
-          if(rdata.result==true){
-            //vm.open("修改成功")
-
-          }
-          vm.loading = false;
-          vm.pageShow=true;
+      if(rowdata.weight === "" || rowdata.weight == null){
+        this.open("权重不能为空");
+        this.verbList()
+        return false;
+      }else{
+        if(isNaN(rowdata.weight)){
+          this.open("权重必须为数字");
+          this.verbList()
+          return false;
         }else{
-          vm.open("修改失败，请重试！")
-          loadingInstance.close();
-          vm.pageShow=false;
-          vm.loading = false;
+          postList.updateWeight(params).then(data=>{
+            if(data.code==0){
+              const rdata = data.data
+              loadingInstance.close();
+              if(rdata.result==true){
+                //vm.open("修改成功")
+                this.$message({
+                  type: 'success',
+                  message: '修改成功!'
+                });
+              }
+              vm.loading = false;
+              vm.pageShow=true;
+            }else{
+              vm.open("修改失败，请重试！")
+              loadingInstance.close();
+              vm.pageShow=false;
+              vm.loading = false;
+            }
+            vm.verbList()
+          })
         }
-          vm.verbList()
-      })
+      }
+
     },
     updateJoin(rowdata){
       const params = {
@@ -301,25 +317,40 @@ export default {
       };
       const loadingInstance = this.$loading({ fullscreen: true });
       const vm = this
-      postList.updateJoin(params).then(data=>{
-        if(data.code==0){
-          const rdata = data.data
-          loadingInstance.close();
-          if(rdata.result==true){
-            //vm.open("修改成功")
-
-          }
-
-          vm.loading = false;
-          vm.pageShow=true;
+      if(rowdata.join_count === "" || rowdata.join_count == null){
+        this.open("参与数不能为空");
+        this.verbList()
+        return false;
+      }else{
+        if(isNaN(rowdata.join_count)){
+          this.open("参与数必须为数字");
+          this.verbList()
+          return false;
         }else{
-          vm.open("修改失败，请重试！")
-          loadingInstance.close();
-          vm.pageShow=false;
-          vm.loading = false;
+          postList.updateJoin(params).then(data=>{
+            if(data.code==0){
+              const rdata = data.data
+              loadingInstance.close();
+              if(rdata.result==true){
+                //vm.open("修改成功")
+                this.$message({
+                  type: 'success',
+                  message: '修改成功!'
+                });
+              }
+
+              vm.loading = false;
+              vm.pageShow=true;
+            }else{
+              vm.open("修改失败，请重试！")
+              loadingInstance.close();
+              vm.pageShow=false;
+              vm.loading = false;
+            }
+            vm.verbList()
+          })
         }
-        vm.verbList()
-      })
+      }
     },
     updatePublish(rowdata){
       const params = {
@@ -334,7 +365,10 @@ export default {
           loadingInstance.close();
           if(rdata.result==true){
             //vm.open("修改成功")
-
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
+            });
           }
 
           vm.loading = false;
@@ -346,44 +380,7 @@ export default {
         }
 
       })
-    },
-
-      hotStatusHide(rowdata){
-          if(rowdata.read_count == "" || rowdata.like_count == ""|| rowdata.like_count =="" || rowdata.share_count =="" || rowdata.weight =="" || rowdata.read_count == null || rowdata.like_count == null|| rowdata.like_count == null || rowdata.share_count == null || rowdata.weight == null){
-               this.open("必填项不能为空");
-               return false;
-           }
-    if(isNaN(rowdata.read_count) || isNaN(rowdata.like_count) || isNaN(rowdata.like_count) || isNaN(rowdata.share_count) || isNaN(rowdata.weight)){
-        this.open("修改项必须为数字");
-        return false;
     }
-        this.$confirm('确定下热门?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        })
-        .then(() => {
-        postList.update({
-          id:rowdata.id,
-          comment_count:parseInt(rowdata.comment_count),
-          read_count:parseInt(rowdata.read_count),
-          like_count:parseInt(rowdata.like_count),
-          share_count:parseInt(rowdata.share_count),
-          is_hot:"0",
-          weight:parseInt(rowdata.weight)
-         }).then(data => {
-              if (data.code == 0) {
-                this.loadList();
-              } else {
-                this.open(data.msg);
-              }
-            });
-        })
-        .catch(data => {
-          this.open(data);
-        });
-
-      }
   }
 };
 </script>

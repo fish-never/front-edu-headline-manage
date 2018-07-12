@@ -1,42 +1,63 @@
 <template xmlns="http://www.w3.org/1999/html">
   <div>
-    <div class="search-wrap">
-      <span class="mgr20"><router-link to="/index/HotpostList" class="color999">社区管理</router-link>>话题管理</span>
-      <!-- <span class="title">检索条件</span> -->
-      <div class="topicTitleContent" >
+
+      <div class="search-wrap inline">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item :to="{ path: '/index/contentApproval/HotpostList' }">社区管理</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/index/contentApproval/TopicManage' }">话题管理</el-breadcrumb-item>
+          <el-breadcrumb-item>话题详情</el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
+            <!-- <span class="title">检索条件</span> -->
+      <div class="topicTitleContent search-wrap" >
         <div class="titleText">
+
           <p class="topicTitle">{{title_data.name}}</p>
           <p class="topicDesc">{{title_data.description}}</p>
           <p class="topicDesc">{{title_data.created_at}}</p>
-          <button class="search-btn" @click="edit">编辑</button>
+          <button class="search-btn"  @click="gotoEdit(title_data.id)">编辑</button>
         </div>
       </div>
-      <div class="content" v-for="item in list_data.result" :key="item.id">
-        <img src="../../assets/imgs/avatar.svg" class="avatar">
-        <p class="userName">Lee</p>
+      <div class="content search-wrap" v-for="item in list_data.result" :key="item.id">
+        <div class="td-t">
+        <img :src="item.thumb_img" class="avatar">
+        <div class="detail-lj">
+        <p class="userName">{{item.nickname}}</p>
         <p class="createdAt">{{item.created_at}}</p>
+        </div>
         <button class="close" @click="deleteDetail(item.id)"></button>
+        </div>
         <p class="contentTitle">#zikaozenmexue#</p>
         <p class="paragraph">{{item.content.content}}</p>
-        <img v-for="image in item.content.images" :src='image' class="img">
-        <br/>
+        <!--<img v-for="image in item.content.images" :src='image' class="img">-->
+        <div class="img-div">
+          <div class="img-div-inner" v-for="image in item.content.images" :key="image.id"><img :src="image" ></div>
+        </div>
+
         <div class="functionContent">
           <div class="function">
-            <img src="../../assets/imgs/comment.svg" class="icon">
-            <p class="num">{{item.comment_count}}</p>
+            <div class="div-all">
+              <div class="div-icon-img"><img src="../../assets/imgs/comment.svg" class="icon"></div>
+              <el-input size="mini" :disabled="true" class="input-icon" v-model="item.comment_count" placeholder="请输入内容"></el-input>
+            </div>
           </div>
           <div class="function">
-            <img src="../../assets/imgs/prise.svg" class="icon">
-            <p class="num">{{item.like_count}}</p>
+            <div class="div-all">
+              <div class="div-icon-img"><img src="../../assets/imgs/prise.svg" class="icon"></div>
+              <el-input size="mini" class="input-icon" @blur="updateNum(item)" v-model="item.like_count" placeholder=""></el-input>
+            </div>
           </div>
           <div class="function">
-            <img src="../../assets/imgs/share.svg" class="icon">
-            <p class="num">{{item.share_count}}</p>
+            <div class="div-all">
+              <div class="div-icon-img"><img src="../../assets/imgs/share.svg" class="icon"></div>
+              <el-input size="mini" class="input-icon" @blur="updateNum(item)" v-model="item.share_count" placeholder=""></el-input>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    <div class="search-wrap">
     <el-pagination
+      class="page-wrap"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="page"
@@ -45,6 +66,7 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
+  </div>
   </div>
 </template>
 
@@ -90,6 +112,16 @@
     //   this.loadList();
     // },
     methods: {
+      //弹框
+      open(text) {
+        this.$alert(text, "信息", {
+          confirmButtonText: "确定"
+        });
+      },
+      //跳转编辑页
+      gotoEdit(tid){
+        this.$router.push({path: '/index/TopicEdit',query:{ id:tid}});
+      },
       handleSelectionChange(val) {
         // console.log(val)
         this.multipleSelection = val;
@@ -153,10 +185,39 @@
           // }
         })
       },
+      //修改点赞数
+      updateNum(rowdata){
+        const params = {
+          id:parseInt(rowdata.id),
+          comment_count:parseInt(rowdata.comment_count),
+          like_count:parseInt(rowdata.like_count),
+          share_count:parseInt(rowdata.share_count),
+          read_count:parseInt(rowdata.read_count),
+          is_hot:parseInt(rowdata.is_hot),
+          weight:parseInt(rowdata.weight),
+        };
+        const loadingInstance = this.$loading({ fullscreen: true });
+        const vm = this
+        topicManageService.updateNum(params).then(data=>{
+          if(data.code==0){
+            const rdata = data.data
+            loadingInstance.close();
+            if(rdata.result==1){
+              vm.open("修改成功")
+            }
+            vm.loading = false;
+            vm.pageShow=true;
+          }else{
+            vm.open("修改失败，请重试！")
+            loadingInstance.close();
+            vm.pageShow=false;
+            vm.loading = false;
+          }
+        })
+      },
       //删除
       deleteDetail(id) {
-        const ids = parseInt(id);
-        console.log(ids);
+        //const ids = parseInt(id);
         let params = {
           ids: parseInt(id)
         };
@@ -168,10 +229,9 @@
           // topicManageService.deletePost(ids);
           topicManageService.deletePost(params).then(data=>{
             if (data.code === 0){
-              console.log(data);
-              console.log(ids);
               this.loadList();
             } else {
+              vm.open("删除失败，请重试！")
               console.log('err!');
               console.log(ids)
             }
@@ -198,12 +258,21 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+  .input-icon{width:50px;height:25px!important;line-height: 25px!important;float:left}
+  .img-div{display:flex;margin-top:15px;}
+  .img-div-inner{flex:1;margin-right:20px;height:150px;overflow: hidden;}
+  .img-div-inner:last-child{margin:0;}
+  .img-div-inner img{width:100%;}
+  .bg-img{width:100%;height:100%;}
+  .td-t{overflow: hidden;margin-bottom:15px;position:relative}
+  .detail-lj{float:left;margin-left:18px;}
   .color999{
     color: #999999;
   }
   .topicTitle{
     color: #FD782D;
     font-size: 22px;
+
   }
   .topicDesc{
     color: #FFFFFF;
@@ -211,13 +280,11 @@
     margin-top: 7px;
   }
   .topicTitleContent{
-    height: 104px;
-    width: 900px;
-    margin-top: 20px;
-    background-image: url("../../assets/imgs/topictitlebg.png");
+
+
   }
   .content{
-    width: 900px;
+    padding:20px 34px;
     height: auto;
     background-color: white;
     margin-top: 16px;
@@ -225,39 +292,31 @@
   .userName{
     color: #333333;
     font-size: 16px;
-    float: left;
-    margin-top: 32px;
-    margin-left: 10px;
+line-height: 30px;
   }
   .createdAt{
     color: #999999;
     font-size: 12px;
-    float: left;
-    margin-top: 57px;
-    margin-left: -28px;
+    line-height: 20px;
   }
   .avatar{
     height: 50px;
     width: 50px;
-    margin-left: 35px;
-    margin-top: 32px;
     float: left;
+    border-radius: 50%;
   }
   .contentTitle{
     color: #FD782D;
     font-size: 18px;
-    clear: both;
-    margin-left: 42px;
-    padding-top: 17px;
+    margin-bottom: 5px;
   }
   .paragraph{
-    width: 791px;
-    height: auto;
     font-size: 14px;
     color: #666666;
-    margin-left: 44px;
-    margin-top: 7px;
+line-height: 24px;
   }
+  .div-all{width:80px;
+    overflow: hidden;margin:0 auto;}
   .img{
     height: 150px;
     width: 300px;
@@ -265,45 +324,47 @@
     margin-top: 23px;
     margin-right: -14px;
   }
+  .div-icon-img{
+    width:30px;
+    float:left;
+  }
   .icon{
-    height: 20px;
-    width: 20px;
+    height: 25px;
+    width: 25px;
     color: #202020;
-    float: left;
+    margin-top:2px;
   }
   .function{
-    float: left;
-    margin-left: 106px;
-    margin-right: 120px;
-    padding-bottom: 25px;
+    flex:1;
+    text-align: center;
   }
   .functionContent{
-    height: 30px;
-    margin-top: 25px;
-    margin-bottom: 25px;
+    display: flex;
+    margin-top:35px;
   }
   .num{
     float: left;
     line-height: 20px;
   }
   .titleText{
-    margin-left: 32px;
-    padding-top: 14px;
+    background: url("../../assets/imgs/line.jpg") repeat-x;
+    //background-size:100%;
+    padding:15px 34px;
+    position:relative;
   }
   .close{
     background-image: url("../../assets/imgs/deleteicon.svg");
     height: 17px;
     width: 17px;
-    float: right;
-    margin-top: 30px;
-    margin-right: 30px;
+    position:absolute;
+    top:0;
+    right:0;
     background-color: white;
   }
   .search-btn{
     width: 70px;
     height: 32px;
-    position: relative;
-    left: 750px;
-    top: -50px;
+    position: absolute;
+right:34px;top:50%;margin-top:-16px;
   }
 </style>

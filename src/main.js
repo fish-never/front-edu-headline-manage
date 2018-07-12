@@ -24,7 +24,7 @@ KindEditor.lang({
   clearstyle:'样式格式化'
   },'zh-CN');
 Vue.use(VueKindEditor)
-import $ from 'jquery';   
+import $ from 'jquery';
 window.$ = $;
 
 let token = localStorage.getItem('Token')

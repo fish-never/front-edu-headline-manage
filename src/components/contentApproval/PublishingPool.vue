@@ -1,19 +1,27 @@
 <template>
   <div>
-    <div class="clearfloat wrap-main">
-      <div class="search-wrap">
-         <span class="mgr20"><router-link to="/index/publishingPool">社区管理</router-link>>热帖列表</span>
-        <!-- <span class="title">检索条件</span> -->
-        <el-input v-model="content" placeholder="请输入内容" clearable class="searchinput mgr20"></el-input>
-       <el-input v-model="username" placeholder="请输入用户名" clearable  class="searchinput"></el-input>
-        <button class="search-btn" @click="getSourceList">搜索</button>
+    <div class="search-wrap inline">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: '/index/contentApproval/HotpostList' }">社区管理</el-breadcrumb-item>
+        <el-breadcrumb-item>发布池内容管理</el-breadcrumb-item>
+      </el-breadcrumb>
+      <div class="overflow-h margin-t10">
+        <div class="float-l">
+          <el-input v-model="content" size="small" placeholder="请输入话题关键字" clearable class="searchinput mgr20" style="width:150px;"></el-input>
+          <el-input v-model="username" size="small" placeholder="请输入用户名" clearable class="searchinput mgr20" style="width:150px;"></el-input>
+
+          <button class="search-btn" @click="getSourceList">搜索</button>
+        </div>
+
       </div>
     </div>
     <el-table  :data="itemData"  tooltip-effect="dark" stripe class="mainTab" header-align="center">
       <el-table-column  label="用户"  width="200" >
         <template slot-scope="scope">
-          <span class="lh30 username"><img :src="touxiang" alt="" class="userimg"></span>
-          <span class="lh30 nametext">00000000</span>
+          <div>
+            <div class="float-l img-div"><img :src="scope.row.thumb_img" alt="" /></div>
+            <div class="float-l nick-div">{{scope.row.nickname}}</div>
+          </div>
         </template>
       </el-table-column>
       <el-table-column  label="内容"  align="center">
@@ -158,23 +166,33 @@ export default {
       });
     },
     Detele(ids) {
+      const params = {
+        ids: ids
+      };
       this.$confirm("确定删除?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-          postList.detele({
-             ids: ids
-          }).then(data => {
-            if (data.code == 0) {
-              this.loadList();
-            } else {
-              this.open(data.msg);
-            }
+        postList.detele(params).then(data => {
+          if (data.code == 0) {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+            this.loadList();
+          } else {
+            this.open(data.msg);
+          }
+        });
+      })
+        .catch(data => {
+          this.$message({
+            type: 'info',
+            message: '已取消操作'
           });
-        })
+        });
     },
-
     handleSizeChange(val) {
       this.pageNum = val; // 改变每页显示条数
       this.loadList(); // 重新请求
@@ -187,36 +205,52 @@ export default {
       // console.log("...");
     },
     updateData(rowdata){
-      if(rowdata.read_count == "" || rowdata.like_count == ""|| rowdata.like_count =="" || rowdata.share_count =="" || rowdata.weight =="" || rowdata.read_count == null || rowdata.like_count == null|| rowdata.like_count == null || rowdata.share_count == null || rowdata.weight == null){
-               this.open("必填项不能为空");
-               return false;
-           }
-    if(isNaN(rowdata.read_count) || isNaN(rowdata.like_count) || isNaN(rowdata.like_count) || isNaN(rowdata.share_count) || isNaN(rowdata.weight)){
-        this.open("修改项必须为数字");
+      if(rowdata.read_count === ""||rowdata.like_count === ""||rowdata.share_count === ""||rowdata.weight === "" || rowdata.read_count == null||rowdata.like_count == null||rowdata.share_count == null||rowdata.weight == null){
+        this.open("修改项不能为空");
+        this.loadList();
         return false;
-    }
-      postList.update({
-          id:rowdata.id,
-          comment_count:parseInt(rowdata.comment_count),
-          read_count:parseInt(rowdata.read_count),
-          like_count:parseInt(rowdata.like_count),
-          share_count:parseInt(rowdata.share_count),
-          is_hot:rowdata.is_hot,
-          weight:parseInt(rowdata.weight)
+      }else{
+        if(isNaN(rowdata.read_count)||isNaN(rowdata.like_count)||isNaN(rowdata.share_count)||isNaN(rowdata.weight)){
+          this.open("权重必须为数字");
+          this.loadList();
+          return false;
+        }else{
+          postList.update({
+            id:rowdata.id,
+            comment_count:parseInt(rowdata.comment_count),
+            read_count:parseInt(rowdata.read_count),
+            like_count:parseInt(rowdata.like_count),
+            share_count:parseInt(rowdata.share_count),
+            is_hot:rowdata.is_hot,
+            weight:parseInt(rowdata.weight)
           }).then(data => {
-              if (data.code == 0) {
-                this.loadList();
-              } else {
-                this.open(data.msg);
-              }
-            });
+            if (data.code == 0) {
+              this.$message({
+                type: 'success',
+                message: '修改成功!'
+              });
+              this.loadList();
+            } else {
+              this.open(data.msg);
+              this.loadList();
+            }
+          });
+        }
+      }
+
     }
   }
 };
 </script>
 
 <style scoped lang="scss">
-.tetxleft{text-align: left;}
+  .float-l{float:left;}
+  .user-div{width:100px;}
+div.nick-div{height:25px;line-height:25px;width:60px;overflow: hidden;text-overflow:ellipsis;white-space:nowrap;margin-left:4px;}
+  .img-div{width:25px;height:25px;margin-left:10px;}
+  .img-div img{width:100%;border-radius:50%;}
+
+  .tetxleft{text-align: left;}
 .lh30{line-height: 30px;}
 .texthandle{position: relative;overflow: hidden;display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 25px;}
 .texthandle::after{content: "......查看全部"; position: absolute; bottom: 2px; right: 0; padding-left: 60px;
@@ -300,4 +334,8 @@ background: linear-gradient(to right, transparent, #fff 55%);}
   line-height: 20px;
   margin: 14px 0 21px 0;
 }
+  .el-breadcrumb{float:left;height: 32px;
+    line-height: 32px;
+    margin-right: 20px;}
+  .overflow-h{overflow: hidden;}
 </style>
