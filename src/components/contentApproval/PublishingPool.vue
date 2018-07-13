@@ -245,7 +245,11 @@ export default {
   }
 };
 </script>
-
+<style>
+  .el-table thead th {
+    background-color: #96ABB5
+  }
+</style>
 <style scoped lang="scss">
   .pooldiv .pooltab .cell{color:#000;}
   .pooltab td{color:#000;}
