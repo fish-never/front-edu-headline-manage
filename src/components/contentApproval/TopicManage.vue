@@ -285,6 +285,11 @@ export default {
           this.verbList()
           return false;
         }else{
+          if(parseInt(rowdata.weight)<0||parseInt(rowdata.weight)>99999){
+            this.open("权重必须大于0或小于99999");
+            this.verbList()
+            return false;
+          }else{
           postList.updateWeight(params).then(data=>{
             if(data.code==0){
               const rdata = data.data
@@ -306,7 +311,7 @@ export default {
             }
             vm.verbList()
           })
-        }
+        }}
       }
 
     },
@@ -327,6 +332,11 @@ export default {
           this.verbList()
           return false;
         }else{
+          if(parseInt(rowdata.join_count)<0||parseInt(rowdata.join_count)>99999){
+            this.open("参与数必须大于0或小于99999");
+            this.verbList()
+            return false;
+          }else{
           postList.updateJoin(params).then(data=>{
             if(data.code==0){
               const rdata = data.data
@@ -349,6 +359,7 @@ export default {
             }
             vm.verbList()
           })
+        }
         }
       }
     },

@@ -73,7 +73,7 @@ $font-color01:#344750;
 $font-color02:#666;
 $font-color03:#999;
 $font-color04:#333;
-
+$font-color05:#000;
 $font-color06:#fff;
 $font-color07:#969696;
 // 搜索框
@@ -141,7 +141,7 @@ $font-color07:#969696;
   font-size:$font-size01;
 }
 .el-table td{
-  color:$font-color07;
+  color:$font-color05;
   font-size:$font-size01;
 }
 .el-main{
@@ -199,18 +199,20 @@ input,button,select,textarea{outline:none}
   color: #305da1;
   cursor: pointer;
   display: inline-block;
-  padding: 2px 5px;
+  padding: 0 5px;
   &:hover{
     color:#FD782D;
   }
 }
-
+.text-c{text-align: center;}
 .link-status{
   display: inline-block;
   padding: 2px 5px;
   color:#FD782D;
   cursor: pointer;
 }
+.numinput{display:inline-block;width:46px;border-radius: 4px;text-align: center;height:30px;line-height: 30px;padding:0 3px;background-color: transparent;}
+.numinput:focus{border:1px solid #dcdfe6;background-color: #fefefe;border:1px solid #ebeef5;}
 .add-btn{
   width:114px;
   height:32px;

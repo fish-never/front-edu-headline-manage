@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="search-wrap inline">
+  <div class="pooldiv">
+    <div class="search-wrap inline margin-b20">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/index/contentApproval/HotpostList' }">社区管理</el-breadcrumb-item>
         <el-breadcrumb-item>发布池内容管理</el-breadcrumb-item>
@@ -15,8 +15,8 @@
 
       </div>
     </div>
-    <el-table  :data="itemData"  tooltip-effect="dark" stripe class="mainTab" header-align="center">
-      <el-table-column  label="用户"  width="200" >
+    <el-table  :data="itemData"  tooltip-effect="dark" stripe  style="width: 100%" class="pooltab">
+      <el-table-column  label="用户"  width="130">
         <template slot-scope="scope">
           <div>
             <div class="float-l img-div"><img :src="scope.row.thumb_img" alt="" /></div>
@@ -24,57 +24,54 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column  label="内容"  align="center">
+      <el-table-column  label="内容" class="content-width" width="200">
         <template slot-scope="scope">
           <router-link class="link-a tetxleft texthandle" :to="{path:'/index/contentApproval/PublishingPoolEdit/'+ scope.row.id}">{{scope.row.content.content}}</router-link>
         </template>
       </el-table-column>
-      <el-table-column  label="评论时间" align="center">
+      <el-table-column  label="评论时间" prop="created_at" width="140">
+
+      </el-table-column>
+      <el-table-column  label="评论数" prop="comment_count">
+
+      </el-table-column>
+      <el-table-column  label="浏览量">
         <template slot-scope="scope">
-          <span>{{scope.row.created_at}}</span>
+          <input v-model="scope.row.read_count" class="numinput" @blur="updateData(scope.row)" />
         </template>
       </el-table-column>
-      <el-table-column  label="评论数"  width="60px" align="center">
-      <template slot-scope="scope">
-        <span>{{scope.row.comment_count}}</span>
-      </template>
-    </el-table-column>
-         <el-table-column  label="浏览量" width="60px" align="center">
-      <template slot-scope="scope">
-         <input v-model="scope.row.read_count" class="numinput" @blur="updateData(scope.row)" />
-      </template>
-    </el-table-column>
-    <el-table-column  label="点赞数"  width="60px" align="center">
-      <template slot-scope="scope">
-         <input v-model="scope.row.like_count" class="numinput" @blur="updateData(scope.row)" />
-      </template>
-    </el-table-column>
-
-    <el-table-column   label="转发数"  width="60px" align="center">
-      <template slot-scope="scope">
-         <input v-model="scope.row.share_count" class="numinput" @blur="updateData(scope.row)" />
-      </template>
-    </el-table-column>
-    <el-table-column   label="热门"  width="140"  align="center">
-      <template slot-scope="scope">
-        <el-tooltip :content="'当前热门状态：'+toast(scope.row.is_hot)" placement="top">
-          <el-switch
-            v-model="scope.row.is_hot"
-            active-color="#FD782D"
-            inactive-color="#96ABB5"
-            active-value="1"
-            inactive-value="0"
-            @change="updateData(scope.row)">
-          </el-switch>
-        </el-tooltip>
-      </template>
+      <el-table-column  label="点赞数">
+        <template slot-scope="scope">
+          <input v-model="scope.row.like_count" class="numinput" @blur="updateData(scope.row)" />
+        </template>
       </el-table-column>
-      <el-table-column label="操作"  width="150px"  align="center">
+
+      <el-table-column label="转发数">
+        <template slot-scope="scope">
+          <input v-model="scope.row.share_count" class="numinput" @blur="updateData(scope.row)" />
+        </template>
+      </el-table-column>
+      <el-table-column label="热门" width="80">
+        <template slot-scope="scope">
+          <el-tooltip :content="'当前热门状态：'+toast(scope.row.is_hot)" placement="top">
+            <el-switch
+              v-model="scope.row.is_hot"
+              active-color="#FD782D"
+              inactive-color="#96ABB5"
+              active-value="1"
+              inactive-value="0"
+              @change="updateData(scope.row)">
+            </el-switch>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作"  width="80" >
         <template slot-scope="scope">
           <span type="button" class="link-a"  @click="Detele(scope.row.id)">删除</span>
         </template>
       </el-table-column>
     </el-table>
+
     <el-pagination
       class="page-wrap"
       @size-change="handleSizeChange"
@@ -211,10 +208,15 @@ export default {
         return false;
       }else{
         if(isNaN(rowdata.read_count)||isNaN(rowdata.like_count)||isNaN(rowdata.share_count)||isNaN(rowdata.weight)){
-          this.open("权重必须为数字");
+          this.open("修改项必须为数字");
           this.loadList();
           return false;
         }else{
+          if(parseInt(rowdata.read_count)<0||parseInt(rowdata.read_count)>99999||parseInt(rowdata.like_count)<0||parseInt(rowdata.like_count)>99999||parseInt(rowdata.share_count)<0||parseInt(rowdata.share_count)>99999||parseInt(rowdata.weight)<0||parseInt(rowdata.weight)>99999){
+            this.open("修改项必须大于0或小于99999");
+            this.loadList();
+            return false;
+          }else{
           postList.update({
             id:rowdata.id,
             comment_count:parseInt(rowdata.comment_count),
@@ -235,6 +237,7 @@ export default {
               this.loadList();
             }
           });
+          }
         }
       }
 
@@ -244,16 +247,20 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  .pooldiv .pooltab .cell{color:#000;}
+  .pooltab td{color:#000;}
+  .margin-b20{margin-bottom: 20px;}
+  .content-width{width:200px;}
   .float-l{float:left;}
   .user-div{width:100px;}
-div.nick-div{height:25px;line-height:25px;width:60px;overflow: hidden;text-overflow:ellipsis;white-space:nowrap;margin-left:4px;}
-  .img-div{width:25px;height:25px;margin-left:10px;}
+div.nick-div{color:#000;height:25px;line-height:25px;width:60px;overflow: hidden;text-overflow:ellipsis;white-space:nowrap;margin-left:4px;}
+  .img-div{width:25px;height:25px;}
   .img-div img{width:100%;border-radius:50%;}
 
   .tetxleft{text-align: left;}
 .lh30{line-height: 30px;}
-.texthandle{position: relative;overflow: hidden;display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 25px;}
-.texthandle::after{content: "......查看全部"; position: absolute; bottom: 2px; right: 0; padding-left: 60px;
+.texthandle{height:25px;position: relative;overflow: hidden; line-height: 25px;}
+.texthandle::after{content: "......查看全部"; position: absolute; bottom: 0; right: 0; padding-left: 60px;
 background: -webkit-linear-gradient(left, transparent, #fff 55%);
 background: -o-linear-gradient(right, transparent, #fff 55%);
 background: -moz-linear-gradient(right, transparent, #fff 55%);
@@ -262,8 +269,7 @@ background: linear-gradient(to right, transparent, #fff 55%);}
 .username{display:inline-block;}
 .userimg{width:30px;height:30px;display:block;border-radius:50%;margin-right:20px;line-height: 40px;float: left;}
 .nametext{display:block;margin-top:-35px;padding-left:40px;}
-.numinput{display:inline-block;width:40px;border:0;border-radius: 4px;text-align: center;height:30px;line-height: 30px;}
-.numinput:focus{border:1px solid #dcdfe6;background-color: none;}
+
 .mainTab{margin:20px 0 0 20px;}
 .item-wrap {
   width: 290px;

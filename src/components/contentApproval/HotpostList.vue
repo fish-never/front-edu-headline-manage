@@ -37,20 +37,20 @@
                 <div class="float-l nick-div">{{item.nickname}}</div>
               </div>
             </td>
-          <td><router-link class="link-a tetxleft" :to="{path:'/index/contentApproval/HotpostListEdit/'+ item.id}">{{item.content.content}}</router-link></td>
+          <td><router-link class="link-a" :to="{path:'/index/contentApproval/HotpostListEdit/'+ item.id}">{{item.content.content}}</router-link></td>
           <td><div>{{item.created_at}}</div></td>
-          <td><div>{{item.comment_count}}</div></td>
-          <td><div><input type="text" v-model="item.read_count" @blur="updateData(item)" /></div></td>
-          <td><div><input type="text" v-model="item.like_count"  @blur="updateData(item)" /></div></td>
-          <td><div><input type="text" v-model="item.share_count"  @blur="updateData(item)" /></div></td>
-          <td><div><input type="text" v-model="item.weight"  @blur="updateData(item)" /></div></td>
+          <td><div class="text-c">{{item.comment_count}}</div></td>
+          <td><div><input class="numinput" type="text" v-model="item.read_count" @blur="updateData(item)" /></div></td>
+          <td><div><input class="numinput" type="text" v-model="item.like_count"  @blur="updateData(item)" /></div></td>
+          <td><div><input class="numinput" type="text" v-model="item.share_count"  @blur="updateData(item)" /></div></td>
+          <td><div><input class="numinput" type="text" v-model="item.weight"  @blur="updateData(item)" /></div></td>
           <td>
             <div>
               <span type="button" class="link-a" @click="hotStatusHide(item)">下热门</span>
               <span  type="button" class="link-a" @click="Detele(item.id)">删除</span>
           </div>
           </td>
-          <td><div><img src="../../assets/imgs/drag.svg" alt="" /></div></td>
+          <td><div class="text-c"><img src="../../assets/imgs/drag.svg" alt="" /></div></td>
           </tr>
         </draggable>
       </table>
@@ -228,10 +228,15 @@ export default {
         return false;
       }else{
         if(isNaN(rowdata.read_count)||isNaN(rowdata.like_count)||isNaN(rowdata.share_count)||isNaN(rowdata.weight)){
-          this.open("权重必须为数字");
+          this.open("修改项必须为数字");
           this.loadList();
           return false;
         }else{
+          if(parseInt(rowdata.read_count)<0||parseInt(rowdata.read_count)>99999||parseInt(rowdata.like_count)<0||parseInt(rowdata.like_count)>99999||parseInt(rowdata.share_count)<0||parseInt(rowdata.share_count)>99999||parseInt(rowdata.weight)<0||parseInt(rowdata.weight)>99999){
+            this.open("修改项必须大于0或小于99999");
+            this.loadList();
+            return false;
+          }else{
           postList.update({
             id:rowdata.id,
             comment_count:parseInt(rowdata.comment_count),
@@ -252,6 +257,7 @@ export default {
               this.loadList();
             }
           });
+        }
         }
       }
 
@@ -302,16 +308,15 @@ export default {
   .img-div img{width:100%;border-radius:50%;}
 .tetxleft{text-align: left;}
 .tabwarp{width:100%;border-collapse:collapse;margin:20px 0 0 20px;background-color: #fff;}
-.tabwarp tr th{ background: #96ABB5;color: #fff; font-size: 12px; padding: 12px 10px;border-collapse:collapse;}
+.tabwarp tr th{ background: #96ABB5;color: #fff; font-size: 12px; padding: 12px 10px;border-collapse:collapse;text-align: left}
 .maincontent{width: 400px;}
-.tabwarp tr th.comment_count{width: 350px;}
+.tabwarp tr th.comment_count{width: 250px;}
 .tabwarp tr:hover{background-color: #FAFAFA;}
-.tabwarp tr td{text-align: center;font-size: 12px;color: #333;border-bottom: 1px solid #ebeef5;padding: 12px 0px;}
+.tabwarp tr td{font-size: 12px;color: #333;border-bottom: 1px solid #ebeef5;padding: 12px 0px;}
 .tabwarp tr td div{box-sizing: border-box;    white-space: normal;    word-break: break-all;    line-height: 23px;}
-.tabwarp tr td div input{display:inline-block;width:40px;border:0;border-radius: 4px;text-align: center;height:30px;line-height: 30px;}
-.tabwarp tr td div input:focus{border:1px solid #dcdfe6;background-color: none;}
+
 /*.tabwarp tr td a{display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;color: #305da1;  padding: 2px 5px;}*/
-.tabwarp tr td a{position: relative;overflow: hidden;display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical;line-height: 25px; }
+.tabwarp tr td a{position: relative;overflow: hidden;height:25px;line-height: 25px; }
 .tabwarp tr td a::after{content: "......查看全部"; position: absolute; bottom: 0; right: 0; padding-left: 60px;
 background: -webkit-linear-gradient(left, transparent, #fff 55%);
 background: -o-linear-gradient(right, transparent, #fff 55%);
@@ -329,8 +334,6 @@ background: linear-gradient(to right, transparent, #fff 55%);}
 .username{display:inline-block;}
 .userimg{width:30px;height:30px;display:block;border-radius:50%;margin-right:20px;line-height: 40px;}
 .nametext{display:block;margin-top:-35px;padding-left:40px;}
-.numinput{display:inline-block;width:40px;border:0;border-radius: 4px;text-align: center;height:30px;line-height: 30px;}
-.numinput:focus{border:1px solid #dcdfe6;background-color: none;}
 .item-wrap {
   width: 290px;
   height: 258px;

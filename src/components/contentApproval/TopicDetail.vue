@@ -96,11 +96,12 @@
         total: 10,
         page: 1,
         pageNum: 10,
-        topicId: 0
+        topicId: this.$route.query.id
       }
     },
 
     created: function () {
+
       this.loadList();
       this.loadTopicDesc();
     },
@@ -146,7 +147,7 @@
       //加载话题描述
       loadTopicDesc(){
         const params = {
-          id: 12
+          id: this.topicId
         };
         topicManageService.topicTitleDesc(params).then(data=>{
           if(data.code === 0){

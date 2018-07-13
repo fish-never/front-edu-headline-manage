@@ -144,6 +144,10 @@ watch:{
         }).then((data) => {
             contentApprovalService.check(params).then(data=>{
               if(data.code==0){
+                this.$message({
+                  type: 'success',
+                  message: '通过成功!'
+                });
                 this.loadList()
               }else{
                 this.open(data.msg)
@@ -169,6 +173,10 @@ watch:{
         }).then(() => {
           contentApprovalService.check(params).then(data=>{
             if(data.code==0){
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
             this.loadList()
             }else{
             this.open(data.msg)
@@ -252,7 +260,6 @@ watch:{
 }
 
 .item-wrap{
-  height:310px;
   position: relative;
   cursor: pointer;
   margin: 10px 0px 10px 30px;
@@ -261,8 +268,7 @@ watch:{
 
 .item{
   background:rgba(255,255,255,1);
-  padding:30px 25px;
-  height:310px;
+  padding:30px 100px 40px 25px;
   overflow-y: auto;
   }
 .pass,.delete{
