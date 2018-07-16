@@ -44,13 +44,13 @@
           <div class="function">
             <div class="div-all">
               <div class="div-icon-img"><img src="../../assets/imgs/prise.svg" class="icon"></div>
-              <el-input size="mini" class="input-icon" @blur="updateNum(item)" v-model="item.like_count" placeholder=""></el-input>
+              <el-input size="mini" class="input-icon" @change="updateNum(item)" v-model="item.like_count" placeholder=""></el-input>
             </div>
           </div>
           <div class="function">
             <div class="div-all">
               <div class="div-icon-img"><img src="../../assets/imgs/share.svg" class="icon"></div>
-              <el-input size="mini" class="input-icon" @blur="updateNum(item)" v-model="item.share_count" placeholder=""></el-input>
+              <el-input size="mini" class="input-icon" @change="updateNum(item)" v-model="item.share_count" placeholder=""></el-input>
             </div>
           </div>
         </div>
@@ -163,7 +163,7 @@
         const params = {
           page:this.page,
           pageNum:this.pageNum,
-          topic_id:12
+          topic_id:parseInt(this.topicId)
         };
         console.log('loaded!');
         const loadingInstance = this.$loading({ fullscreen: true });
@@ -348,7 +348,7 @@ line-height: 24px;
     line-height: 20px;
   }
   .titleText{
-    background: url("../../assets/imgs/line.jpg") repeat-x;
+    background: url("../../assets/imgs/line.jpg") repeat;
     //background-size:100%;
     padding:15px 34px;
     position:relative;

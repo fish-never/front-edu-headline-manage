@@ -1,6 +1,13 @@
 <template>
   <div>
-    <p class="location"> <router-link to="/index/PublishingPool" class="grey">发布池内容管理</router-link>>预览</p>
+    <div class="search-wrap inline">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: '/index/contentApproval/HotpostList' }">社区管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/index/contentApproval/PublishingPool' }">发布池内容管理</el-breadcrumb-item>
+        <el-breadcrumb-item >编辑发布池内容</el-breadcrumb-item>
+      </el-breadcrumb>
+
+    </div>
     <div class="wrap">
         <h2 class="title">{{this.title}}</h2>
         <!-- <p class="tag"><span>{{data.tag_name}}</span><span>{{data.type_name}}</span><span>3099年25月66日</span></p> -->
@@ -21,7 +28,7 @@
               <el-radio v-model="fromdata.is_hot" label="1" >是</el-radio>
                <el-radio v-model="fromdata.is_hot" label="0">否</el-radio>
             </el-form-item>
-            
+
             <el-form-item>
               <el-button class="w100" type="danger" @click="updating()">保存</el-button>
               <el-button  class="quxiao w100" @click="toback">取消</el-button>
@@ -73,15 +80,18 @@
           this.$router.push({ path: "/" });
           return;
         }
-      postList.view(this.id).then(data=>{
-        if(data.code==0){
-          this.cont = data.data.content.content; // 多层结构或者不在数据源内单独赋值
-          this.title = data.data.topic_title;
-          this.fromdata = data.data;
-      }
-    });
+      this.loadList()
     },
     methods:{
+      loadList(){
+        postList.view(this.id).then(data=>{
+          if(data.code==0){
+            this.cont = data.data.content.content; // 多层结构或者不在数据源内单独赋值
+            this.title = data.data.topic_title;
+            this.fromdata = data.data;
+          }
+        });
+      },
        //弹框
      open(text) {
         this.$alert(text, '信息', {
@@ -89,14 +99,21 @@
         });
       },
     updating(){
-      if(this.fromdata.read_count == "" || this.fromdata.like_count == "" || this.fromdata.share_count ==""  || this.fromdata.read_count == null || this.fromdata.like_count == null || this.fromdata.share_count == null){
-               this.open("必填项不能为空");
-               return false;
-           }
-    if(isNaN(this.fromdata.read_count) || isNaN(this.fromdata.like_count) || isNaN(this.fromdata.share_count)){
-        this.open("修改项必须为数字");
+      if(this.fromdata.read_count === ""||this.fromdata.like_count === ""||this.fromdata.share_count === "" || this.fromdata.read_count == null||this.fromdata.like_count == null||this.fromdata.share_count == null){
+        this.open("修改项不能为空");
+        this.loadList();
         return false;
-    }
+      }
+      if(isNaN(this.fromdata.read_count)||isNaN(this.fromdata.like_count)||isNaN(this.fromdata.share_count)){
+        this.open("修改项必须为数字");
+        this.loadList();
+        return false;
+      }
+      if(parseInt(this.fromdata.read_count)<0||parseInt(this.fromdata.read_count)>99999||parseInt(this.fromdata.like_count)<0||parseInt(this.fromdata.like_count)>99999||parseInt(this.fromdata.share_count)<0||parseInt(this.fromdata.share_count)>99999){
+        this.open("修改项必须大于0或小于99999");
+        this.loadList();
+        return false;
+      }
       postList.update({
           id:this.fromdata.id,
           comment_count:parseInt(this.fromdata.comment_count),
@@ -125,7 +142,7 @@
     background:rgba(255,255,255,1);
     border-radius: 8px ;
     text-align: left;
-    margin:0 20px 20px 20px ;
+    margin:20px 20px 20px 20px ;
     padding:35px;
   }
   .title {

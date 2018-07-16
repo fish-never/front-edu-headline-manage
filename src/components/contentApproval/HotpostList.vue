@@ -37,13 +37,13 @@
                 <div class="float-l nick-div">{{item.nickname}}</div>
               </div>
             </td>
-          <td><router-link class="link-a" :to="{path:'/index/contentApproval/HotpostListEdit/'+ item.id}">{{item.content.content}}</router-link></td>
+          <td  style="width:250px;"><router-link class="link-a" :to="{path:'/index/contentApproval/HotpostListEdit/'+ item.id}">{{item.content.content}}</router-link></td>
           <td><div>{{item.created_at}}</div></td>
           <td><div class="text-c">{{item.comment_count}}</div></td>
-          <td><div><input class="numinput" type="text" v-model="item.read_count" @blur="updateData(item)" /></div></td>
-          <td><div><input class="numinput" type="text" v-model="item.like_count"  @blur="updateData(item)" /></div></td>
-          <td><div><input class="numinput" type="text" v-model="item.share_count"  @blur="updateData(item)" /></div></td>
-          <td><div><input class="numinput" type="text" v-model="item.weight"  @blur="updateData(item)" /></div></td>
+          <td><div><input class="numinput" type="text" v-model="item.read_count" @change="updateData(item)" /></div></td>
+          <td><div><input class="numinput" type="text" v-model="item.like_count"  @change="updateData(item)" /></div></td>
+          <td><div><input class="numinput" type="text" v-model="item.share_count"  @change="updateData(item)" /></div></td>
+          <td><div><input class="numinput" type="text" v-model="item.weight"  @change="updateData(item)" /></div></td>
           <td>
             <div>
               <span type="button" class="link-a" @click="hotStatusHide(item)">下热门</span>
@@ -310,18 +310,18 @@ export default {
 .tabwarp{width:100%;border-collapse:collapse;margin:20px 0 0 20px;background-color: #fff;}
 .tabwarp tr th{ background: #96ABB5;color: #fff; font-size: 12px; padding: 12px 10px;border-collapse:collapse;text-align: left}
 .maincontent{width: 400px;}
-.tabwarp tr th.comment_count{width: 250px;}
+.tabwarp tr th.comment_count，.tabwarp tr td.comment_count{width: 250px;}
 .tabwarp tr:hover{background-color: #FAFAFA;}
 .tabwarp tr td{font-size: 12px;color: #333;border-bottom: 1px solid #ebeef5;padding: 12px 0px;}
 .tabwarp tr td div{box-sizing: border-box;    white-space: normal;    word-break: break-all;    line-height: 23px;}
 
 /*.tabwarp tr td a{display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;color: #305da1;  padding: 2px 5px;}*/
-.tabwarp tr td a{position: relative;overflow: hidden;height:25px;line-height: 25px; }
-.tabwarp tr td a::after{content: "......查看全部"; position: absolute; bottom: 0; right: 0; padding-left: 60px;
-background: -webkit-linear-gradient(left, transparent, #fff 55%);
-background: -o-linear-gradient(right, transparent, #fff 55%);
-background: -moz-linear-gradient(right, transparent, #fff 55%);
-background: linear-gradient(to right, transparent, #fff 55%);}
+.tabwarp tr td a{position: relative;height:25px;line-height: 25px; width:250px;overflow:hidden;
+  text-overflow:ellipsis;
+  -o-text-overflow:ellipsis;
+  -webkit-text-overflow:ellipsis;
+  -moz-text-overflow:ellipsis;
+  white-space:nowrap;}
 .tabwarp tr td div img{cursor: move;}
 .lh30{line-height: 30px;}
 .texthandle{position: relative;overflow: hidden;display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 25px;}

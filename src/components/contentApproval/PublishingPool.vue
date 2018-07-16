@@ -37,18 +37,18 @@
       </el-table-column>
       <el-table-column  label="浏览量">
         <template slot-scope="scope">
-          <input v-model="scope.row.read_count" class="numinput" @blur="updateData(scope.row)" />
+          <input v-model="scope.row.read_count" class="numinput" @change="updateData(scope.row)" />
         </template>
       </el-table-column>
       <el-table-column  label="点赞数">
         <template slot-scope="scope">
-          <input v-model="scope.row.like_count" class="numinput" @blur="updateData(scope.row)" />
+          <input v-model="scope.row.like_count" class="numinput" @change="updateData(scope.row)" />
         </template>
       </el-table-column>
 
       <el-table-column label="转发数">
         <template slot-scope="scope">
-          <input v-model="scope.row.share_count" class="numinput" @blur="updateData(scope.row)" />
+          <input v-model="scope.row.share_count" class="numinput" @change="updateData(scope.row)" />
         </template>
       </el-table-column>
       <el-table-column label="热门" width="80">
@@ -263,12 +263,12 @@ div.nick-div{color:#000;height:25px;line-height:25px;width:60px;overflow: hidden
 
   .tetxleft{text-align: left;}
 .lh30{line-height: 30px;}
-.texthandle{height:25px;position: relative;overflow: hidden; line-height: 25px;}
-.texthandle::after{content: "......查看全部"; position: absolute; bottom: 0; right: 0; padding-left: 60px;
-background: -webkit-linear-gradient(left, transparent, #fff 55%);
-background: -o-linear-gradient(right, transparent, #fff 55%);
-background: -moz-linear-gradient(right, transparent, #fff 55%);
-background: linear-gradient(to right, transparent, #fff 55%);}
+.texthandle{height:25px;position: relative;line-height: 25px;overflow:hidden;
+  text-overflow:ellipsis;
+  -o-text-overflow:ellipsis;
+  -webkit-text-overflow:ellipsis;
+  -moz-text-overflow:ellipsis;
+  white-space:nowrap;}
 .searchinput{display:inline-block;width:150px;background-color: #fff; background-image: none;    border-radius: 4px;}
 .username{display:inline-block;}
 .userimg{width:30px;height:30px;display:block;border-radius:50%;margin-right:20px;line-height: 40px;float: left;}

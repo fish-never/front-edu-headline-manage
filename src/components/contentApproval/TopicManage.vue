@@ -42,8 +42,8 @@
               <td><router-link class="link-a tetxleft" :to="{path:'/index/TopicDetail?id='+ item.id}">{{item.name}}</router-link></td>
               <td><div>{{item.creator}}</div></td>
               <td><div>{{item.created_at}}</div></td>
-              <td><div><input type="text" v-model="item.join_count" @blur="updateJoin(item)" /></div></td>
-              <td><div><input type="text" v-model="item.weight"  @blur="updateweight(item)" /></div></td>
+              <td><div><input type="text" v-model="item.join_count" @change="updateJoin(item)" /></div></td>
+              <td><div><input type="text" v-model="item.weight"  @change="updateweight(item)" /></div></td>
               <td><div><el-switch
                 v-model="item.status"
                 active-color="#13ce66" @change="updatePublish(item)"
