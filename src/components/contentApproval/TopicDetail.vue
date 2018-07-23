@@ -259,7 +259,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  .input-icon{width:50px;height:25px!important;line-height: 25px!important;float:left}
+  .input-icon{width:100px;height:25px!important;line-height: 25px!important;float:left}
   .img-div{display:flex;margin-top:15px;}
   .img-div-inner{flex:1;margin-right:20px;height:150px;overflow: hidden;}
   .img-div-inner:last-child{margin:0;}
@@ -283,6 +283,9 @@
   .topicTitleContent{
 
 
+  }
+  .input-icon{
+    padding:0 8px;
   }
   .content{
     padding:20px 34px;
@@ -316,7 +319,8 @@ line-height: 30px;
     color: #666666;
 line-height: 24px;
   }
-  .div-all{width:80px;
+  .div-all{
+    width:150px;
     overflow: hidden;margin:0 auto;}
   .img{
     height: 150px;
