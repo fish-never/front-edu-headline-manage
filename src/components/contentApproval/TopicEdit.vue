@@ -10,7 +10,7 @@
       <div class="content">
         <div class="topic  positionR">话题:</div>
         <el-input class="topicinput mgr20"
-          placeholder="#自考怎么学"
+          placeholder="自考怎么学"
           v-model="topicEdit.name"
           :disabled="canEdit">
         </el-input>

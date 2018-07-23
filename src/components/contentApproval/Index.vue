@@ -83,6 +83,9 @@ watch:{
    //上面分页
    search(value){
      console.log(value)
+     if(value===""){
+       value=20
+     }
      this.pageNum = value;
      this.loadList()
    },

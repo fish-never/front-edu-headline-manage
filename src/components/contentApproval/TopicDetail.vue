@@ -27,7 +27,7 @@
         </div>
         <button class="close" @click="deleteDetail(item.id)"></button>
         </div>
-        <p class="contentTitle">#zikaozenmexue#</p>
+        <p class="contentTitle">#{{title_data.name}}#</p>
         <p class="paragraph">{{item.content.content}}</p>
         <!--<img v-for="image in item.content.images" :src='image' class="img">-->
         <div class="img-div">
