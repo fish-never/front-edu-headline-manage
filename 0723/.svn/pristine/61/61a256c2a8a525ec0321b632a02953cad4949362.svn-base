@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="70px" height="71px" viewBox="0 0 70 71" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 14</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-1.0%" y="-2.6%" width="102.0%" height="106.5%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="3" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.556862745   0 0 0 0 0.650980392   0 0 0 0 0.690196078  0 0 0 0.229647871 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="内容审核" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-1165.000000, -1007.000000)">
+        <g id="Group-9" transform="translate(0.000000, -16.000000)">
+            <g id="3" filter="url(#filter-1)" transform="translate(230.000000, 776.000000)">
+                <g id="Group-14" transform="translate(940.000000, 250.000000)">
+                    <polygon id="Rectangle-11" fill="#FD782D" points="59 0 59 60 0 60"></polygon>
+                    <polygon id="Page-1" fill="#FFFFFF" points="48.8219476 33 35.6780545 46.1444361 29.2937227 39.7611904 27.4164891 41.6378809 33.8002779 48.0216697 35.6780545 49.8994463 50.6997242 34.8777766"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

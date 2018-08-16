@@ -12,7 +12,7 @@
     "dev-laosun": "cross-env API_URL=http://laosun.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "dev-lijia": "cross-env API_URL=http://lijia.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "dev-alin": "cross-env API_URL=http://alin.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "dev-zhongxiang": "cross-env API_URL=http://zhongxiang.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev-xiaoai": "cross-env API_URL=http://xiaoai.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "dev-test": "cross-env API_URL=http://www.toutiao-manage-api.com/  webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "dev-zhangyu": "cross-env API_URL=http://zhangyu.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "dev-tangxin": "cross-env API_URL=http://tangxin.toutiao-manage-api.com/ webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",

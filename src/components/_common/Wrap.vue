@@ -61,6 +61,10 @@
                 <el-menu-item index="8-4" @click="gotoChild('/index/contentApproval/TopicManage')">话题管理</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
+            <el-menu-item index="2"  dataId="9" :class="{curr: curid==9}" @click="goto($event,'/index/plan/index')" dataPath="/index/plan/index">
+              <i class="icon2 icon" :class="{curr9: path=='/index/plan/index'}"></i>
+                <span>成长计划</span>
+            </el-menu-item>
           </el-menu>
         </el-col>
       </el-aside>

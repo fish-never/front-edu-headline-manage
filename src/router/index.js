@@ -60,7 +60,11 @@ import pushIndex from '@/components/push/index'
 import pushReply from '@/components/push/reply'
 import pushAdd from '@/components/push/add'
 import pushEdit from '@/components/push/edit'
-
+//成长计划
+import planIndex from '@/components/plan/index'
+import planReply from '@/components/plan/reply'
+import planAdd from '@/components/plan/add'
+import planEdit from '@/components/plan/edit'
 
 Vue.use(Router)
 
@@ -215,6 +219,26 @@ export default new Router({
           path: 'push/edit',
           name: 'pushEdit',
           component: pushEdit
+        },
+        {
+          path: 'plan/index',
+          name: 'planIndex',
+          component: planIndex
+        },
+        {
+          path: 'plan/reply',
+          name: 'planReply',
+          component: planReply
+        },
+        {
+          path: 'plan/add',
+          name: 'planAdd',
+          component: planAdd
+        },
+        {
+          path: 'plan/edit',
+          name: 'planEdit',
+          component: planEdit
         },
         {
           path: 'versions',
