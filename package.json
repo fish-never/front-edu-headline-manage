@@ -23,7 +23,7 @@
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "build": "cross-env API_URL=http://manage-api-toutiao.ministudy.com/ node build/build.js",
     "laosun": "cross-env API_URL=http://laosun.toutiao-manage-api.com/ node build/build.js",
-    "lijia": "cross-env API_URL=http://lijia.toutiao-manage-api.com/ node build/build.js",
+    "lijiajia": "cross-env API_URL=http://lijiajia.toutiao-manage-api.com/ node build/build.js",
     "zhouqing": "cross-env API_URL=http://zhouqing.toutiao-manage-api.com/ node build/build.js",
     "duanwei": "cross-env API_URL=http://duanwei.toutiao-manage-api.com/ node build/build.js",
     "tangxin": "cross-env API_URL=http://tangxin.toutiao-manage-api.com/ node build/build.js",
