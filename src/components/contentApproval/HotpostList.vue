@@ -29,7 +29,10 @@
           <th>操作</th>
           <th style="width:80px;"></th>
         </tr>
-        <draggable v-model="itemData" :move="getdata" @update="datadragEnd" element="tbody"><!--draggable会自动生成一个外层div标签导致与上面的tr不平齐，这里使用element="tbody"将其改变成tbody，也不会影响渲染的tr-->
+        <tr v-if="itemData.length==0" class="tr_nodata">
+          暂无热帖数据
+        </tr>
+        <draggable v-else v-model="itemData" :move="getdata" @update="datadragEnd" element="tbody"><!--draggable会自动生成一个外层div标签导致与上面的tr不平齐，这里使用element="tbody"将其改变成tbody，也不会影响渲染的tr-->
           <tr v-for="item in itemData" :key="item.key">
             <td>
               <div>
@@ -53,6 +56,7 @@
           <td><div class="text-c"><img src="../../assets/imgs/drag.svg" alt="" /></div></td>
           </tr>
         </draggable>
+
       </table>
 
     <el-pagination
@@ -301,6 +305,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  .tr_nodata{height:50px;line-height: 50px;text-align: center;}
   .float-l{float:left;}
   .user-div{width:100px;}
   .tabwarp tr td div.nick-div{height:25px;line-height:25px;width:60px;overflow: hidden;text-overflow:ellipsis;white-space:nowrap;margin-left:4px;}

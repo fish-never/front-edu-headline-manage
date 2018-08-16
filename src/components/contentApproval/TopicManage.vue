@@ -42,7 +42,7 @@
               <td><router-link class="link-a tetxleft" :to="{path:'/index/TopicDetail?id='+ item.id}">{{item.name}}</router-link></td>
               <td><div>{{item.creator}}</div></td>
               <td><div>{{item.created_at}}</div></td>
-              <td><div><input type="text" v-model="item.join_count" @change="updateJoin(item)" /></div></td>
+              <td><div>{{item.join_count}}</div></td>
               <td><div><input type="text" v-model="item.weight"  @change="updateweight(item)" /></div></td>
               <td><div><el-switch
                 v-model="item.status"
