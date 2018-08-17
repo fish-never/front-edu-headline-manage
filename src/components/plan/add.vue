@@ -176,6 +176,7 @@ export default {
   overflow: hidden;
   position: relative;
   top: 15px;
+  border:1px solid #f5f5f5;
 }
 .up-btn{
   float: right;

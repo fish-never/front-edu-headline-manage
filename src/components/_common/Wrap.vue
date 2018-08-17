@@ -62,7 +62,7 @@
               </el-menu-item-group>
             </el-submenu>
             <el-menu-item index="2"  dataId="9" :class="{curr: curid==9}" @click="goto($event,'/index/plan/index')" dataPath="/index/plan/index">
-              <i class="icon2 icon" :class="{curr9: path=='/index/plan/index'}"></i>
+              <i class="icon9 icon" :class="{curr9:curid==9}"></i>
                 <span>成长计划</span>
             </el-menu-item>
           </el-menu>
@@ -178,6 +178,9 @@ export default {
   .icon2{
      background:url("../../assets/imgs/icon2.svg") center center no-repeat;
 }
+  .icon9{
+     background:url("../../assets/imgs/icon2.svg") center center no-repeat;
+}
   .icon3{
      background:url("../../assets/imgs/icon3.svg") center center no-repeat;
 }
@@ -195,7 +198,7 @@ export default {
   background-size:20px 20px;
 }
 .icon8{
-  background:url("../../assets/imgs/icon77.svg") center center no-repeat;
+  background:url("../../assets/imgs/icon7.svg") center center no-repeat;
 
 }
 .curr1{
@@ -203,6 +206,9 @@ export default {
      background:url("../../assets/imgs/icon11.svg") center center no-repeat;
 }
   .curr2{
+     background:url("../../assets/imgs/icon22.svg") center center no-repeat;
+}
+  .curr9{
      background:url("../../assets/imgs/icon22.svg") center center no-repeat;
 }
   .curr3{
@@ -221,6 +227,9 @@ export default {
      background:url("../../assets/imgs/icon66.svg") center center no-repeat;
 }
 .curr7{
+     background:url("../../assets/imgs/icon77.svg") center center no-repeat;
+}
+.curr8{
      background:url("../../assets/imgs/icon77.svg") center center no-repeat;
 }
   .el-main{
