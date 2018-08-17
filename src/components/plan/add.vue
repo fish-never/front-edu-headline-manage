@@ -131,12 +131,10 @@ export default {
 
 </script>
 
-<style>
+<style lang="scss" scoped>
   .pushadd .datetime .el-form-item{float:left;margin-right:20px;}
   .lineheight20 .el-form-item__label{line-height: 20px;}
   .inline .el-breadcrumb{float:left;height:32px;line-height: 32px;margin-right:20px;}
-</style>
-<style lang="scss" scoped>
   .title-p{
     font-size:24px;
     color:#333;

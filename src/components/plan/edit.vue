@@ -6,29 +6,35 @@
       <el-breadcrumb-item>修改计划</el-breadcrumb-item>
     </el-breadcrumb>
   </div>
-  <div class="search-wrap" style="width:600px;">
+  <div class="search-wrap  wrap-margin wrap-padding" >
     <el-form ref="form" :model="form" label-width="150px" :rules="rules">
-      <el-form-item label="计划图标(用户)"  prop="title">
-        <el-input v-model="form.title"></el-input>
+      <el-form-item label="计划图标(全部)"  prop="icon">
+        <el-input v-model="form.icon"></el-input>
+        <div class="cover-list">
+           <UploadFile v-model="form.icon" />
+        </div>
       </el-form-item>
-      <el-form-item label="计划图标(全部)"  prop="title">
-        <el-input v-model="form.title"></el-input>
+      <el-form-item label="计划图标(用户)"  prop="user_icon">
+        <el-input v-model="form.user_icon"></el-input>
+          <div class="cover-list">
+           <UploadFile v-model="form.user_icon" />
+        </div>
       </el-form-item>
-      <el-form-item label="计划图标(转发)"  prop="title">
-        <el-input v-model="form.title" ></el-input>
+      <el-form-item label="计划图标(转发)"  prop="share_icon">
+        <el-input v-model="form.share_icon" ></el-input>
+        <div class="cover-list">
+           <UploadFile v-model="form.share_icon" />
+        </div>
       </el-form-item>
-
-      <el-form-item label="计划标题" prop="url_id">
-        <el-input v-model="form.url_id"  placeholder="40字符以内(20汉子以内)"></el-input>
+      <el-form-item label="计划标题"  prop="title">
+        <el-input v-model="form.title"  placeholder="40字符以内(20汉子以内)"></el-input>
       </el-form-item>
       <el-form-item label="计划简介" prop="description">
-        <el-input type="textarea" v-model="form.description"  placeholder="400字符以内(200汉子以内)"></el-input>
+        <el-input type="textarea"  :autosize="{ minRows: 6}" v-model="form.description" placeholder="400字符以内(200汉子以内)"></el-input>
       </el-form-item>
-      <el-form-item label="关联话题" prop="openids">
-        <el-input v-model="form.openids" placeholder="话题ID(数字)"></el-input>
+      <el-form-item label="关联话题" prop="topic_id">
+        <el-input v-model="form.topic_id" placeholder="话题ID(数字)"></el-input>
       </el-form-item>
-
-
       <el-form-item>
         <el-button type="primary" @click="onSubmit('form')"  v-if="!btnShow">保存</el-button>
         <button class="gray-btn" type="button" v-if="btnShow">正在保存</button>
@@ -42,6 +48,7 @@
 <script>
   import planService from '../../service/plan';
   import commonService from '../../service/common';
+  import UploadFile from "../_common/UploadFile";
 export default {
   name: 'preview',
   data () {
@@ -54,57 +61,37 @@ export default {
       url:'小程序首页',
       form: {
         title: '',
-        time1:'',
-        data1:'',
-        time2:'',
-        data2:'',
-        url: 'pages/index1/index1',
-        publish_time: '',
-        send_time: '',
-        type: 1,
-        url_id: '0',
-        openids:'',
-        description:''
+        description:'',
+        icon:'',
+        user_icon:'',
+        share_icon:'',
+        topic_id:'',
+        plan_id:'',
+        id:''
       },
       rules: {
         title: [
-          { required: true, message: '文章标题', trigger: 'blur' },
+          { required: true, message: '文章标题不能为空', trigger: 'blur' },
         ],
-        url: [
-          { required: true, message: '请选择进入小程序查看的位置',trigger: 'change'}
+        icon:[
+          {  required: true, message: '图标不能为空', trigger: 'blur' }
         ],
-        publish_time: [
-          {  required: true, message: '请选择时间',trigger: 'change'}
+        user_icon: [
+          { required: true, message: '图标不能为空', trigger: 'blur' }
         ],
-        data2: [
-          {  required: true, message: '请选择日期',trigger: 'change'}
-        ],
-        time2: [
-          {  required: true, message: '请选择时间',trigger: 'change'}
-        ],
-        data1: [
-          {  required: true, message: '请选择日期',trigger: 'change'}
-        ],
-        time1: [
-          {  required: true, message: '请选择时间',trigger: 'change'}
-        ],
-        send_time: [
-          {  required: true, message: '请选择时间',trigger: 'change'}
-        ],
-        url_id:[
-          {  required: true, message: '请输入文章ID', trigger: 'blur' }
-        ],
-        type: [
-          { required: true, message: '请选择活动资源', trigger: 'blur' }
-        ],
-        openids:[
-          { message: 'OPENID', trigger: 'blur'}
+        share_icon: [
+          { required: true, message: '图标不能为空', trigger: 'blur' }
         ]
+
       },
     }
   },
+  components: {
+    UploadFile
+  },
   created(){
     this.loading = false;
+    this.id = this.$route.query.id
   },
   mounted(){
     this.getDetail();
@@ -117,7 +104,20 @@ export default {
         confirmButtonText: '确定',
       });
     },
-
+    getDetail(){
+      let params = {
+        plan_id:this.id
+      }
+      planService.getDetail(params).then(data=>{
+        if(data.code==0){
+          this.form = data.data[0];
+          this.form.plan_id = this.id;
+        }else{
+          this.btnShow = false;
+          this.open(data.msg)
+        }
+      })    
+    },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
@@ -126,23 +126,9 @@ export default {
       this.$refs[formName].validate((valid) => {
         var vm = this
         if (valid) {
-          vm.form.url="pages/index1/index1"
-          vm.form.publish_time=vm.form.data1+' '+vm.form.time1
-          vm.form.send_time=vm.form.data2+' '+vm.form.time2
-
-          if(vm.type){
-            vm.form.type = 2;
-            //theForm.send_time=theForm.send_time.format('yyyy-MM-dd h:m:s')
-          }else{
-            vm.form.type = 1;
-            vm.form.send_time=''
-          }
-          vm.form.url_id=parseInt(vm.form.url_id)
-          //theForm.publish_time=theForm.publish_time.format('yyyy-MM-dd h:m:s')
-
-          pushService.saveAdd(vm.form).then(data=>{
+          planService.update(vm.form).then(data=>{
             if(data.code==0){
-              vm.$router.push({ path: "../../index/push/index?"+data.data.result })
+              vm.$router.push({ path: "../../index/plan/index"})
             }else{
               vm.btnShow = false;
               vm.open(data.msg)
@@ -162,12 +148,12 @@ export default {
 
 </script>
 
-<style>
+<style lang="scss" scoped>
   .pushadd .datetime .el-form-item{float:left;margin-right:20px;}
   .lineheight20 .el-form-item__label{line-height: 20px;}
   .inline .el-breadcrumb{float:left;height:32px;line-height: 32px;margin-right:20px;}
-</style>
-<style lang="scss" scoped>
+
+
   .title-p{
     font-size:24px;
     color:#333;
@@ -200,6 +186,22 @@ export default {
     color:rgba(102,102,102,1);
     line-height:20px;
   }
-
+.cover-list{
+  margin-left:20px;
+  width:80px;
+  height:40px;
+  display: inline-block;
+  background: #fff;
+  overflow: hidden;
+  position: relative;
+  top: 15px;
+  border:1px solid #dedede;
+}
+.up-btn{
+  float: right;
+}
+.el-input {
+  width:400px;
+}
 
 </style>

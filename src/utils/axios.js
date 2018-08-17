@@ -28,9 +28,6 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) {
     let data = response.data;
     let status = response.status;
-    console.log(data)
-    console.log(status)
-    console.log(exceptionHandler)
     if(data.code == 10030003){
       
     }

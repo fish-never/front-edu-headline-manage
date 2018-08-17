@@ -62,7 +62,6 @@ import pushAdd from '@/components/push/add'
 import pushEdit from '@/components/push/edit'
 //成长计划
 import planIndex from '@/components/plan/index'
-import planReply from '@/components/plan/reply'
 import planAdd from '@/components/plan/add'
 import planEdit from '@/components/plan/edit'
 
@@ -225,11 +224,7 @@ export default new Router({
           name: 'planIndex',
           component: planIndex
         },
-        {
-          path: 'plan/reply',
-          name: 'planReply',
-          component: planReply
-        },
+
         {
           path: 'plan/add',
           name: 'planAdd',

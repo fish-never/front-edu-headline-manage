@@ -23,21 +23,21 @@
         label="图标(全部)"
         width="">
         <template slot-scope="scope">
-          <img :src="scope.row.icon" />
+          <img :src="scope.row.icon" class="icon-img" />
         </template>
       </el-table-column>
       <el-table-column
         label="图标(用户)"
         width="">
         <template slot-scope="scope">
-          <img :src="scope.row.user-icon" />
+          <img :src="scope.row.user_icon" class="icon-img" />
         </template>
       </el-table-column>
       <el-table-column
         label="图标(转发)"
         width="">
         <template slot-scope="scope">
-          <img :src="scope.row.share-icon" />
+          <img :src="scope.row.share_icon"  class="icon-img" />
         </template>
       </el-table-column>
       <el-table-column
@@ -50,6 +50,13 @@
         label="简介">
         <template slot-scope="scope">
           <span>{{ scope.row.description }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="关联话题">
+        <template slot-scope="scope">
+          <router-link class="link-a tetxleft" :to="{path:'/index/TopicDetail?id='+ scope.row.topic_id}">{{scope.row.topic_id}}</router-link>
+          <!-- <span>{{ scope.row.topic_id }}</span> -->
         </template>
       </el-table-column>
       <el-table-column
@@ -75,7 +82,7 @@
 
 
 
-    <el-pagination v-if="pageShow"
+    <!-- <el-pagination v-if="pageShow"
                    class="page-wrap"
                    @size-change="handleSizeChange"
                    @current-change="handleCurrentChange"
@@ -84,7 +91,7 @@
                    :page-size="pageNum"
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
-    </el-pagination>
+    </el-pagination> -->
   </div>
 </template>
 
@@ -101,7 +108,7 @@ export default {
       content:'',
       value1:'',
       page:1,
-      pageNum:10,
+      pageNum:20,
       created_at:'',
       title:'',
       itemData:[],
@@ -205,14 +212,6 @@ export default {
           this.page = parseInt(rdata.page);
           this.pageNum = parseInt(rdata.pageNum);
           this.total = parseInt(rdata.count);
-          // for(var i =0;i<rdata.result.length;i++){
-          //   if(rdata.result[i].type==1){
-          //     rdata.result[i].type=false
-          //   }else{
-          //     rdata.result[i].type=true
-          //   }
-
-          // }
           this.itemData =rdata ;
 
             console.log(this.itemData)
@@ -238,33 +237,9 @@ export default {
   }
 };
 
-  Date.prototype.format = function(format) {
-    var date = {
-      "M+": this.getMonth() + 1,
-      "d+": this.getDate(),
-      "h+": this.getHours(),
-      "m+": this.getMinutes(),
-      "s+": this.getSeconds(),
-      "q+": Math.floor((this.getMonth() + 3) / 3),
-      "S+": this.getMilliseconds()
-    };
-    if (/(y+)/i.test(format)) {
-      format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
-    }
-    for (var k in date) {
-      if (new RegExp("(" + k + ")").test(format)) {
-        format = format.replace(RegExp.$1, RegExp.$1.length == 1
-          ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
-      }
-    }
-    return format;
-  }
 </script>
-<style>
+<style lang="scss" scoped>
   .inline .el-breadcrumb{float:left;height:32px;line-height: 32px;margin-right:20px;}
-</style>
-<style>
-
 .push .el-input__inner {
   height:32px!important;
   line-height:32px!important;
@@ -334,5 +309,9 @@ export default {
   line-height: 32px;
   text-align: center;
   margin-right: 1rem;
+}
+.icon-img{
+  width:40px;
+  height:40px;
 }
 </style>
