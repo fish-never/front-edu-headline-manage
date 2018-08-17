@@ -81,7 +81,11 @@ export default {
         ],
         share_icon: [
           { required: true, message: '图标不能为空', trigger: 'blur' }
+        ],
+        topic_id: [
+          { required: true, message: '关联话题不能为空', trigger: 'blur' }
         ]
+
 
       },
     }
