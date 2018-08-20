@@ -28,18 +28,18 @@
         </div>
       </el-form-item>
       <el-form-item label="计划标题"  prop="title">
-        <el-input v-model="form.title"  placeholder="40字符以内(20汉子以内)"></el-input>
+        <el-input v-model="form.title"  placeholder="20字符以内" maxlength="20"></el-input>
       </el-form-item>
       <el-form-item label="计划简介" prop="description">
-        <el-input type="textarea"  :autosize="{ minRows: 6}" v-model="form.description" placeholder="400字符以内(200汉子以内)"></el-input>
+        <el-input type="textarea"  :autosize="{ minRows: 6}" v-model="form.description" placeholder="200字符以内" maxlength="200"></el-input>
       </el-form-item>
       <el-form-item label="关联话题" prop="topic_id">
-        <el-input v-model="form.topic_id" placeholder="话题ID(数字)"></el-input>
+        <el-input v-model="form.topic_id" placeholder="话题ID(数字)" type="number"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('form')"  v-if="!btnShow">保存</el-button>
         <button class="gray-btn" type="button" v-if="btnShow">正在保存</button>
-        <el-button>取消</el-button>
+        <el-button   @click="goIndex">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -101,7 +101,9 @@ export default {
         confirmButtonText: '确定',
       });
     },
-
+   goIndex(){
+       this.$router.push({ path: "../../index/plan/index"})
+    },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
