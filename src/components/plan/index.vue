@@ -14,9 +14,9 @@
       style="width: 100%"
       class="wrap-margin"
       @selection-change="handleSelectionChange">
-      <el-table-column
+   <el-table-column
         type="index"
-        label="序号"   
+        label="编号"
         width="60">
       </el-table-column>
       <el-table-column
@@ -82,7 +82,7 @@
 
 
 
-    <!-- <el-pagination v-if="pageShow"
+    <el-pagination v-if="pageShow"
                    class="page-wrap"
                    @size-change="handleSizeChange"
                    @current-change="handleCurrentChange"
@@ -91,7 +91,7 @@
                    :page-size="pageNum"
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
-    </el-pagination> -->
+    </el-pagination>
   </div>
 </template>
 
@@ -108,7 +108,7 @@ export default {
       content:'',
       value1:'',
       page:1,
-      pageNum:20,
+      pageNum:10,
       created_at:'',
       title:'',
       itemData:[],
@@ -149,57 +149,7 @@ export default {
     addlist:function(){
       this.$router.push('add');
     },
-    SendNow:function(tid){
-      const vm =this
-      const params = {
-        id:parseInt(tid),
-      };
-      //const loadingInstance = this.$loading({ fullscreen: true });
-
-      this.$confirm('确定发送吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        pushService.sendNow(params).then(data=>{
-          if(data.code==0 && data.data.result){
-            vm.open("推送成功！")
-            //loadingInstance.close();
-            vm.List()
-          }else{
-            vm.open("推送失败，请重试！")
-            this.pageShow=false;
-            this.loading = false;
-          }
-          loadingInstance.close();
-        })
-      }).catch(() => {
-      });
-
-
-
-
-    },
-    Delete:function(tid){
-      const params = {
-        id:parseInt(tid),
-      };
-      const loadingInstance = this.$loading({ fullscreen: true });
-      pushService.deletePush(params).then(data=>{
-        if(data.code==0 && data.data.result){
-          this.open("删除成功！")
-          loadingInstance.close();
-          this.List()
-        }else{
-          this.open("删除失败，请重试！")
-          this.pageShow=false;
-          this.loading = false;
-        }
-
-      })
-    },
     List:function(){
-
       const params = {
         page:this.page,
         pageSize:this.pageNum,
@@ -210,10 +160,9 @@ export default {
           const rdata = data.data
           loadingInstance.close();
           this.page = parseInt(rdata.page);
-          this.pageNum = parseInt(rdata.pageNum);
-          this.total = parseInt(rdata.count);
-          this.itemData =rdata ;
-
+          this.pageNum = parseInt(rdata.pageSize);
+          this.total = parseInt(rdata.total);
+          this.itemData =rdata.data ;
             console.log(this.itemData)
           this.loading = false;
           this.pageShow=true;
