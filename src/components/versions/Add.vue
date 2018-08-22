@@ -8,11 +8,11 @@
             <el-input v-model="data.version" placeholder="例如版本号2.0.1,此处填写为20001"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="朋友圈分享" prop="isCheck">
+        <el-form-item label="打卡排行" prop="isCheck">
           <el-radio v-model="data.isCheck" label="1">开启</el-radio>
           <el-radio v-model="data.isCheck" label="0">关闭</el-radio>
         </el-form-item>
-         <el-form-item label="分享活动入口" prop="openShare">
+         <el-form-item label="朋友圈分享" prop="openShare">
           <el-radio v-model="data.openShare" label="1">开启</el-radio>
           <el-radio v-model="data.openShare" label="0">关闭</el-radio>
         </el-form-item>
