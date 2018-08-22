@@ -109,6 +109,8 @@ export default {
     },
     //保存
     onSubmit(formName){
+      let n = $.trim(this.form.title);
+      // console.log(n)
       this.$refs[formName].validate((valid) => {
         var vm = this
         if (valid) {

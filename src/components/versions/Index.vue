@@ -23,7 +23,7 @@
         </template>
       </el-table-column>
          <el-table-column
-        label="朋友圈分享">
+        label="打卡排行">
         <template slot-scope="scope">
           <span v-if="scope.row.status == 0&& scope.row.flag==1">关闭</span>
           <span v-if="scope.row.status == 1 && scope.row.flag==1">开启</span>
@@ -33,7 +33,7 @@
 
       </el-table-column>   
       <el-table-column
-        label="分享活动入口" >
+        label="朋友圈分享" >
         <template slot-scope="scope"  v-if='scope.row.flag==2'>
           <span v-if="scope.row.status.openShare == 0">关闭</span>
           <span v-if="scope.row.status.openShare == 1">开启</span>
