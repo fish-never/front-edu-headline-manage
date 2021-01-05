@@ -31,7 +31,7 @@
     "build-test": "cross-env API_URL=http://www.toutiao-manage-api.com/ node build/build.js"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "element-ui": "^2.3.9",
     "jquery": "^3.3.1",
     "qs": "^6.5.2",
